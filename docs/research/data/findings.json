@@ -1,0 +1,1189 @@
+[
+ {
+  "finder": "needs",
+  "summary": "災害時の通信途絶・輻輳と、Webアクセス集中による防災サイト閲覧困難は一次資料で繰り返し確認できた。東日本大震災では音声発信規制最大95%・基地局約2.9万局停波(パケットは相対的に疎通)、熊本地震で約400局、能登半島地震で最大839局が停波。台風19号では国交省「川の防災情報」が輻輳し軽量な簡易版への切替で凌ぎ、岩手県も震災時に県サイトをテキストのみ化、東京都はアクセス集中対策ガイドラインで軽量化を推奨。実測では「重ねるハザードマップ」はJS/CSSだけで約6.9MB+地図タイル約87KB/枚と重く、128kbps級ではテキスト中心ページしか実用にならない。高齢層はスマホ保有80.5%だがフィーチャーフォン保有16.8%が残存。文字中心軽量防災サイトの存在意義を裏付ける根拠は強い。",
+  "findings": [
+   {
+    "topic": "東日本大震災(2011)の通信輻輳・通信規制",
+    "claim": "東日本大震災では携帯電話音声でNTTドコモに通常の50〜60倍のトラヒックが発生し、発信規制は最大でドコモ90%、KDDI 95%、ソフトバンク70%に達した。一方メール等のパケット通信の規制はドコモが一時30%を実施しすぐ解除した程度で、最大95%規制された回線交換(音声)よりパケット通信の方が疎通しやすい結果となった。",
+    "source_title": "平成23年版 情報通信白書 第1部 東日本大震災における情報通信の状況(総務省)",
+    "source_url": "https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h23/pdf/n0010000.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2011年発行(2026-08-13にPDF本文を直接確認)",
+    "notes": "PDF本文から数値を直接抽出して確認済み。「音声は塞がるがデータは相対的に通る」という軽量サイト構想の前提を裏付ける一次資料。"
+   },
+   {
+    "topic": "東日本大震災(2011)の基地局停波・回線被災",
+    "claim": "東日本大震災では携帯電話・PHS基地局が5社合計で最大約29,000局停波した(東北・関東の基地局約137,500局に対し、3/12時点)。固定通信もNTT東日本で最大約100万回線が不通、3社合計約190万回線が被災。停波原因の多くはエントランス回線断と商用電源途絶(長期停電による非常用電源枯渇)だった。",
+    "source_title": "平成23年版 情報通信白書 第1部(総務省)",
+    "source_url": "https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h23/pdf/n0010000.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2011年発行(2026-08-13にPDF本文を直接確認)",
+    "notes": "内閣府防災の検討会資料(https://www.bousai.go.jp/kaigirep/kentokai/kinoukakuho/2/pdf/1.pdf)にも同旨の総務省報告あり。"
+   },
+   {
+    "topic": "熊本地震(2016)の基地局停波",
+    "claim": "平成28年熊本地震では携帯電話基地局が最大で合計約400局(熊本県内基地局の約10%)停波した。停波原因の約75%は商用電源の停電、残りは土砂崩れ等による伝送路断で、停波地域の大半は阿蘇山周辺の山間地域だった。",
+    "source_title": "電気通信事業者の平成28年熊本地震への対応状況(総務省 総合通信基盤局)",
+    "source_url": "https://www.soumu.go.jp/main_content/000432337.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2016年発行(2026-08-13にPDF本文を直接確認)",
+    "notes": "平成29年版情報通信白書(https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h29/html/nc152130.html)にも同内容。中規模災害でも山間部で停波が起きるパターンを示す。"
+   },
+   {
+    "topic": "能登半島地震(2024)の基地局停波と復旧",
+    "claim": "令和6年能登半島地震では、停電・伝送路断等によりNTTドコモ・KDDI・ソフトバンク・楽天モバイル合計で最大839の携帯電話基地局(うち石川県799)が停波した(2024年1月3日時点)。道路寸断の中、各社は最大約100台の車載・可搬型基地局、船上基地局、ドローン基地局等で応急復旧したが、能登半島北部6市町の基地局が本来の状態に戻ったのは5月末時点で97%と、本格復旧には数か月を要した。",
+    "source_title": "令和6年版 情報通信白書 第2節 通信、放送、郵便等の状況(総務省)",
+    "source_url": "https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r06/pdf/n1120000.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2024年発行(2026-08-13にPDF本文を直接確認)",
+    "notes": "直近の大災害でも週〜月単位で通信が劣化し続けた事実。エリア復旧後も応急復旧構成では容量・品質が限られる点は白書の記述からの推論であり断定はしない。"
+   },
+   {
+    "topic": "能登半島地震(2024)の00000JAPAN開放",
+    "claim": "能登半島地震では2024年1月1日以降、災害用統一SSID「00000JAPAN」がドコモ・KDDI・ソフトバンク等により石川・新潟・富山・福井等で無料開放された。認証不要で誰でも使える一方、通信は暗号化されないためセキュリティ上の注意が公式に案内された。",
+    "source_title": "令和6年能登半島地震の影響に伴う公衆無線LANサービス「00000JAPAN」の開設について(NTTドコモ)",
+    "source_url": "https://www.docomo.ne.jp/info/notice/page/240101_00_m.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2024-01-01公表(2026-08-13確認)",
+    "notes": "開放の事実は一次資料で確認。避難所Wi-Fiの混雑度合いを定量化した一次資料は今回の調査では見つからず、混雑実態は未確認。"
+   },
+   {
+    "topic": "台風19号(2019)での政府防災サイトの輻輳と「簡易版」への切替",
+    "claim": "令和元年台風19号では、国土交通省「川の防災情報」にこれまでの最大アクセス数の1.6倍を超えるアクセスが集中してつながりにくい状況が発生し、緊急のサーバーメモリー増強でも解消せず、国交省は軽量な「川の防災情報 簡易版」で水位情報を提供し、さらにNHK・Yahoo!に水位データ・CCTV画像を提供して誘導した。",
+    "source_title": "台風第19号における河川・気象情報の提供状況(国土交通省 検証チーム第1回 資料2)",
+    "source_url": "https://www.mlit.go.jp/river/shinngikai_blog/kaizen_kensho/dai01kai/dai1kai_shiryou2.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2019年発行(2026-08-13にPDF本文を直接確認)",
+    "notes": "政府自身がアクセス集中時のフォールバックとして「軽量な簡易版」を実際に使った事例であり、文字中心軽量防災サイトの存在意義を最も直接的に裏付ける。"
+   },
+   {
+    "topic": "台風19号(2019)での自治体サイト閲覧困難と東京都ガイドライン",
+    "claim": "令和元年台風19号の通過前後に都内自治体のホームページへ住民のアクセスが集中し、表示が遅い・閲覧できない事象が発生した。これを受け東京都は令和2年2月に「アクセス集中対応のためのガイドライン」を作成し、対策としてCDN・Yahoo!キャッシュサイトによる負荷分散と、ページや画像コンテンツの軽量化による負荷軽減を区市町村に示した。",
+    "source_title": "東京都・アクセス集中対応のためのガイドラインに関する紹介記事について(東京都デジタルサービス局)",
+    "source_url": "https://www.digitalservice.metro.tokyo.lg.jp/news/guideline.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "ガイドラインは2020年2月作成(2026-08-13確認)",
+    "notes": "J-LIS誌への都職員執筆記事(https://www.j-lis.go.jp/service/magazine/magazine_search/g-j-lis2/2008/pickup_01.html)でも軽量化が対策として明記。民間調査(piyolog: https://piyolog.hatenadiary.jp/entry/2019/10/15/080000)では東京23区のうち14区でサイト閲覧支障の報告があった(こちらはTwitter報告の集計で二次情報)。"
+   },
+   {
+    "topic": "東日本大震災(2011)での自治体サイトのテキスト化事例",
+    "claim": "岩手県は東日本大震災発生後、アクセス集中で閲覧しづらくなった公式Webサイトを画像等を一時削除したテキスト情報のみのサイトに切り替え、表示する情報量を減らしてサーバ負荷を軽減した。またヤフーは省庁・自治体・交通機関など275機関の公式サイトのキャッシュサイトを提供し、更新は60秒以内に反映された。",
+    "source_title": "事例11 自治体の公式Webサイト等の負荷軽減(総務省 災害対応におけるICT利活用事例集)",
+    "source_url": "https://www.soumu.go.jp/main_content/000173744.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "総務省公表資料(2026-08-13にPDF本文を直接確認)",
+    "notes": "「災害時に文字中心へ軽量化する」運用が実際に行われ、総務省が事例集で推奨している一次資料。"
+   },
+   {
+    "topic": "低速回線(128kbps級)でのWeb閲覧の実態",
+    "claim": "速度制限時の128kbpsでは、テキスト中心のWebページやLINEのテキストは実用になる一方、検索結果表示に10〜20秒程度、トップページ表示に30秒〜1分かかることがあり、画像の多いページはほぼ閲覧できず、動画は実用不能とされる。",
+    "source_title": "通信速度制限128kbpsって実際何ができなくなるの?(スマホスピタル)ほか複数の解説記事",
+    "source_url": "https://smahospital.jp/column/help/139024/",
+    "source_type": "secondary",
+    "confidence": "low",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "商業ブログの体験談ベースで統制された測定ではないため確度は低い。ただし128kbps≒16KB/sという帯域から、数KBのテキストページは数秒・数MBの地図サイトは数分〜実用不能という推定は物理的に妥当。一次的な公的測定データは見つからなかった。"
+   },
+   {
+    "topic": "平時都市部の輻輳(パケ詰まり)",
+    "claim": "2023年頃、東京23区・大阪・名古屋等の都市部で、電波表示はあるのにデータが流れない「パケ詰まり」がNTTドコモを中心に顕在化した。原因は人流回復による基地局処理能力の逼迫で、ドコモは2023年に300億円を前倒し投資し新宿・渋谷・池袋・新橋等で対策を実施した。",
+    "source_title": "ドコモのパケ詰まりは改善が進むも、依然として残る\"穴\"(ITmedia Mobile)",
+    "source_url": "https://www.itmedia.co.jp/mobile/articles/2308/05/news054.html",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2023-08-05公開(2026-08-13確認)",
+    "notes": "災害時でなくとも人が集中すると輻輳し重いページが開けなくなる実例。キャリア公式の詳細発表はプレス記事経由でしか確認できなかったため二次情報とする。"
+   },
+   {
+    "topic": "地図中心防災サイトのページ重量(実測)",
+    "claim": "国交省・国土地理院「重ねるハザードマップ」(disaportal.gsi.go.jp)は、HTML約20KBに加えHTMLから参照されるJS/CSSが59ファイル・合計約6.9MB(転送ベース実測。内訳例: gsimaps.js 1.76MB、hazardmaps.js 1.25MB、turf.min.js 570KB、leaflet-src.js 439KB)あり、さらに地理院地図の標準タイルPNGは1枚平均約87KB(6枚サンプル実測)、洪水浸水想定オーバーレイタイルは1枚約15KBで、スマホ1画面で概ね6〜15枚のタイルを読むため、初回表示には数MB以上の通信が必要と推定される。",
+    "source_title": "重ねるハザードマップ(国土地理院) ※2026-08-13にcurlで実測",
+    "source_url": "https://disaportal.gsi.go.jp/maps/index.html",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13実測",
+    "notes": "ヘッドレスブラウザが使えず、HTML参照アセットの合計とタイルのサンプル実測による。実ブラウザでは一部アセットが遅延/条件付き読込の可能性があり初回転送量は前後しうるが、テキストページ(数KB〜数十KB)との2〜3桁の差は確実。タイル枚数からの必要通信量は推定と明記。"
+   },
+   {
+    "topic": "キキクルのページ重量(実測・部分)",
+    "claim": "気象庁「キキクル(危険度分布)」(jma.go.jp/bosai/risk/)はHTML自体は約2KBだが、HTMLから静的に参照されるJS/CSSだけで約260KB(圧縮転送・実測、jmatile.bundle 137KB等)あり、加えて地図タイル・危険度データ・遅延読込バンドルを動的に取得するため、実際の表示にはさらに大きい通信量を要する。",
+    "source_title": "キキクル(気象庁 大雨・洪水警報の危険度分布) ※2026-08-13にcurlで実測",
+    "source_url": "https://www.jma.go.jp/bosai/risk/",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13実測",
+    "notes": "動的読込分(タイル・JSON・lazyバンドル)は未計測のため下限値。SPA構造のため総転送量は実ブラウザ計測でないと確定できない。それでも文字中心ページ比で1〜2桁重いことは確実。"
+   },
+   {
+    "topic": "スマホ/フィーチャーフォンの保有状況(全体)",
+    "claim": "総務省の令和6年通信利用動向調査(2025年5月30日公表、調査時点2024年8月末)によれば、個人のスマートフォン保有割合は80.5%、携帯電話(スマートフォンを除く=フィーチャーフォン等)の保有割合は16.8%で減少傾向、モバイル端末を1種類も保有しない個人も2割超存在する。世帯のスマートフォン保有は90.5%、個人のインターネット利用者割合は85.6%。",
+    "source_title": "令和6年通信利用動向調査の結果(総務省 報道発表)",
+    "source_url": "https://www.soumu.go.jp/johotsusintokei/statistics/data/250530_1.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2025-05-30公表(2026-08-13にPDF本文を直接確認)",
+    "notes": "フィーチャーフォン保有者が個人の約17%残存しており、旧来ケータイ的な軽量サイトの潜在利用者層の規模を示す。なおフルブラウザ非搭載端末では閲覧手段自体が別途課題。"
+   },
+   {
+    "topic": "高齢者のスマホ利用率(年齢階層別)",
+    "claim": "年齢階層別では、インターネット利用率は13〜69歳で9割超だが80歳以上では前年より低下しており(令和6年通信利用動向調査)、民間集計では70代のスマートフォン所有率は7割弱、80歳以上ではスマホ非利用・非保有が過半とされる。高齢層ほどフィーチャーフォン・非ネット利用が残る。",
+    "source_title": "令和6年通信利用動向調査(総務省)および高齢者のデジタル機器利用に関する民間・シンクタンク集計",
+    "source_url": "https://www.soumu.go.jp/johotsusintokei/statistics/data/250530_1.pdf",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2025-05-30公表(2026-08-13確認)",
+    "notes": "「13〜69歳9割超・80歳以上低下」は総務省一次資料の本文で確認済み。70代68%前後・80歳以上過半非利用という個別数値は年齢階層別グラフが画像のためPDFテキストから直接確認できず、二次情報(日本総研 https://www.jri.co.jp/page.jsp?id=105843 等)に依拠しており確度は中。"
+   },
+   {
+    "topic": "仙台市の事例(2015年関東・東北豪雨)",
+    "claim": "仙台市では2015年9月の関東・東北豪雨の際に市ホームページへのアクセスが集中してつながりにくくなり、同年10月にデータ処理容量を大幅増強、2016年6月からは市ホームページとは別URLの「仙台市避難情報提供システム」の運用を開始した。",
+    "source_title": "災害情報伝達手段の奏功事例集(消防庁防災情報室、令和2年3月)",
+    "source_url": "https://www.fdma.go.jp/mission/prepare/transmission/items/0203_soukoujirei.pdf",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2020-03発行(2026-08-13確認)",
+    "notes": "検索結果の要約で確認したがPDF本文の該当箇所は未精読のため確度は中。台風19号・東日本大震災以外にも中規模水害でアクセス集中が起きる傍証。"
+   }
+  ]
+ },
+ {
+  "finder": "domestic",
+  "summary": "国内の「軽量テキスト防災サイト」は縮退局面にある。最有力の現存例だったNHKオンラインテキスト版(実測3.9KB)は放送法改正に伴い2025年9月21日で災害・気象情報の掲載を終了し、後継のNHK ONEは受信契約前提。tenki.jpのケータイ版は2021年終了、J-anpiは2023年終了、FOMA/iモードは2026年3月31日に終了し、福岡県の登録制防災メールもアプリへ移行した。一方、web171(実測8KB)や緊急速報メールなど輻輳に強いテキスト系手段は存続し、LINEヤフーは1,627自治体と災害協定を結び自治体サイトのキャッシュ配信を無償提供している。2011年には岩手県のテキスト化やヤフーの275機関キャッシュ提供が政府資料に記録され、軽量化の有効性は実証済み。気象庁の防災ポータルは実測約940KBのJS依存ページで軽量版がなく、「自分で見に行ける軽量Web」には明確な空白が存在する。",
+  "findings": [
+   {
+    "topic": "NHKテキスト版の現状",
+    "claim": "NHKは旧ガラケー向け由来の超軽量サイト「NHKオンライン テキスト版」(k.nhk.jp)を現在も公開しており、トップページのHTMLは実測約3.9KB(Shift_JIS・ほぼテキストのみ)。ただし2025年9月21日をもってニュース・災害情報・気象情報・地域情報の掲載を終了し、現在は番組表・受信料窓口等のみが残る。",
+    "source_title": "NHKオンラインテキスト版 一部サービス終了のお知らせ",
+    "source_url": "https://k.nhk.jp/notice.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13にWebFetch/curlで実ページを確認",
+    "notes": "ページサイズはcurlによる実測(3,860バイト)。「軽量テキスト防災サイト」の国内最有力の現存例が、防災コンテンツを失った直後という重要事実。"
+   },
+   {
+    "topic": "NHKテキスト版終了の理由",
+    "claim": "テキスト版のニュース・災害情報終了の理由は2025年10月1日施行の改正放送法で、ネットのニュース・災害・気象情報がNHKの必須業務となり「NHK ONE」(放送同様に受信契約が必要な新サービス)へ移行したため。NHKは今後の災害情報は放送とNHK ONEで伝えるとしている。",
+    "source_title": "NHKオンラインテキスト版 一部サービス終了のお知らせ",
+    "source_url": "https://k.nhk.jp/notice.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "NHK ONEを受信契約なし・未登録でどこまで閲覧できるかは報道(ITmedia等)でも「暫定的で不明確」とされており未確定。軽量テキスト版の後継は用意されていない。"
+   },
+   {
+    "topic": "LINEヤフー災害協定(現行)",
+    "claim": "LINEヤフーは全国1,627自治体(2026年5月末時点、47都道府県すべてを含む)と「災害に係る情報発信等に関する協定」を締結し、無償で(1)自治体サイトのキャッシュサイト公開によるアクセス集中時の負荷軽減、(2)Yahoo!防災速報・Yahoo! JAPANアプリへの自治体発信ツール提供、(3)避難所情報の地図掲載を行っている。",
+    "source_title": "災害協定|LINEヤフー株式会社(サステナビリティ)",
+    "source_url": "https://www.lycorp.co.jp/ja/sustainability/csr/article/019/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "ページ表記2026年6月更新、2026-08-13確認",
+    "notes": "自治体向け案内は https://saigai.yahoo.co.jp/agreement/ 。主要電力会社・日本ガス協会ともキャッシュサイト協定あり。『災害時に静的複製を配る』仕組みが民間主導で既に大規模運用されている点は企画の競合/連携先として重要。"
+   },
+   {
+    "topic": "自治体側のキャッシュサイト運用例",
+    "claim": "国立市・東松山市・新潟市など多数の自治体が「災害時に市サイトが重い場合はヤフーのキャッシュサイト(複製サイト)を利用してほしい」と自サイトで住民向けに案内している。",
+    "source_title": "災害時、市ホームページが重いときはヤフーのキャッシュサイトをご利用ください(国立市)",
+    "source_url": "https://www.city.kunitachi.tokyo.jp/soshiki/Dept01/Div01/Sec02/gyomu/0366/1593060202948.html",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13検索で確認",
+    "notes": "検索結果で複数自治体の公式ページを確認したが、各ページ本文の全文取得までは行っていない。東松山市: https://www.city.higashimatsuyama.lg.jp/soshiki/27/2189.html 、新潟市: https://www.city.niigata.lg.jp/kurashi/bosai/bosai_taisaku/index_koujo/yahookyoutei.html"
+   },
+   {
+    "topic": "東日本大震災時の軽量化事例(自治体)",
+    "claim": "総務省の公式事例集は、岩手県が東日本大震災発生後に公式Webサイトを画像等を一時削除した「テキスト情報のみ」に切り替えて表示情報量を減らしサーバ負荷を軽減したことを、自治体サイト負荷軽減の代表事例として記録している。",
+    "source_title": "総務省 事例11「自治体の公式Webサイト等の負荷軽減」(ICT利活用事例集)",
+    "source_url": "https://www.soumu.go.jp/main_content/000173744.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13にPDF全文を確認",
+    "notes": "同資料は「災害後に急遽対策するのではなく平常時から準備しておくこと」を明記しており、『平時から軽量サイトを用意する価値』の政府側裏付けになる。"
+   },
+   {
+    "topic": "東日本大震災時のヤフーのキャッシュサイト提供",
+    "claim": "ヤフーは東日本大震災時、各省庁・自治体・交通機関など275機関(Googleの記録では約300サイト、2011年3月16日運用開始、首相官邸含む)の公式Webサイトのキャッシュサイトを提供し、元サイトの更新は60秒以内にキャッシュへ反映された。",
+    "source_title": "総務省 事例11(同上PDF)/Google「東日本大震災と情報、インターネット、Google」第20章 Yahoo! JAPANの奮闘(2)",
+    "source_url": "https://www.google.org/crisisresponse/kiroku311/chapter_20.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "275機関の数字は総務省PDF(https://www.soumu.go.jp/main_content/000173744.pdf)、約300サイト・3/16開始・事後許諾方式はGoogleの記録集。この経験が現在の災害協定キャッシュサービスの原型。"
+   },
+   {
+    "topic": "東日本大震災時のヤフー トップページ対応",
+    "claim": "震災当日のYahoo! JAPANは全ページのバナー広告を地震情報まとめページへの誘導に切り替え、メールマガジン等のプロモーション配信を全停止、検索窓下に津波注意を表示。節電情報ページは1日3,000万PVを記録した。",
+    "source_title": "Google「東日本大震災と情報、インターネット、Google」第19章 Yahoo! JAPANの奮闘(1)",
+    "source_url": "https://www.google.org/crisisresponse/kiroku311/chapter_19.html",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "『トップページから画像を外し軽量化した』という広く知られる逸話自体は、当時のヤフー公式ページ(about.yahoo.co.jp)がLINEヤフー統合でドメイン廃止となり一次確認できなかった。確認できた範囲の事実のみ記載。"
+   },
+   {
+    "topic": "東日本大震災時のGoogleの対応",
+    "claim": "Googleは2011年3月11日14:46の地震発生から1時間46分後の16:32にクライシスレスポンス特設ページと日本語版パーソンファインダーを公開し、同日23:50には一般の携帯電話(フィーチャーフォン)からも利用可能にした。安否登録は翌朝までに2.5万件に達した。",
+    "source_title": "Google「東日本大震災と情報、インターネット、Google」第1章",
+    "source_url": "https://www.google.org/crisisresponse/kiroku311/chapter_01.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "震災用Person Finderは2011年10月30日に終了(INTERNET Watch報道)。『携帯電話対応を急いだ』事実は低機能端末向け軽量提供の需要の傍証。"
+   },
+   {
+    "topic": "Googleによる災害時軽量化の推奨",
+    "claim": "Googleは2011年9月、ウェブマスター向け公式ブログで「災害時、急激なアクセス集中に備えてウェブマスターができること」と題した記事を公開し、災害に備えて画像・装飾を省いたHTML中心の軽量ページを用意することを推奨した。",
+    "source_title": "災害時、急激なアクセス集中に備えてウェブマスターができること(Google検索セントラルブログ)",
+    "source_url": "https://developers.google.com/search/blog/2011/09/blog-post_30",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2011-09公開、2026-08-13確認",
+    "notes": "記事タイトルと公開日はGoogle公式アーカイブで確認したが、本文の全文は取得できず、具体的推奨内容(画像・Flashを外しテキスト置換等)は検索結果の要約に依拠。confidence を medium とした。"
+   },
+   {
+    "topic": "災害用伝言板web171の現状",
+    "claim": "NTT東西の「災害用伝言板(web171)」は現在も提供中で、電話番号をキーに安否メッセージを登録・確認できる。トップページの転送量は実測約8KB(7,994バイト)と非常に軽く、テキスト中心の設計が維持されている。",
+    "source_title": "災害用伝言板 web171(NTT東日本)",
+    "source_url": "https://www.web171.jp/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13にcurlで実測",
+    "notes": "解説ページは https://www.ntt-east.co.jp/saigai/web171/ 。軽量な安否確認Webが今も公共インフラとして維持されている現存例。"
+   },
+   {
+    "topic": "J-anpiの終了",
+    "claim": "キャリア各社・報道機関の安否情報を横断検索できた「J-anpi〜安否情報まとめて検索〜」(2012年10月開始、NTTレゾナント・NTT・NHK運営)は2023年9月30日15時に運営終了した。理由は各社災害用伝言板同士の横断検索が実現し当初の役割を果たしたため。以後は各キャリアの災害用伝言サービスの利用が案内されている。",
+    "source_title": "「J-anpi〜安否情報まとめて検索〜」運営終了について(NTT)",
+    "source_url": "https://group.ntt/jp/topics/2023/02/24/j_anpi_service_termination.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2023-02-24発表、2026-08-13確認",
+    "notes": "軽量系の横断安否サービスが1つ消滅した事例だが、機能はキャリア伝言板の相互連携に引き継がれている点に注意。"
+   },
+   {
+    "topic": "キャリア災害用伝言板の現状",
+    "claim": "NTTドコモの災害用伝言板は現在もWebブラウザ(スマホ・タブレット・ケータイ)と災害用キットアプリで提供中(Wi-Fi非対応)。ただしFOMA/iモード終了に伴い「ファミリー割引グループ安否確認機能」「登録お願いメール機能」は2026年3月31日で終了した。",
+    "source_title": "災害用伝言板|NTTドコモ",
+    "source_url": "https://www.docomo.ne.jp/info/disaster/disaster_board/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "確認時点で「災害用伝言板が運用中のため体験サービスは利用不可」との表示があり、実運用中だった。"
+   },
+   {
+    "topic": "iモード/FOMAの終了",
+    "claim": "NTTドコモの3G「FOMA」とケータイ向けネット接続サービス「iモード」は2026年3月31日をもって終了した。これにより旧来の『ケータイ向け(iモード)防災サイト』というチャネル自体が消滅し、各社のフィーチャーフォン向けサービス(福岡県防災メール等)の終了理由にもなっている。",
+    "source_title": "「FOMA」および「iモード」サービス終了のご案内(NTTドコモ)",
+    "source_url": "https://www.docomo.ne.jp/info/3g_closed/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "au 3Gは2022年3月、SoftBank 3Gは2024年1月に終了済み(本調査では個別未確認のためnotesに留める)。『ケータイサイト』の再現は回線・端末面では不可能で、狙うべきは低速回線・輻輳時のスマホ向け軽量Webという整理になる。"
+   },
+   {
+    "topic": "iモード時代の防災提供内容",
+    "claim": "iモード時代の防災機能の中核は2004年開始の「iモード災害用伝言板」(iMenuトップから安否登録・確認)で、2005年11月には国際ローミング先51の国・地域からも安否確認できるよう拡充された(月額無料)。ほかに緊急速報エリアメール(2007年開始)がケータイ防災の柱だった。",
+    "source_title": "報道発表資料:iモード災害用伝言板サービスを拡充(NTTドコモ、2005年)",
+    "source_url": "https://www.docomo.ne.jp/info/news_release/page/20051027.html",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2005-10-27発表、2026-08-13確認",
+    "notes": "2004年開始という開始年とエリアメール2007年開始は当該ページ以外の一般知識に基づくため、報告書で使う場合はドコモ沿革での再確認を推奨。confidenceをmediumとした。"
+   },
+   {
+    "topic": "tenki.jpのケータイ向けサイト",
+    "claim": "日本気象協会のフィーチャーフォン・3Gケータイ向け有料天気サイト「tenki.jp+more」は、キャリア各社のフィーチャーフォン向けサービス終了方針を受け2021年11月30日16時に終了した。現在のtenki.jpにケータイ向け軽量版は存在しない。",
+    "source_title": "「tenki.jp+more」フィーチャーフォン向けサイト終了のお知らせ(日本気象協会)",
+    "source_url": "https://www.jwa.or.jp/news/2021/09/14506/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2021-09発表、2026-08-13確認",
+    "notes": "「現在軽量版が存在しない」ことの完全な証明は困難(悪魔の証明)だが、公式サイト・公式案内に軽量版への言及は見当たらない。"
+   },
+   {
+    "topic": "気象庁サイトの軽量版の不在",
+    "claim": "気象庁の防災情報ポータル(www.jma.go.jp/bosai/)はJavaScript依存の動的ページで、初回取得だけで実測約940KBに達する。公式のテキスト版・軽量版ページは確認できず、政府系の防災情報一次ソースに『低帯域向け』の受け皿がない。",
+    "source_title": "気象庁 防災情報(実ページ)",
+    "source_url": "https://www.jma.go.jp/bosai/",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13にcurlで実測(938,702バイト)",
+    "notes": "サイズは自前計測で環境により変動しうる。『軽量版が無い』は本調査での不発見に基づく推定であり断定不可。なお気象庁は防災情報XML/JSON配信を行っており、軽量サイトのデータ源として利用可能(この点は別観点での確認を推奨)。"
+   },
+   {
+    "topic": "自治体登録制防災メールの縮退",
+    "claim": "福岡県の登録制メール「防災メール・まもるくん」(避難情報・気象情報等をメール配信)は、3G回線サービス終了に伴い2026年3月31日でサービスを終了し、後継はスマホアプリ「ふくおか防災ナビ・まもるくん」となった。県内多数の市町村がアプリへの移行を案内している。",
+    "source_title": "福岡県防災メールまもるくんの終了について(久留米市)",
+    "source_url": "https://www.city.kurume.fukuoka.jp/1050kurashi/2040bousaianzen/3005sonaeru/2023-0622-1406-86.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "県公式(bousai.pref.fukuoka.jp)は確認時503で取得不可、市の公式案内で代替確認。『テキストで届く手段』が大規模にアプリへ置き換わった代表例。ただし登録制防災メール自体は多くの自治体で存続しており、全国的な存廃状況の網羅は本調査では未実施。"
+   },
+   {
+    "topic": "残存するテキスト系配信手段(緊急速報メール)",
+    "claim": "緊急速報「エリアメール」(セルブロードキャスト)は現在も無料・申込不要で提供中で、緊急地震速報・津波警報・自治体の避難情報等を「回線混雑の影響を受けずに」テキストで受信できる。近年は衛星通信「docomo Starlink Direct」経由の受信にも対応した。",
+    "source_title": "緊急速報「エリアメール」|NTTドコモ",
+    "source_url": "https://www.docomo.ne.jp/service/areamail/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "輻輳に強いテキスト配信は既にセルブロードキャストが担っている一方、プッシュ型で情報量が少なく、『自分で見に行ける軽量Web』とは補完関係にある——という整理の材料になる。"
+   },
+   {
+    "topic": "行政のアクセス集中対策ガイドライン",
+    "claim": "東京都は自治体サイト向けに「アクセス集中対応のためのガイドライン」を作成しており(J-LIS月刊誌2020年8月号で紹介)、対策として(1)CDNやヤフーキャッシュサイトによる負荷分散、(2)ページ軽量化(テキスト主体の軽量コンテンツ準備、画像縮小)による負荷軽減を挙げている。",
+    "source_title": "PICK UP! 東京都・アクセス集中対応のためのガイドライン(月刊J-LIS 2020年8月号)",
+    "source_url": "https://www.j-lis.go.jp/service/magazine/magazine_search/g-j-lis2/2008/pickup_01.html",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2020-08掲載、2026-08-13検索で確認",
+    "notes": "記事本文の全文は未取得で、検索結果の要約に依拠。行政側でも『災害時のテキスト主体軽量ページ』が公式に推奨されている裏付けとして、原文確認を推奨。"
+   },
+   {
+    "topic": "Yahoo! JAPAN現行トップの災害時挙動",
+    "claim": "現在のYahoo! JAPANトップページ/アプリには震度3以上の地震や津波警報時に災害情報を自動表示する機能があるが、『災害時にトップページ全体を軽量版へ切り替える』ことを明言する現行の公式文書は確認できなかった。",
+    "source_title": "災害情報の種類(Yahoo! JAPANヘルプセンター)",
+    "source_url": "https://support.yahoo-net.jp/SaiYjapp/s/article/H000010365",
+    "source_type": "primary",
+    "confidence": "low",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "『確認できなかった』という消極的事実であり、非公開の運用として軽量化切替が存在する可能性は残る。旧ヤフー広報ドメイン(about.yahoo.co.jp)廃止で過去の一次資料へのアクセスが失われている点も不確かさの要因。"
+   }
+  ]
+ },
+ {
+  "finder": "intl",
+  "summary": "海外には災害時向け軽量テキストサイトの現存事例が複数ある。CNNはハリケーンIrma(2017年9月)時にテキスト専用版を公開し、現在もlite.cnn.comとして稼働(画像ゼロ、gzip転送約39KB)。NPRのtext.npr.orgはトップ約6KB・記事約11KB・JSゼロで、2005年開設の最古級。カナダCBCも2021年に低帯域向け「CBC Lite」を公式開設し継続運用中。米NWSはゾーン予報の生テキスト(1.6KB)等のテキスト製品配信を続ける一方、低帯域携帯向けcell.weather.gov(2017年)とmobile.weather.gov(2024年)は公式通知の上で廃止しており、理由は保守困難・利用減・資源集中。GOV.UKは「政府サービスはHTMLのみで機能すべき」と公式ガイダンスで規定し、W3Cは2008年勧告で総ページ重量20KB上限を提示。BBCのlow graphics版は2010年に廃止され利用者の反発を招いた。軽量サイトの有効性と、単独維持の持続性リスクの両面が確認できた。",
+  "findings": [
+   {
+    "topic": "CNN Lite の起源(ハリケーン対応)",
+    "claim": "CNNは2017年9月のハリケーンIrma接近時に、公式Xアカウントで「Irmaの進路上で電話回線が弱い人向け」としてテキスト専用版サイト(当時 lite.cnn.io)を告知した。通信輻輳・低帯域環境の被災者向けに大手報道機関が意図的にテキスト専用サイトを立ち上げた代表例。",
+    "source_title": "CNN公式Xポスト(2017年9月9日)「In Hurricane #Irma's path with a weak phone connection? Stay up to date with the text-only version of our website」",
+    "source_url": "https://x.com/CNN/status/906655810612232193",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2017-09-09(2026-08-13確認)",
+    "notes": "運営者自身の告知であり一次情報。背景解説はPoynter記事(https://www.poynter.org/tech-tools/2017/text-only-news-sites-are-slowly-making-a-comeback-heres-why/)が補完。"
+   },
+   {
+    "topic": "CNN Lite の現状とページサイズ実測",
+    "claim": "lite.cnn.com は2026年8月13日現在も稼働中。実測でトップページはHTML生サイズ335,366バイト(gzip転送約39.5KB)、画像0枚・scriptタグ3個。記事ページは生約690KB(gzip転送約70KB)。画像・動画・広告なしのテキスト構成を維持しているが、フォントのpreload等が加わりHTML自体は初期(2017年当時数十KB程度と報道)より重くなっている。",
+    "source_title": "lite.cnn.com(curlによる直接実測)",
+    "source_url": "https://lite.cnn.com/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13実測",
+    "notes": "サイズはcurlの%{size_download}(gzip転送)とwc -c(生HTML)で計測。サブリソース(フォント等)は含まない。「初期より重量化」の比較部分は当時の実測値が手元にないため参考情報。"
+   },
+   {
+    "topic": "NPR text.npr.org のページサイズ実測",
+    "claim": "text.npr.org は2026年8月13日現在稼働中で、実測でトップページHTML生サイズ5,912バイト(gzip転送2,422バイト)、記事ページ生10,774バイト(gzip転送4,570バイト)、scriptタグ0・imgタグ0(faviconはdata URI埋め込み)。フルニュースサイトを数KBで提供できることを示す実証例。",
+    "source_title": "text.npr.org(curlによる直接実測)",
+    "source_url": "https://text.npr.org/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13実測",
+    "notes": "旧来ケータイサイト水準(数KB〜十数KB)の軽量Webサイトが2026年現在も大手メディアにより現役運用されている直接証拠。"
+   },
+   {
+    "topic": "NPR テキストサイトの歴史・設計動機",
+    "claim": "NPRのテキスト専用サイトは2005年6月に thin.npr.org として開設された現存最古級のテキスト専用ニュースサイトで、9.11同時多発テロ時にニュースサイトがアクセス集中で落ちた経験と携帯端末利用者への対応が動機。2017年のハリケーン時にもNPRは低帯域ユーザー向けに同サイトを告知し、担当者は「低帯域状況は別種の課題であり専用最適化が必要」と述べた。",
+    "source_title": "Poynter「Text-only news sites are slowly making a comeback. Here's why.」(2017年9月27日)",
+    "source_url": "https://www.poynter.org/tech-tools/2017/text-only-news-sites-are-slowly-making-a-comeback-heres-why/",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2017-09-27(2026-08-13確認)",
+    "notes": "NPR自身による網羅的な公式説明ページは今回発見できず、NPR幹部の発言を引用した業界メディア記事(二次情報)に依拠。「アクセス集中時に落ちないための軽量サイト」という設計動機は依頼者の仮説と直接対応する重要な傍証。"
+   },
+   {
+    "topic": "フル版サイトとの重量比較(実測)",
+    "claim": "同日実測で www.cnn.com トップはHTMLだけで生5,580,355バイト(gzip転送579KB)、www.npr.org は生818,722バイト(gzip転送90KB)。lite版・text版はHTML比でそれぞれ約1/17〜1/940であり、サブリソース(JS・画像・広告)を含めれば差はさらに拡大する。テキスト版は転送量を2〜3桁削減できることを示す。",
+    "source_title": "www.cnn.com / www.npr.org(curlによる直接実測)",
+    "source_url": "https://www.cnn.com/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13実測",
+    "notes": "HTML文書単体の比較。フル版はこれに加え大量のJS・画像・広告・動画を読み込むため、実際の総転送量差はこの数値より大きい。"
+   },
+   {
+    "topic": "Web全体の平均ページ重量(対比データ)",
+    "claim": "HTTP Archive「Web Almanac 2024」によると、2024年10月時点のWebページ重量の中央値はデスクトップ2,652KB、モバイル2,311KBで前年比6〜9%増加を続けている。text.npr.org(gzip約2.4KB)はモバイル中央値の約1/1000であり、軽量テキストサイトの差別化価値を定量的に裏付ける。",
+    "source_title": "HTTP Archive Web Almanac 2024: Page Weight",
+    "source_url": "https://almanac.httparchive.org/en/2024/page-weight",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2024年版(2026-08-13確認)",
+    "notes": "HTTP Archiveは実測データの一次配布元。2025/2026年版の同章は未確認だが増加傾向は一貫。"
+   },
+   {
+    "topic": "米NWSのテキスト製品(現役)",
+    "claim": "米国立気象局(NWS)は現在もテキスト形式の防災気象情報を複数経路で配信している。実測(2026-08-13)で、(1) forecast.weather.gov の製品ページ(AFD予報検討資料)は約30KB、(2) 地点予報の「Text Only Forecast」版(MapClick TextType=1)は生22.3KB/gzip 4.1KB、(3) NWS Telecommunication Gateway(tgftp.nws.noaa.gov)のゾーン予報生テキストファイルは1,635バイト。国の気象機関が純テキスト配信を維持している実例。",
+    "source_title": "NWS forecast.weather.gov テキスト製品ページ / tgftp.nws.noaa.gov(直接実測)",
+    "source_url": "https://tgftp.nws.noaa.gov/data/forecasts/zone/ny/nyz072.txt",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13実測",
+    "notes": "併せて https://forecast.weather.gov/product.php?site=NWS&issuedby=OKX&product=AFD (30,026バイト)と https://forecast.weather.gov/MapClick.php?...&FcstType=text&TextType=1 (gzip 4,092バイト)を実測。ただしこれらは「低帯域向け」と明示された設計方針文書ではなく、運用実態からの確認。tgftpのreadme.txt(https://tgftp.nws.noaa.gov/readme.txt)は気象コミュニティ向けデータ取得サーバーである旨とアクセス制限(同時20セッション等)を記載。"
+   },
+   {
+    "topic": "米国立ハリケーンセンターのテキスト勧告",
+    "claim": "国立ハリケーンセンター(NHC)は熱帯低気圧のテキスト勧告・見通し(例: 大西洋熱帯気象見通し MIATWOAT)をWebで公開しており、実測で約24.6KBの軽量HTMLページとして取得できる(2026-08-13)。",
+    "source_title": "NHC Atlantic Tropical Weather Outlook(直接実測)",
+    "source_url": "https://www.nhc.noaa.gov/text/MIATWOAT.shtml",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13実測",
+    "notes": "なお www.nhc.noaa.gov/mobile/ は現在タイトル「Home」・画像59枚の通常ページを返しており、独立した軽量モバイル版としては機能していない模様(確認2026-08-13、低確度)。"
+   },
+   {
+    "topic": "カナダCBCの低帯域サイト「CBC Lite」",
+    "claim": "カナダ公共放送CBCは2021年に低帯域向けテキストサイト「CBC Lite」(cbc.ca/lite)を公式に開設した。CBC Digital Labsの公式解説によれば2021年2月5日に一般公開され、サーバーサイドレンダリング採用・JS無効環境サポート・画像はユーザー操作時のみ読込・「可能な限り軽量であることが最優先(remaining as light as possible is still our main priority)」という方針で、2025年時点でも更新が続く。高速回線を持たない100万人超のカナダ人への情報アクセス格差解消が公式の設立理由。実測(2026-08-13)でニュース一覧ページは生108,311バイト/gzip転送17.4KB。",
+    "source_title": "CBC Digital Labs「CBC Lite | Release Notes」/ CBC/Radio-Canada公式ブログ「Introducing CBC Lite: A low-bandwidth solution」",
+    "source_url": "https://medium.com/cbc-digital-labs/cbc-lite-release-notes-cbc-ca-lite-a562a5529738",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2021-02-05公開・2025年更新(2026-08-13確認)",
+    "notes": "運営者(CBCデジタル部門)自身の技術ブログで一次情報。公式コーポレートブログ https://cbc.radio-canada.ca/en/your-public-broadcaster/blog/introducing-cbc-lite は直接取得に失敗したが検索結果で内容確認(「ダイヤルアップでも数分でなく数秒でページ取得」等)。サイズ実測は https://www.cbc.ca/lite/news に対するcurl計測。"
+   },
+   {
+    "topic": "英国政府のガイドライン(GOV.UK)",
+    "claim": "GOV.UKサービスマニュアル「Using progressive enhancement」(2024年9月27日更新)は「政府サービスはHTMLのみで機能すべき(Government services should be functional using only HTML)」と明記し、JavaScriptは「フォールトトレラントでない」層と位置づけ、低速回線・低性能端末のユーザーへの配慮を政府サービス設計の公式要件としている。軽量・プログレッシブエンハンスメント設計の政府公式根拠。",
+    "source_title": "GOV.UK Service Manual: Using progressive enhancement",
+    "source_url": "https://www.gov.uk/service-manual/technology/using-progressive-enhancement",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2024-09-27更新(2026-08-13確認)",
+    "notes": "英国政府デジタルサービス(GDS)の公式ガイダンス。災害特化ではないが「回線・端末制約下でも機能するWeb」を政府標準として規定した一次情報。"
+   },
+   {
+    "topic": "W3Cの低帯域設計ガイドライン(歴史的基準)",
+    "claim": "W3C勧告「Mobile Web Best Practices 1.0」(2008年7月29日)は、既定配信コンテキスト(Default Delivery Context)として「総ページ重量最大20KB」「マークアップは簡潔に」「重要情報が失われる場合を除き大きな画像を避ける」を規定した。旧来ケータイサイト水準の重量目標に国際標準の裏付けがあったことを示す。",
+    "source_title": "W3C Mobile Web Best Practices 1.0 (W3C Recommendation)",
+    "source_url": "https://www.w3.org/TR/mobile-bp/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2008-07-29勧告(2026-08-13確認)",
+    "notes": "2008年の勧告であり現代のWeb標準としては歴史的文書。ただし「20KB」という具体的数値目標は軽量防災サイトの設計基準を検討する際の参照点として有用。"
+   },
+   {
+    "topic": "廃止事例: BBC low graphics版",
+    "claim": "BBCニュースの「low graphics(低グラフィック)」版は2010年5月頃に予告なく廃止され、メイン/モバイル版へ誘導された。10年以上使われた軽量テキスト版の廃止に利用者の強い反発(復活嘆願含む)があり、代替のモバイル版は見出し数が少なく帯域消費はむしろ増えたと同時期の記事は指摘。運営側(BBCのAnthony Sullivan)は主サイトかモバイル版の利用、将来のアクセシビリティツールでの代替を示した。",
+    "source_title": "All About Symbian「Lessons to learn as the BBC closes down the popular 'low graphics' news pages」(2010年7月1日)",
+    "source_url": "http://www.allaboutsymbian.com/news/item/11759_Lessons_to_learn_as_the_BBC_cl.php",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2010-07-01(2026-08-13確認)",
+    "notes": "BBC自身の廃止告知ブログ(一次情報)は今回直接確認できず、同時期の第三者記事と利用者嘆願(https://www.ipetitions.com/petition/bbclowgraphics)に依拠。廃止日の詳細(5月13日)は記事の記述で、単独ソースのため確度中。"
+   },
+   {
+    "topic": "廃止事例: NWS cell.weather.gov(低帯域携帯向け)",
+    "claim": "NWSは公式のService Change Notice 17-13(2017年2月7日)で、低帯域ユーザー・旧型携帯電話向けに気象データを提供していた cell.weather.gov を2017年3月7日付で廃止した。理由は「2004年以前向けに設計されたレガシーアプリで保守不能(no longer maintainable)」「近年利用が大幅減少」。日本の旧ケータイ向け防災サイト廃止と同型の事例で、軽量サイト単独維持の持続性リスク(保守コスト・利用減)を示す一次資料。",
+    "source_title": "NWS Service Change Notice 17-13: Planned Decommissioning of cell.weather.gov",
+    "source_url": "https://www.weather.gov/media/notification/pdfs/scn17-13decom_cell.gov.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2017-02-07発行(2026-08-13にPDF原文確認)",
+    "notes": "原文引用: 「The URL's main use was to provide weather data to low bandwidth users on older technology cell phones.」政府機関自身が「低帯域ユーザー向け」と明記した上で廃止した点が重要。"
+   },
+   {
+    "topic": "廃止事例: NWS mobile.weather.gov",
+    "claim": "NWSは公式のService Change Notice 24-51(2024年5月16日)で、モバイル向けサイト mobile.weather.gov を2024年6月26日付で廃止し weather.gov へリダイレクトすると通知した。理由は「weather.govの再設計(完全なモバイル対応を含む)にNWSのリソースを集中するため」で、代替として軽量な forecast.weather.gov の地点予報ページのブックマークを案内。2026-08-13時点で mobile.weather.gov は独立サイトとして応答しないことを実確認。専用軽量サイトを畳み、メインサイトのレスポンシブ化+軽量テキストページ併存に集約する潮流を示す。",
+    "source_title": "NWS Service Change Notice 24-51: NWS Mobile Site Decommissioning",
+    "source_url": "https://www.weather.gov/media/notification/pdf_2023_24/scn24-51_mobile_decommissioning.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2024-05-16発行(2026-08-13にPDF原文確認)",
+    "notes": "原文引用: 「...will be decommissioned and redirected to weather.gov in order to focus NWS resources on redesigning weather.gov to improve its value and user experience, which will include full mobile accessibility.」廃止告知ページは https://www.weather.gov/idp/mobilelanding にも掲載。"
+   }
+  ]
+ },
+ {
+  "finder": "sources",
+  "summary": "軽量防災サイトの上流データは概ね確保可能。気象庁の警報・地震・津波・噴火情報は防災情報XML(Atomフィード)で公式に無償公開され、再配信・商用利用も原則自由(出典表示要、予報業務許可等の気象業務法上の留意あり)。フィードは毎分更新で更新時刻を持ち、停止検知も可能。ただし「リアルタイムのサポートなし・急な配信停止あり得る」ため、確実性が必要なら気象業務支援センターの有料配信が公式経路。河川水位はスクレイピング自粛要請があり、定期取得は河川情報センターの実費有料サービス経由。避難指示・避難所開設情報の全国一括入手はLアラート経由だが伝達者は法人限定で、現在新規受付停止中(2026年12月に総務省運営へ移行し受付再開予定)。個人・小規模サービスにとって最大の壁は避難情報・避難所情報の入手であり、気象系は容易という非対称がある。",
+  "findings": [
+   {
+    "topic": "気象庁 防災情報XML Atomフィード",
+    "claim": "気象庁は防災情報XML電文をAtomフィードでPULL型無償公開している。高頻度フィード(毎分更新・直近10分以上掲載)と長期フィード(毎時更新・数日分掲載)があり、区分は「定時」(天気概況等)、「随時」(警報・注意報等)、「地震火山」(地震・津波・噴火情報)、「その他」。URLは https://www.data.jma.go.jp/developer/xml/feed/extra.xml (随時・高頻度)、eqvol.xml(地震火山・高頻度)など8本。",
+    "source_title": "気象庁防災情報XMLフォーマット(PULL型)の提供(xml.kishou.go.jp)",
+    "source_url": "https://xml.kishou.go.jp/xmlpull.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "特別警報・警報・注意報は「随時」フィード、津波・噴火は「地震火山」フィードに含まれることを実フィードの電文タイトル(気象特別警報・警報・注意報等)でも確認。"
+   },
+   {
+    "topic": "気象庁XMLの再配信可否",
+    "claim": "気象庁公式FAQによれば、XML電文の取得に資格は不要で、第三者への提供・ホームページ掲載などの二次利用は「気象業務法の趣旨に反しない限り、原則として制限はありません」とされ、商用利用も制限されていない。ただし利用方法により気象業務法(予報業務許可・警報の制限)に抵触し得るため留意事項・運用指針の確認が求められる。",
+    "source_title": "気象庁防災情報XMLフォーマット よくある質問(公式FAQ)",
+    "source_url": "https://xml.kishou.go.jp/qanda.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "気象庁発表の警報・注意報を「そのまま」伝達するのは予報業務許可不要だが、独自予報の発表には許可が必要(気象業務法17条)。警報類似情報の発表制限(23条)にも注意。"
+   },
+   {
+    "topic": "気象庁XMLの提供保証と有料の確実経路",
+    "claim": "公式FAQは公開XML電文について「リアルタイムでのサポートは行っておらず、急な配信停止等の可能性もございます」と明記し、迅速・確実な配信が必要な場合は(一財)気象業務支援センターの有料配信サービスの利用を推奨している。同センターは電文形式データ・緊急地震速報等をオンライン配信負担金(実費)で提供する公式の確実経路。",
+    "source_title": "気象業務支援センター オンライン気象情報配信サービス / 気象庁XML公式FAQ",
+    "source_url": "http://www.jmbsc.or.jp/jp/online/online.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "生命に関わるサービスとして可用性SLAが必要なら支援センター経由が公式回答。無償Atomフィードは「ベストエフォート」である点が設計上の重要制約。"
+   },
+   {
+    "topic": "フィードの更新検知(停止検知)",
+    "claim": "Atomフィードにはフィード全体の<updated>と各エントリの<updated>が付与されており、実フィードを2026-08-13に直接取得してフィードレベル<updated>が現在時刻(2026-08-13T21:02:12+09:00)であることを確認した。高頻度フィードは毎分再生成されるため、<updated>が古いままなら配信停止・取得失敗を機械的に検知できる。フィード内にWebSubハブ(link rel=\"hub\" http://alert-hub.appspot.com/)も宣言されておりPUSH型受信も可能。",
+    "source_title": "気象庁 高頻度(随時)Atomフィード(実データを直接確認)",
+    "source_url": "https://www.data.jma.go.jp/developer/xml/feed/extra.xml",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13にフィード実物を取得して確認",
+    "notes": "「毎分更新」は公式ページの記載。フィードの<rights>から利用規約(気象庁HP利用規約)へリンクされている。WebSubハブはGoogleのalert-hub.appspot.comであり、ハブ自体の可用性保証は別問題。"
+   },
+   {
+    "topic": "気象庁XMLの利用条件(帯域制限)",
+    "claim": "公式ページに、サーバメンテナンスによる配信停止の可能性、および1日10GB以上のダウンロードを行うとIP遮断され得る旨が明記されている。軽量サイト用途(警報・地震電文の差分取得)なら通常この上限には達しない。",
+    "source_title": "気象庁防災情報XMLフォーマット(PULL型)の提供",
+    "source_url": "https://xml.kishou.go.jp/xmlpull.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": ""
+   },
+   {
+    "topic": "気象庁HPの利用規約",
+    "claim": "気象庁ホームページのコンテンツは「公共データ利用規約(第1.0版)」(政府標準利用規約の後継、CC BY相当の出典表示型ライセンス)に準拠して利用でき、出典記載(「出典:気象庁ホームページ(URL)」)と加工時の加工明示が条件。免責として「利用者がホームページの情報を用いて行う一切の行為について気象庁は何ら責任を負うものではありません」と明記。",
+    "source_title": "気象庁ホームページについて(著作権・利用規約)",
+    "source_url": "https://www.jma.go.jp/jma/kishou/info/coment.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "「公共データ利用規約(第1.0版)準拠」はページ記載を確認。CC BY互換である点は同規約の一般的性質で、規約本文の逐条確認まではしていない。"
+   },
+   {
+    "topic": "気象庁 bosai配下JSONの位置づけ",
+    "claim": "www.jma.go.jp/bosai/ 配下のJSON(天気予報 forecast/data/forecast/{コード}.json、警報 warning/data/warning/{コード}.json 等)は気象庁サイトの内部実装データであり、公式に仕様が文書化・保証されたAPIではない。気象庁は「政府標準利用規約(現・公共データ利用規約)に準拠して利用可能」としつつ「仕様の継続性や運用状況の通知は約束しない」との見解で、予告なき仕様変更・廃止リスクがある。",
+    "source_title": "気象庁のAPIと予報区のコード(あんこエデュケーション)ほか開発者向け解説",
+    "source_url": "https://anko.education/webapi/jma",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "「利用可・ただし無保証」という気象庁見解は2021年サイトリニューアル時の取材・問い合わせベースで広く報じられたが、気象庁の恒常的な公式文書としては存在しない(利用規約ページがサイト全コンテンツに適用される形)。生命に関わる基幹データ源としてはXML電文フィードを正とし、JSONは補助と位置づけるべき。"
+   },
+   {
+    "topic": "国交省 川の防災情報の外部利用",
+    "claim": "「川の防災情報」(www.river.go.jp)のコンテンツは出典記載を条件に商用含め自由に利用できるが、「ツール等による定期的なデータ収集は、サーバに過度の負担がかかるため控えてください」と明記され、高頻度アクセスにはアクセス制限があり得る。定期的なデータ取得が必要な場合は「河川情報数値データ配信事業」(有料)の利用が公式に指示されている。",
+    "source_title": "川の防災情報 取り扱い上の注意(国土交通省)",
+    "source_url": "https://www.river.go.jp/kawabou/kwb_apend/html/caution.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "つまり水位のリアルタイム定期取得を無償スクレイピングで行う設計は公式に非推奨。閲覧リンク誘導か有料配信かの二択になる。"
+   },
+   {
+    "topic": "河川データの正規入手経路(有料)",
+    "claim": "(一財)河川情報センターの「水防災オープンデータ提供サービス」が、テレメータ(雨量・水位)、XRAIN、危機管理型水位計、河川カメラ静止画、水害リスクライン(令和7年11月追加予定)等の数値データを実費負担で配信する正規経路。テレメータ水位(都道府県)は料金値下げ実績もある。",
+    "source_title": "水防災オープンデータ提供サービス(河川情報センター)",
+    "source_url": "https://www.river.or.jp/koeki/opendata/index.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "「オープンデータ」の名称だが実費有料の契約制配信。小規模個人サービスにはコスト面のハードルになり得る(具体額は料金ページ・申込要領で要確認)。"
+   },
+   {
+    "topic": "Lアラートの参加資格",
+    "claim": "Lアラート(災害情報共有システム)の情報発信者は地方公共団体等、情報伝達者は「放送・報道機関等の法人」が対象で、それ以外の事業者は伝達実績・運用体制の審査(利用資格審査基準に基づく書類審査等)を経る。個人としての参加は原則認められない。またLアラートの基本目的は自治体発の「避難情報」「避難所情報」の伝達であり、気象情報や国民保護情報のみの利用は認められない。",
+    "source_title": "Lアラート FAQ(一般財団法人マルチメディア振興センター)",
+    "source_url": "https://www.fmmc.or.jp/commons/faq/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "個人開発の軽量サイトが避難情報を全国横断でリアルタイム取得する公式経路は実質Lアラートのみだが、法人格と審査が必要。"
+   },
+   {
+    "topic": "Lアラート運営移管と新規受付停止",
+    "claim": "Lアラートは2011年6月の運用開始以来FMMCが管理運営してきたが、令和8年(2026年)12月1日から総務省(国)による運営に移行予定。この移行のため、現行規約による一般の情報伝達者の新規申込受付は停止中(地方自治体・特定情報伝達者を除く)で、国運営移行後に新規受付が再開される見込み。",
+    "source_title": "総務省 Lアラート(災害情報共有システム)の普及促進 / FMMC 申込にあたり",
+    "source_url": "https://www.soumu.go.jp/menu_seisaku/ictseisaku/ictriyou/02ryutsu06_03000032.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "FMMC側ページ(https://www.fmmc.or.jp/commons/download/detail.html)にも受付停止と2026年12月の国運営移行が記載。移行後の参加要件・料金体系は現時点で未公表のため、2026年12月以降に総務省の新制度を要確認。"
+   },
+   {
+    "topic": "Jアラート・国民保護情報の入手経路",
+    "claim": "Jアラート(全国瞬時警報システム)は消防庁が運営し、弾道ミサイル等の国民保護情報は自治体の防災行政無線、携帯キャリアの緊急速報メール(エリアメール/ETWS)で住民に直接伝達されるほか、消防庁がLアラートへ配信することで民間事業者(テレビ・ラジオ・Yahoo!防災速報等のスマホアプリ)が再配信できる。個人・小規模サービスが直接受信できる公開フィードは存在しない。",
+    "source_title": "消防庁報道資料「スマートフォンアプリ等による国民保護情報の配信サービスの活用」",
+    "source_url": "https://www.fdma.go.jp/pressrelease/houdou/items/h29/05/290511_houdou_1-1.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "資料は2017-05-11発表、2026-08-13確認",
+    "notes": "枠組みは令和6年版消防白書(https://www.fdma.go.jp/publication/hakusho/r6/chapter3/section1/68021.html)でも継続を確認。国民保護情報は気象庁XMLフィードには含まれない点に注意。"
+   },
+   {
+    "topic": "キキクル通知の仕組み(アプリのデータ源)",
+    "claim": "気象庁は土砂・浸水・洪水キキクル(危険度分布)について、危険度の変化を10分毎に判定したデータを協力事業者(令和元年公募で選定。アールシーソリューション、ゲヒルン等5事業者)に提供し、各社のアプリ・メールでプッシュ通知させる公民連携スキームを公式に運用している。危険度分布データ自体は気象庁HPでも公開される。",
+    "source_title": "気象庁 キキクル、噴火警報・噴火速報のプッシュ型通知サービスについて",
+    "source_url": "https://www.jma.go.jp/jma/kishou/know/bosai/push_tsuchi.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "警報・注意報の文字情報はXMLフィードで足りるが、キキクル級の面的データを自前で扱うには協力事業者スキームか有料配信が前提になる。"
+   },
+   {
+    "topic": "避難所の静的データ",
+    "claim": "指定緊急避難場所・指定避難所の位置・対応災害種別等の静的リストは、国土地理院が市町村別CSVとして集約公開しており、デジタル庁の自治体標準オープンデータセット(旧・推奨データセット)にも「指定緊急避難場所一覧」のフォーマット標準が定義され、各自治体のオープンデータカタログでCSV提供されている。",
+    "source_title": "国土地理院 指定緊急避難場所・指定避難所データ",
+    "source_url": "https://www.gsi.go.jp/bousaichiri/hinanbasho.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "これらはあくまで「指定」の静的一覧であり、災害時にどこが「開設中」かは含まれない。"
+   },
+   {
+    "topic": "避難所開設状況のリアルタイムデータ",
+    "claim": "避難所の「開設状況」を全国横断でリアルタイム提供する公的オープンデータは存在せず、開設情報は自治体がLアラートに発信する「避難所情報」として法人の情報伝達者にのみ流通する。一部民間サービス(例:全国避難所ガイド)がLアラート連携の開設状況・混雑状況をAPIとして商用提供している。リアルタイム性は各自治体職員の入力に依存する。",
+    "source_title": "防災情報 全国避難所ガイド API(ファーストメディア)",
+    "source_url": "https://www.hinanjyo.jp/api.html",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "「全国横断の公的オープンデータが存在しない」ことの直接的な公式否定文書はなく、Lアラート資料(総務省)と各データカタログの調査からの帰納。自治体単位では独自にオープンデータ/防災ポータルで開設状況を出す例(千葉県防災ポータル等)があるが、形式・鮮度はばらばら。"
+   },
+   {
+    "topic": "e-Govデータポータルでの位置づけ",
+    "claim": "気象庁防災情報XML(高頻度・長期の各フィード)はe-Govデータポータルにも公式データセットとして登録されており、政府オープンデータとしての位置づけが明確である。",
+    "source_title": "気象庁防災情報XML - e-Govデータポータル",
+    "source_url": "https://data.e-gov.go.jp/data/dataset/mlit_20170902_0034",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": ""
+   }
+  ]
+ },
+ {
+  "finder": "legal",
+  "summary": "気象庁の警報・注意報・地震情報を「そのまま伝達」することは予報業務に該当せず許可不要(気象庁公式Q&A)。一方、独自の予想の発表は気象業務法17条の予報業務許可が必要で、警報の独自発表は同23条で禁止(違反は50万円以下の罰金。例外は孤立時の市町村長による津波警報のみ)。気象庁HPコンテンツは公共データ利用規約第1.0版(CC BY 4.0互換)に基づき出典明記で転載可。避難情報(高齢者等避難・避難指示・緊急安全確保)は災対法56条・60条に基づき市町村長が発令し、第三者配信の標準ルートはLアラート(2026年12月に総務省運営へ移行中)。データ入手は無料の防災情報XML電文フィード(ベストエフォート・免責明記)と気象業務支援センターの有償配信(開設5万円+月約2〜3万円)の二層構造。ゲヒルン(NERV防災)は予報業務許可(地震動)を取得しJMBSC専用線で受信する個人発ベンチャーの先例で、Yahoo!防災速報・NERV防災とも利用規約で情報の正確性を保証しない免責を置いている。",
+  "findings": [
+   {
+    "topic": "気象業務法・予報業務許可",
+    "claim": "気象業務法第17条第1項は「気象庁以外の者が気象、地象、津波、高潮、波浪又は洪水の予報の業務(以下「予報業務」という。)を行おうとする場合は、気象庁長官の許可を受けなければならない」と定める。無許可で予報業務を行った場合は同法第46条第2号により50万円以下の罰金(2026年5月29日施行の最新改正版条文をe-Gov法令APIで確認)。",
+    "source_title": "気象業務法(昭和27年法律第165号) - e-Gov法令検索",
+    "source_url": "https://laws.e-gov.go.jp/law/327AC0000000165",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認(令和8年5月29日施行版)",
+    "notes": "e-Gov法令API(law_data/327AC0000000165)から最新条文を直接取得して確認。"
+   },
+   {
+    "topic": "気象業務法・用語定義",
+    "claim": "気象業務法第2条の定義では「予報」とは「観測の成果に基づく現象の予想の発表」(第6項)、「警報」とは「重大な災害の起こるおそれのある旨を警告して行う予報」(第7項)。すなわち「予想の発表」を伴わない既発表情報の転載は定義上「予報」に当たらない。",
+    "source_title": "気象業務法 第2条 - e-Gov法令検索",
+    "source_url": "https://laws.e-gov.go.jp/law/327AC0000000165",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認"
+   },
+   {
+    "topic": "気象業務法・そのまま伝達は許可不要",
+    "claim": "気象庁の公式Q&Aページは、「気象庁が発表した予報や警報の内容をそのまま利用者に伝達する場合」は予報業務に該当せず、予報業務許可は不要と明示している(気象庁発表情報を配信・放送する事業者が例示されている)。したがって警報・注意報・地震情報を改変せず再配信する軽量サイトは許可なしで合法に運営できる。",
+    "source_title": "予報業務許可に関するQ&A - 気象庁",
+    "source_url": "https://www.jma.go.jp/jma/kishou/minkan/q_a_o.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "報告書の核心となる論点。気象庁公式ページで直接確認。"
+   },
+   {
+    "topic": "気象業務法・独自予報には許可が必要",
+    "claim": "気象庁の公式Q&Aによれば、「時」と「場所」を特定して独自の予想を提供する行為は予報業務に該当し許可が必要。気象庁の予報データを独自に加工・補正して提供することも独自予報とみなされる。つまり軽量サイトでも独自の予測値を生成・表示すれば許可が必要になる。",
+    "source_title": "予報業務許可に関するQ&A - 気象庁",
+    "source_url": "https://www.jma.go.jp/jma/kishou/minkan/q_a_o.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認"
+   },
+   {
+    "topic": "気象業務法・警報の独自発表禁止(23条)",
+    "claim": "気象業務法第23条は「気象庁以外の者は、気象、地象、津波、高潮、波浪及び洪水の警報をしてはならない。ただし、政令で定める場合は、この限りでない」と定める。違反は第46条第6号により50万円以下の罰金。政令(気象業務法施行令第10条)が定める唯一の例外は「津波に関する気象庁の警報事項を適時に受けることができない状況にある地の市町村の長が津波警報をする場合」のみ。",
+    "source_title": "気象業務法第23条・第46条、気象業務法施行令第10条 - e-Gov法令検索",
+    "source_url": "https://laws.e-gov.go.jp/law/327AC0000000165",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "施行令はhttps://laws.e-gov.go.jp/law/327CO0000000471。「独自の警報」の発表は禁止だが、気象庁の警報の伝達や一般的な警戒の呼びかけは該当しない(気象庁Q&A)。ネット上には罰金額を30万円とする古い記述もあるが、最新条文で50万円以下と確認。"
+   },
+   {
+    "topic": "気象業務法・特定予報業務(2023年改正)",
+    "claim": "気象業務法第17条第3項により、噴火・火山ガスの放出・土砂崩れ・津波・高潮・洪水の予報業務は「特定予報業務」とされ、許可を受けても第19条の3の説明を受けた者(契約者等)にのみ利用させることができ、不特定多数向けの発表はできない。一般向け軽量サイトが独自の津波・洪水等予測を出すことは許可を得ても制度上不可能。",
+    "source_title": "気象業務法第17条第3項・第19条の3 - e-Gov法令検索",
+    "source_url": "https://laws.e-gov.go.jp/law/327AC0000000165",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認(令和8年5月29日施行版)",
+    "notes": "気象等・地震動・波浪の予報業務は不特定多数向けも可(審査基準)。"
+   },
+   {
+    "topic": "気象庁HP利用規約",
+    "claim": "気象庁ホームページのコンテンツは現在「公共データ利用規約(第1.0版)」に準拠しており、出典を記載すれば複製・再配信・編集加工が可能。出典記載例は「出典：気象庁ホームページ(当該ページのURL)」。編集・加工した場合はその旨を出典とは別に記載する必要があり(例「気象庁『図・写真等の名称』を加工して作成」)、「編集・加工した情報を、あたかも国(又は府省等)が作成したかのような態様で公表・利用してはいけません」と明記。また「利用者がホームページの情報を用いて行う一切の行為について気象庁は何ら責任を負うものではありません」との免責がある。",
+    "source_title": "気象庁ホームページについて - 気象庁",
+    "source_url": "https://www.jma.go.jp/jma/kishou/info/coment.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "従来の政府標準利用規約(第2.0版)から公共データ利用規約(第1.0版)への移行済み。加工物を気象庁発表と誤認させない義務は、警報の独自発表禁止(23条)と併せて表示設計上の重要制約。"
+   },
+   {
+    "topic": "公共データ利用規約とCC BY互換性",
+    "claim": "公共データ利用規約(第1.0版)はデジタル庁が2024年7月5日に策定したもので、その解説文書においてクリエイティブ・コモンズ表示4.0国際(CC BY 4.0)と互換性があることが明記されている。政府標準利用規約(第2.0版)(2015年12月24日決定)も同様にCC BY 4.0互換であった。",
+    "source_title": "「公共データ利用規約(第1.0版)」の解説(令和6年7月5日 デジタル庁)",
+    "source_url": "https://www.digital.go.jp/assets/contents/node/basic_page/field_ref_resources/f7fde41d-ffca-4b2a-9b25-94b8a701a037/b44a7e0c/20240705_resources_data_outline_07.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2024-07-05発行/2026-08-13確認"
+   },
+   {
+    "topic": "気象庁HPスクレイピングの位置づけ",
+    "claim": "気象庁は公式Q&Aで、業務でのデータ入手手段としてホームページからの資料入手(スクレイピング)は「確実性等の観点から適切ではない」との見解を示しており、確実な配信が必要な場合は気象業務支援センター等への問い合わせを案内している。",
+    "source_title": "予報業務許可に関するQ&A - 気象庁",
+    "source_url": "https://www.jma.go.jp/jma/kishou/minkan/q_a_o.html",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "WebFetchによる要約で確認した表現。原文の正確な文言・文脈(どの入手手段との比較か)は原典ページの再確認を推奨。防災情報XMLのPULL型公開ページにも同趣旨の案内あり。"
+   },
+   {
+    "topic": "無料データ入手・防災情報XML電文フィード",
+    "claim": "気象庁は防災情報XMLフォーマット形式電文をPULL型(Atomフィード、HTTPS GET)で無償公開しており、契約・料金は不要。高頻度フィード(毎分更新、直近10分以上の入電を掲載)と長期フィード(毎時更新、数日分)があり、定時・随時(警報・注意報等)・地震火山・その他の4種別。ただし「サーバーメンテナンス等により、配信が停止・遅延する場合があります」「利用者が公開XML電文を用いて行う一切の行為について気象庁は何ら責任を負わない」と明記され、1日10GB以上のダウンロードはIPアドレス遮断の対象。確実な配信が必要な場合は気象業務支援センター等への問い合わせを案内。",
+    "source_title": "気象庁防災情報XMLフォーマット形式電文(PULL型) - 気象庁",
+    "source_url": "https://xml.kishou.go.jp/xmlpull.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "個人・小規模サイトが警報・避難関連の気象データを合法かつ無料で機械可読形式で得られる公式ルート。ベストエフォートである点が有償配信との本質的な違い。"
+   },
+   {
+    "topic": "有償データ入手・気象業務支援センター(JMBSC)配信負担金",
+    "claim": "気象業務支援センターのオンライン気象情報提供(2024年4月現在)は、開設時負担金50,000円(初回のみ)、基本負担金月額4,200円に加え、情報別負担金として電文形式データ「注意報・警報」月額13,800円、「地震・火山・津波」月額9,000円等、通信設備負担金はインターネット回線で月額1,500円。警報+地震津波を受ける最小構成でも初期5万円+月額約2.9万円程度の実費負担となる。",
+    "source_title": "気象情報オンライン提供 情報提供負担金(2024年4月現在) - 一般財団法人気象業務支援センター",
+    "source_url": "https://www.jmbsc.or.jp/jp/online/20240401_futan-kin/futan-kin_20240401.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2024-04-01時点の料金表/2026-08-13確認",
+    "notes": "PDF原本から金額を直接確認。負担金は営利目的の対価ではなく配信経費の実費負担という建付け(JMBSCサイト「オンライン気象情報提供に要する経費をデータご利用の皆様にご負担頂いております」)。"
+   },
+   {
+    "topic": "JMBSC契約の主体(個人契約の可否)",
+    "claim": "JMBSCの公開資料には契約主体を法人に限る旨の明記はないが、「民間気象事業者や報道機関をはじめとする気象情報利用者」への提供と説明されており、個人が契約できるかどうかは公開ページ上では確認できない。申込は配信事業部契約担当(haisin@jmbsc.or.jp)へのメール問い合わせから開始する運用。",
+    "source_title": "オンライン気象情報 - 一般財団法人気象業務支援センター",
+    "source_url": "https://www.jmbsc.or.jp/jp/online/online.html",
+    "source_type": "primary",
+    "confidence": "low",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "個人可否は公式ページに明示がなく未確認。報告書に記載する場合は「公開資料上は制限の明記なし、要個別確認」とすべき。断定は不可。"
+   },
+   {
+    "topic": "災害対策基本法・避難情報の発令主体",
+    "claim": "災害対策基本法第60条により、「避難指示」(避難のための立退きの指示、第1項)と「緊急安全確保措置」(高所への移動・近傍の堅固な建物への退避等の指示、第3項)の発令主体は市町村長。市町村長が指示できないとき等は警察官・海上保安官が指示できる(第61条)。避難の必要がなくなったときは直ちに公示する義務がある(第60条第5項)。",
+    "source_title": "災害対策基本法第60条・第61条 - e-Gov法令検索",
+    "source_url": "https://laws.e-gov.go.jp/law/336AC0000000223",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認(令和8年7月17日施行版)",
+    "notes": "e-Gov法令APIから最新条文を直接取得。2021年改正で「避難勧告」は廃止され「避難指示」に一本化済み。"
+   },
+   {
+    "topic": "災害対策基本法・高齢者等避難と警戒レベル",
+    "claim": "「高齢者等避難」(警戒レベル3)は災害対策基本法第56条(第2項の要配慮者への配慮規定)を根拠に市町村長が発令する情報で、警戒レベル4が「避難指示」、警戒レベル5が「緊急安全確保」。内閣府「避難情報に関するガイドライン」は令和8年(2026年)3月に改定され、同年5月下旬からの新たな防災気象情報の運用開始に合わせて警戒レベル相当情報の体系整理・名称変更(例:レベル4氾濫危険警報)が反映された。",
+    "source_title": "避難情報に関するガイドラインの改定(令和8年3月) - 内閣府防災情報のページ",
+    "source_url": "https://www.bousai.go.jp/oukyu/hinanjouhou/r3_hinanjouhou_guideline/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-03改定/2026-08-13確認",
+    "notes": "ガイドライン本文PDFはhttps://www.bousai.go.jp/oukyu/hinanjouhou/r3_hinanjouhou_guideline/pdf/hinan_guideline_r8_1.pdf。2026年に警戒レベル相当情報の名称が変わったため、転載サイトは新名称への追随が必要という含意がある。"
+   },
+   {
+    "topic": "避難情報の第三者配信ルート(Lアラート)",
+    "claim": "市町村発令の避難情報を事業者が機械可読で受け取る標準ルートは「Lアラート(災害情報共有システム)」で、一般財団法人マルチメディア振興センター(FMMC)が運営し総務省が普及促進してきた。配信を受けるには「情報伝達者」としての利用申請が必要。2026年6〜7月にFMMCは新規利用申込の受付を停止しており、令和8年(2026年)12月1日から総務省が運営主体となる移行が進行中で、新規利用申請は移行後に受付再開予定。",
+    "source_title": "Lアラート - 一般財団法人マルチメディア振興センター/総務省",
+    "source_url": "https://www.fmmc.or.jp/commons/",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "新規受付停止のお知らせ(2026年6月12日・7月22日付)はFMMCトップページで確認。「令和8年12月1日から総務省運営・受付再開」は検索結果の要約およびFMMC公表資料(https://www.fmmc.or.jp/Portals/0/images/commons/publish/資料32-2 FMMC説明資料_Lアラートの新たな運営体制について.pdf)に基づくが、原文の逐語確認は未了のため確度は中。総務省ページ:https://www.soumu.go.jp/menu_seisaku/ictseisaku/ictriyou/02ryutsu06_03000032.html。今まさに移行期であり、新規参入者は申請時期に注意が必要。"
+   },
+   {
+    "topic": "免責事項の実務・Yahoo!防災速報",
+    "claim": "Yahoo!防災速報(LINEヤフー)は公式の免責事項で「当社は通知する情報の内容の正確性について保証しておりませんので、官公庁や自治体等が発表する情報もあわせてご確認ください」と明記し、さらに「システム障害およびお客様がお使いの通信環境や通信状況によって、通知が遅延・不達となる場合があります」(不達時の再送なし)、「本サービスの内容を予告なく変更・終了する場合があります」と定めている。",
+    "source_title": "免責事項 - 防災速報からのお知らせ(LINEヤフー)",
+    "source_url": "https://notice.yahoo.co.jp/emg/sokuho/service/disclaimer.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認",
+    "notes": "大手事業者でも正確性無保証+一次情報(官公庁・自治体)への誘導という構造。軽量サイトの免責設計のひな形になる。"
+   },
+   {
+    "topic": "免責事項の実務・NERV防災(ゲヒルン)",
+    "claim": "特務機関NERV防災の利用規約は、第10条で「本サービスおよび本サービスを通じて利用者に提供される情報について、その正確性、信頼性、目的適合性、その他一切の事項について保証いたしません」、第11条で「本サービスの利用、内容変更、終了、中断によって生じた損害について、それらの予見可能性の有無にかかわらず一切の責任を負いません」とし、賠償責任を負う場合も「利用者が当社に本サービスの対価として支払った総額を限度額」とする責任制限を置いている(無料利用者は実質ゼロ)。",
+    "source_title": "特務機関NERV防災 利用規約 - ゲヒルン株式会社",
+    "source_url": "https://www.gehirn.co.jp/policies/nervappterms/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13確認"
+   },
+   {
+    "topic": "NERV防災のデータ取得体制",
+    "claim": "内閣官房国土強靱化推進室の民間取組事例集によれば、ゲヒルン株式会社は「気象庁が指定する『気象業務支援センター』と接続した専用線から、気象庁独自形式の情報データを受け取り、変換処理できるプログラムを開発」しており、加えて河川情報センターからダム放流通知、Lアラートから避難情報・避難所情報を受信。システムは東京と大阪の計6データセンターで運用され、東京全拠点停止時や気象庁本庁舎との通信途絶時には3秒以内に大阪側へ自動フェイルオーバーする設計。",
+    "source_title": "国土強靱化 民間の取組事例018「国内最速レベルで防災気象情報を提供する『特務機関NERV防災アプリ』」 - 内閣官房",
+    "source_url": "https://www.cas.go.jp/jp/seisaku/kokudo_kyoujinka/r2_minkan/pdf/018.pdf",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "令和2年度事例集/2026-08-13確認",
+    "notes": "政府作成の事例集(PDF原文を抽出して確認)。ゲヒルン自社ページ(https://www.gehirn.co.jp/services/disaster/)にも「気象庁や総務省、電力事業者などから配信された情報をわかりやすい文章に変換し…配信」との記載。個人のTwitterアカウント発の活動が、JMBSC専用線契約+冗長化投資に至った実例。"
+   },
+   {
+    "topic": "NERV防災・予報業務許可の取得",
+    "claim": "ゲヒルン株式会社は2019年6月17日に気象業務法第17条第1項に基づく予報業務許可(地震動)を気象庁長官から取得し、2023年1月26日には地震動の予報業務の変更認可(震央推定震度・長周期地震動階級等)を受けている。緊急地震速報(予報)を利用者に配信するには「そのまま伝達」の範囲を超えるため地震動の予報業務許可が必要であり、警報・注意報の単純転載とは規制上の扱いが異なる先例。",
+    "source_title": "気象庁長官から予報業務許可(地震動)を受けました - ゲヒルン株式会社",
+    "source_url": "https://www.gehirn.co.jp/news/2019-06-17/forecast-operation/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2019-06-17発表/2026-08-13確認",
+    "notes": "変更認可のリリースはhttps://www.gehirn.co.jp/news/2023-01-26/forecast-operation/。緊急地震速報を地点ごとの予想(予報)として配信する機能を持たせるかどうかで、軽量サイトに必要な許可の有無が変わるという設計上の分岐点を示す。"
+   }
+  ]
+ },
+ {
+  "finder": "tech",
+  "summary": "3Gは3キャリアとも停波完了(au 2022/3/31、ソフトバンク 2024/4/15、ドコモFOMA/iモードは2026/3/31終了を公式サイトの過去形表記で確認)。TLS1.0までしか話せない旧ガラケーブラウザは2020年前後のTLS1.2必須化で既に閲覧不能であり、「本物のケータイサイト」の想定読者はモバイル網上に存在しない。作るべきはTLS1.2対応の4Gケータイと低速回線スマホ双方で読める軽量テキストHTMLサイトである。東京都は災害時アクセス集中対策として「テキスト主体の軽量ページ+CDN」を公式ガイドラインで推奨。Cloudflareは静的アセット配信が無料・無制限、GitHub Pagesは100GB/月のソフト制限で高負荷時429の可能性あり。GitHub Actions cronは最短5分かつ遅延・欠落があり、警報系は気象庁公式の毎分更新Atomフィード等から生成する構成が現実的。GOV.UKの漸進的強化原則に沿い非JSでも動くHTMLを基本にPWAを加算し、JIS X 8341-3(総務省ガイドライン)・やさしい日本語指針に準拠すべき。",
+  "findings": [
+   {
+    "topic": "3G停波(au)",
+    "claim": "KDDI・沖縄セルラーはauの3G携帯電話向けサービス「CDMA 1X WIN」を2022年3月31日に終了した。VoLTE非対応契約は2022年4月1日に自動解約となり、iPhone 5/5s/5cなどVoLTE非対応機種は利用不能になった。",
+    "source_title": "3G携帯電話向けサービス「CDMA 1X WIN」を22年3月31日に終了(KDDIニュースリリース)",
+    "source_url": "https://news.kddi.com/kddi/corporate/newsrelease/2021/11/29/5546.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2021-11-29",
+    "notes": "キャリア公式発表。"
+   },
+   {
+    "topic": "3G停波(ソフトバンク)",
+    "claim": "ソフトバンクの3Gサービスは当初2024年1月31日終了予定だったが、能登半島地震の影響で2024年4月15日に延期して終了。石川県在住者のみ県内で2024年7月31日まで利用可能とされた。",
+    "source_title": "3Gサービスを4月15日に終了(ソフトバンク プレスリリース)",
+    "source_url": "https://www.softbank.jp/corp/news/press/sbkk/2024/20240313_01/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2024-03-13",
+    "notes": "キャリア公式発表。"
+   },
+   {
+    "topic": "3G停波(ドコモFOMA/iモード)",
+    "claim": "NTTドコモのFOMAおよびiモードは予定どおり2026年3月31日にサービスを終了した(公式サイトが「終了しました」と過去形で明記)。FOMA機種は完全に利用不可となり、VoLTE非対応の4G機種も音声通話不可となった。これで国内3キャリアの3Gはすべて停波済み。",
+    "source_title": "「FOMA」および「iモード」サービス終了のご案内(NTTドコモ)",
+    "source_url": "https://www.docomo.ne.jp/info/3g_closed/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "2026-08-13にWebFetchで確認。終了の実施はマイナビニュース(2026-03-31)等の報道でも裏付け。"
+   },
+   {
+    "topic": "TLS制約(旧ガラケー閲覧不能の経緯)",
+    "claim": "KDDIは2019年7月発表でTLS1.0/1.1を無効化しTLS1.2のみ有効化すると告知し、3Gのauケータイは全機種が2020年2月4日以降主要サービスを閲覧不可となった。一方「4G LTEケータイは引き続きご利用いただけます」と明言しており、4GケータイはTLS1.2対応である。",
+    "source_title": "セキュリティ強化に伴う一部ウェブサイト閲覧不可について(KDDI)",
+    "source_url": "https://www.kddi.com/important-news/20190731/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2019-07-31",
+    "notes": "「本物のケータイサイト」の技術的前提(TLS1.0時代のブラウザ)が2020年時点で崩壊していたことを示すキャリア一次情報。"
+   },
+   {
+    "topic": "TLS制約(旧ガラケーブラウザの対応上限)",
+    "claim": "iモード/EZweb等の旧フィーチャーフォン内蔵ブラウザはTLS1.0までの対応が一般的で、Webサイトの常時SSL化とTLS1.2以降必須化により「SSL通信が無効です」等のエラーで表示不能となった。旧ガラケー向けにHTTPS配信する現実的手段はない。",
+    "source_title": "フィーチャーフォン(いわゆるガラケー)でSSL通信エラーが表示され表示できない(atwikiサポート)",
+    "source_url": "https://atwiki.zendesk.com/hc/ja/articles/115000954086",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "複数のサービス事業者告知で一致する内容だが、機種別のTLS対応を網羅した一次資料は未発見。なお平文HTTP配信は理論上可能だが、3G停波により旧端末は回線自体が失われている。"
+   },
+   {
+    "topic": "4Gケータイ(ガラホ)の現状",
+    "claim": "現行の4Gケータイ(例: ドコモ arrows ケータイ ベーシック F-41C、2022年発売)はWebブラウザを搭載しWebサイト閲覧が可能(公式FAQにブラウザ項目が9件存在)だが、Wi-Fi非対応・OS非公開・アプリ追加不可など制約が多く、スマホと同一のフル機能は期待できない。",
+    "source_title": "arrows ケータイ ベーシック F-41C:FAQ(FCNT)/サービス・機能とスペック(NTTドコモ)",
+    "source_url": "https://www.fcnt.com/faq/f-41c/",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "ドコモ公式スペック(https://www.docomo.ne.jp/support/product/f41c/spec.html)ではWi-Fi「−」・OS「非公開」を確認。ブラウザのTLSバージョンやHTML/CSS対応範囲の公式仕様は非公開のため、実機検証を推奨。KDDIの2019年発表は4G LTEケータイのTLS1.2対応を裏付ける。"
+   },
+   {
+    "topic": "旧スマホのTLS制約",
+    "claim": "Android 4.4.4以下(2013〜2015年頃発売)の旧スマートフォンもTLS1.2初期無効のため閲覧不能になり得る。ドコモはTLS1.2未対応機種一覧を公開している。低スペック・旧端末対応は「軽いHTML」だけでなくTLS設定にも依存する。",
+    "source_title": "TLS1.2未対応の機種一覧(NTTドコモ オンラインショップ)",
+    "source_url": "https://onlineshop.smt.docomo.ne.jp/contents/pdf/information/tls_model_list.pdf",
+    "source_type": "primary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13",
+    "notes": "一覧はドコモオンラインショップ閲覧可否の文脈。サーバ側でTLS1.2以上+広い暗号スイートを許容する設定が旧端末救済の現実的上限。"
+   },
+   {
+    "topic": "低速回線(128kbps)の実在性",
+    "claim": "ドコモは利用可能データ量超過後の通信速度を「送受信時最大128kbps」に制限しており(ギガライト等)、128kbps級の低速環境は災害時に限らず日常的に存在する。10KBのHTML(=80kbit)は128kbpsで転送約0.6〜0.7秒であり、軽量テキストページなら128kbps環境でも実用的。",
+    "source_title": "128kbps通信解除(NTTドコモ)",
+    "source_url": "https://www.docomo.ne.jp/charge/128kbps_cancellation/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "転送時間は計算値(プロトコルオーバーヘッド・TLSハンドシェイクの往復遅延は別途加算)。速度制限仕様はプランにより128kbps〜1Mbpsと幅がある。"
+   },
+   {
+    "topic": "ページサイズの目安(14KBルール)",
+    "claim": "TCPスロースタートの初期輻輳ウィンドウは一般に10パケット≒14.6KBであり、最初の1往復(1RTT)で届くのは約14KB。クリティカルなHTMLを14KB以内に収めると往復1回分の待ち時間を節約でき、モバイル網ではRTT分の200〜500msの差になり得る。",
+    "source_title": "Why your website should be under 14kB in size (endtimes.dev)",
+    "source_url": "https://endtimes.dev/why-your-website-should-be-under-14kb-in-size/",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13",
+    "notes": "初期ウィンドウを拡大しているサーバもあり厳密な法則ではない(tunetheweb.comの検証記事でも同旨)。設計目標としては「本文HTML 14KB以下」が合理的な経験則。"
+   },
+   {
+    "topic": "行政の公式推奨(テキスト主体の軽量防災ページ)",
+    "claim": "東京都は令和元年台風19号で自治体HPが表示遅延・閲覧不能になった事象を受け、2020年2月に「アクセス集中対応のためのガイドライン」を策定。対策はCDN等による負荷分散とコンテンツ軽量化の2本柱で、非常時用コンテンツは「テキスト主体の軽量なコンテンツページで作成」し、避難所情報はPDF/Word形式ではなくテキスト形式で提供、平時から閲覧可能にしておくことを推奨している。Googleの1ページ約1.6MB推奨にも言及。",
+    "source_title": "東京都・アクセス集中対応のためのガイドライン(月刊J-LIS 2020年8月号掲載、東京都戦略政策情報推進本部)",
+    "source_url": "https://www.digitalservice.metro.tokyo.lg.jp/documents/d/digitalservice/guideline",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2020-08-01",
+    "notes": "「文字中心の軽量防災サイト」という依頼者の構想を行政自身が公式に推奨している最重要の裏付け。東京都サイトでPDF公開されている転載記事を直接確認。"
+   },
+   {
+    "topic": "静的ホスティングの耐輻輳性(GitHub Pages)",
+    "claim": "GitHub Pagesには月間100GB帯域のソフト制限、毎時10ビルドのソフト制限、公開サイト1GB以下の制限があり、過度なリクエストにはHTTP 429でレート制限される。SLAの記載はなく、ECやSaaS等の商用利用は禁止。生命に関わる高可用サービスの単独基盤には不向き。",
+    "source_title": "GitHub Pages limits(GitHub Docs)",
+    "source_url": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "非商用の防災情報サイトは利用規約上は可能だが、帯域超過時に配信停止の可能性がある点がリスク。ミラー(複数ホスティング併用)が現実解。"
+   },
+   {
+    "topic": "静的ホスティングの耐輻輳性(Cloudflare)",
+    "claim": "Cloudflare Workersの公式料金ページは「Requests to static assets are free and unlimited(静的アセットへのリクエストは無料・無制限)」と明記。Workers(動的処理)の無料枠は10万リクエスト/日で超過分はエラー。Cloudflare Pages無料プランはビルド500回/月・2万ファイル・1ファイル25MiBの制限だが帯域制限の記載はない。静的HTML中心なら無料枠でアクセススパイクに耐える構成が可能。",
+    "source_title": "Workers Pricing / Pages Limits(Cloudflare Docs)",
+    "source_url": "https://developers.cloudflare.com/workers/platform/pricing/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "Pages制限は https://developers.cloudflare.com/pages/platform/limits/ で確認。無料プランにSLAはない(SLAは有料Enterprise向け)。"
+   },
+   {
+    "topic": "災害時スパイクに耐えた静的サイト事例",
+    "claim": "東京都新型コロナウイルス感染症対策サイト(2020年3月公開)は、Nuxt.jsで事前ビルドした静的サイトをNetlifyのCDNから配信するJamstack構成で、公開直後の1日100万PV超のアクセス集中に耐えた。静的生成+CDNが公共緊急情報サイトで実証済みであることを示す。",
+    "source_title": "東京都、Vue+Nuxt.jsで構築した「新型コロナウイルス感染症対策サイト」をNetlifyで公開(@IT)",
+    "source_url": "https://atmarkit.itmedia.co.jp/ait/articles/2003/06/news137.html",
+    "source_type": "secondary",
+    "confidence": "medium",
+    "load_bearing": true,
+    "published_or_checked": "2020-03-06",
+    "notes": "サイト自体(covid19-tokyo.netlify.app)とGitHubリポジトリも現存。PV数は報道ベース。なおNetlify無料プランは現在クレジット制(300クレジット/月)に移行しており、旧来の100GB/月帯域とは条件が異なる点は要再確認(netlify.com/pricing、2026-08-13確認)。"
+   },
+   {
+    "topic": "動的データの静的化(定期ビルドの制約)",
+    "claim": "GitHub Actionsのscheduleトリガーの最短間隔は5分。ただし公式ドキュメントは高負荷時(特に毎正時)に遅延し得ること、負荷が十分高い場合キューされたジョブが破棄(drop)され得ることを明記。またパブリックリポジトリで60日間活動がないとスケジュールは自動無効化される。警報のような分単位の即時性が必要な情報を「cronビルドのみ」で配信するのは不適切。",
+    "source_title": "Events that trigger workflows - schedule(GitHub Docs)",
+    "source_url": "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "警報系は(1)エッジ(Workers等)でのJSONプロキシ+短TTLキャッシュ、(2)Webhook/常駐プロセスによる即時ビルドの併用が現実的。平常時の天気予報等は5〜10分cronで十分。"
+   },
+   {
+    "topic": "動的データ源(気象庁公式フィード)",
+    "claim": "気象庁は防災情報XML電文をPULL型(Atomフィード、HTTPS GET)で公式提供しており、高頻度フィードは毎分更新(直近10分以上の入電を掲載)、長期フィードは毎時更新。警報・注意報等を毎分ポーリングして静的ページやJSONに変換する構成が公式データで成立する。",
+    "source_title": "気象庁防災情報XMLフォーマット形式電文(PULL型)",
+    "source_url": "https://xml.kishou.go.jp/xmlpull.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "気象庁HPの https://www.jma.go.jp/bosai/warning/data/warning/{area}.json 等のJSONも取得可能だが、こちらは公式APIではなく仕様変更・廃止リスクあり(二次情報: https://anko.education/webapi/jma)。恒久運用はxml.kishou.go.jpのAtomフィードを基盤とすべき。"
+   },
+   {
+    "topic": "PWA/Service Workerによるオフライン対応",
+    "claim": "Service WorkerとCache APIを使えば、一度取得したページ・資産をローカルキャッシュし、圏外・輻輳時でもキャッシュ済みコンテンツ(避難所一覧・防災手順等)を表示できる(cache-first戦略)。Service Workerは別スレッドで動きUIをブロックしない。",
+    "source_title": "オフラインとバックグラウンド操作(MDN Web Docs)",
+    "source_url": "https://developer.mozilla.org/ja/docs/Web/Progressive_web_apps/Guides/Offline_and_background_operation",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13",
+    "notes": "MDNはブラウザベンダー公式の技術文書。PWAはあくまで加算機能とし、JS無効環境での基本表示を損なわない実装(後述の漸進的強化)が前提。"
+   },
+   {
+    "topic": "非JS端末との両立(漸進的強化)",
+    "claim": "英国政府GOV.UKサービスマニュアルは、まずHTMLだけで機能するように作り、その上にCSS/JavaScriptを重ねる「プログレッシブエンハンスメント」を公式に義務づけている。理由はネットワークエラー・低速回線・低性能端末などでJavaScriptは失敗し得るため。HTML層は設計上フォールトトレラントで、4Gケータイの簡易ブラウザとPWA対応スマホを単一サイトで両立させる根拠となる。",
+    "source_title": "Building a resilient frontend using progressive enhancement(GOV.UK Service Manual)",
+    "source_url": "https://www.gov.uk/service-manual/technology/using-progressive-enhancement",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "政府機関による公式技術ガイダンス。防災用途では「素のHTMLで完結+SWでオフライン強化」の二層構成が最適という結論を支える。"
+   },
+   {
+    "topic": "アクセシビリティ(公的ガイドライン)",
+    "claim": "総務省「みんなの公共サイト運用ガイドライン」(最新2024年版)は、公的機関ウェブサイトにJIS X 8341-3(WCAG 2.0相当)に基づくアクセシビリティ確保(スクリーンリーダー対応、文字サイズ変更、色コントラスト等)を求めている。防災情報サイトが準拠すべき国内標準。",
+    "source_title": "みんなの公共サイト運用ガイドライン(総務省 情報アクセシビリティポータル)",
+    "source_url": "https://www.soumu.go.jp/info-accessibility-portal/webaccessibility/guideline/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13",
+    "notes": "2024年版本文PDF: https://www.soumu.go.jp/main_content/000945249.pdf。テキスト中心の軽量サイトは画像依存が少なくスクリーンリーダー親和性が高いため、本構想とアクセシビリティ要件は整合する。"
+   },
+   {
+    "topic": "アクセシビリティ(デジタル庁)",
+    "claim": "デジタル庁は「ウェブアクセシビリティ導入ガイドブック」を2022年12月に公開し(2025年10月更新、デジタル社会推進標準ガイドライン群に編入)、行政・事業者向けにアクセシビリティ実装の実務指針を提供している。",
+    "source_title": "ウェブアクセシビリティ導入ガイドブック(デジタル庁)",
+    "source_url": "https://www.digital.go.jp/resources/introduction-to-web-accessibility-guidebook",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2026-08-13",
+    "notes": "2025年10月の標準ガイドライン群編入は二次情報(waic.jp、ミツエーリンクス)による。"
+   },
+   {
+    "topic": "多言語・やさしい日本語",
+    "claim": "出入国在留管理庁と文化庁は「在留支援のためのやさしい日本語ガイドライン」(2020年8月)を公表しており、難しい言葉の言い換え等により外国人・高齢者・障害者に分かりやすく伝える文章作成の公式指針(3ステップの書き換え手順、変換例)を提供している。防災テキストサイトの多言語化(やさしい日本語+英語)の根拠指針となる。",
+    "source_title": "在留支援のためのやさしい日本語ガイドライン(出入国在留管理庁・文化庁)",
+    "source_url": "https://www.moj.go.jp/isa/support/portal/plainjapanese_guideline.html",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": false,
+    "published_or_checked": "2020-08-28",
+    "notes": "ガイドライン本文PDF: https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/pdf/92484001_01.pdf。テキスト中心サイトは機械翻訳との相性も良い。"
+   },
+   {
+    "topic": "結論材料(本物のケータイサイトの意義)",
+    "claim": "3G全停波(2026年3月完了)とTLS1.2必須化により、iモード等の旧ケータイブラウザ端末はモバイル回線・HTTPS接続の両面で閲覧手段を失っており、「本物のケータイサイト」(CHTML/TLS1.0時代仕様)を新規に作る意義は消滅した。現実的なターゲットは(1)TLS1.2対応の現行4Gケータイのブラウザ、(2)低速・輻輳回線下のスマートフォンであり、いずれも「軽量テキストHTML+HTTPS」で到達できる。",
+    "source_title": "「FOMA」および「iモード」サービス終了のご案内(NTTドコモ)ほかキャリア3社公式発表",
+    "source_url": "https://www.docomo.ne.jp/info/3g_closed/",
+    "source_type": "primary",
+    "confidence": "high",
+    "load_bearing": true,
+    "published_or_checked": "2026-08-13",
+    "notes": "本findingは上記の一次情報(3キャリア停波発表+KDDIのTLS1.2化発表)からの総合判断。旧3Gガラケーの多くはWi-Fi非搭載のため回線消滅=接続手段消滅となる。"
+   }
+  ]
+ }
+]
