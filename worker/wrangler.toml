@@ -1,0 +1,14 @@
+# Cloudflare Workers設定(フィード更新検知トリガー)。
+# デプロイ: cd worker && npx wrangler@4 deploy
+# シークレット: npx wrangler@4 secret put GITHUB_TOKEN
+#   (fine-grained PAT。対象=本リポジトリのみ、権限=Actions: Read and write)
+name = "k-tai-bousai-trigger"
+main = "index.js"
+compatibility_date = "2026-08-01"
+
+[triggers]
+crons = ["* * * * *"]
+
+[vars]
+GITHUB_REPO = "Yanai-Taketo/k-tai.bousai"
+GITHUB_BRANCH = "main"

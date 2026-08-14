@@ -8,7 +8,15 @@
 
 ## 現在の状況
 
-**フェーズ1: 要件定義・設計 — 着手(2026-08-14)**
+**フェーズ2: 実装 — 生成システム・デプロイ機構・テスト完成(2026-08-14)。アカウント設定([docs/setup.md](docs/setup.md))待ち**
+
+- 🏗 生成システム `generator/`(標準ライブラリのみ・新体系VPWW55〜61/VPBS50/VPHW50-51/VXSE51・53/VTSE41/VPFD51/VPFW50対応)
+- ✅ 実電文ゴールデンテスト18件(`tests/`)、実データ生成62ページ・全ページgzip後2.1KB以下
+- ⚡ 128kbps・RTT300ms実測: 全ページ表示完了0.5〜0.75秒(要件2秒以内)
+- 🚀 デプロイ: `.github/workflows/build-deploy.yml`(GitHub Pages artifact+Cloudflare Pages直接アップロードの2系統)+`worker/`(毎分のフィード更新検知トリガー)+`.github/workflows/monitor.yml`(15分毎監視)
+- 📗 [公開セットアップ手順(依頼者作業)](docs/setup.md)
+
+**フェーズ1: 要件定義・設計 — 完了(2026-08-14)**
 
 - 📐 [要件定義書](docs/requirements.md) / [設計書](docs/design.md)
 - 決定済み: スコープ=警報・注意報/気象防災速報/地震・津波/天気予報のみ(避難場所データは持たない)、コード=MIT+文書=CC BY 4.0、ホスティング=Cloudflare Pages+GitHub Pagesのみで完結(VPSなし)、「新たな防災気象情報」(2026-05-29運用開始)完全対応
@@ -37,7 +45,15 @@
 ## リポジトリ構成
 
 ```
+generator/            # 生成システム(Python標準ライブラリのみ。python3 -m generator.main)
+tests/                # 実電文フィクスチャによるゴールデンテスト
+worker/               # Cloudflare Workers 毎分トリガー(フィード更新検知→Actions起動)
+tools/monitor.py      # 死活・鮮度監視スクリプト
+.github/workflows/    # build-deploy.yml(生成+2系統デプロイ) / monitor.yml(15分毎監視)
 docs/
+  setup.md            # 公開セットアップ手順(依頼者作業)
+  requirements.md     # 要件定義書
+  design.md           # 設計書
   decisions.md        # 依頼者の意思決定記録
   research/
     2026-08-13-feasibility-report.md   # 第1次調査報告書

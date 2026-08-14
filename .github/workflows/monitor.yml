@@ -1,0 +1,38 @@
+# 死活・鮮度監視(設計書§6、要件N-11)。15分毎。
+# 異常時はワークフロー失敗(=GitHubからのメール通知)+監視Issueを起票する。
+name: monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE_URLS: ${{ vars.SITE_URLS }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: フィード・公開サイトの鮮度確認
+        run: python3 tools/monitor.py
+
+      - name: 障害Issueを起票(同種のopen Issueが無い場合のみ)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create monitor --force --color D93F0B --description "自動監視の異常検知" || true
+          existing=$(gh issue list --label monitor --state open --json number --jq length)
+          if [ "$existing" = "0" ]; then
+            gh issue create \
+              --title "監視異常: フィードまたは公開サイトの鮮度低下 ($(date -u +%Y-%m-%dT%H:%MZ))" \
+              --label monitor \
+              --body "monitor.ymlが異常を検知しました。実行ログを確認してください: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi
