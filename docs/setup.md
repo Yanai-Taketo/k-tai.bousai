@@ -38,9 +38,16 @@
 
 ## 3. 毎分トリガー(Cloudflare Worker)
 
+> **なぜPAT(APIキー)が必要なのか**: GitHubのworkflow_dispatch APIに無認証の起動経路は
+> 存在せず、Actions単体では最短5分のscheduleしか使えない(公式仕様)ため、毎分精度の
+> トリガーには外部からの認証付き起動が不可避。敵対的検証の記録は
+> `research/2026-08-14-trigger-verification.md` 参照。PATは下記の最小権限で作成すれば、
+> 漏えいしてもコードの改変やSecretsの読み出しはできない。
+
 1. GitHubで **fine-grained PAT** を作成: 対象リポジトリ=本リポジトリのみ、
    Repository permissions → **Actions: Read and write**。有効期限は運用に合わせて設定
-   (失効するとトリガーが止まり、5分毎cronのフォールバックだけになる。失効前に更新する)。
+   (失効するとトリガーが止まり、5分毎cronのフォールバックだけになる。失効・停止は
+   monitor.ymlが「24時間dispatchなし」として最長24時間で検知しIssue起票する)。
 2. 手元(またはCloud Shell等)で:
    ```
    cd worker
@@ -49,6 +56,8 @@
    npx wrangler@4 secret put GITHUB_TOKEN   # ← 上記PATを入力
    ```
 3. `wrangler.toml` の `GITHUB_REPO` / `GITHUB_BRANCH` が実際の値と一致しているか確認。
+4. Workerの動作を確認できたら、リポジトリの Variable `MINUTE_TRIGGER` = `1` を設定
+   (monitor.ymlの毎分トリガー死活確認が有効になる。Worker導入前に設定すると誤検知するので注意)。
 
 ## 4. 監視の通知先
 

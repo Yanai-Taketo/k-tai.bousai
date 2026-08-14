@@ -49,7 +49,7 @@ generator/            # 生成システム(Python標準ライブラリのみ。p
 tests/                # 実電文フィクスチャによるゴールデンテスト
 worker/               # Cloudflare Workers 毎分トリガー(フィード更新検知→Actions起動)
 tools/monitor.py      # 死活・鮮度監視スクリプト
-.github/workflows/    # build-deploy.yml(生成+2系統デプロイ) / monitor.yml(15分毎監視)
+.github/workflows/    # build-deploy.yml(生成+2系統デプロイ) / fallback-schedule.yml(5分毎フォールバック) / monitor.yml(15分毎監視)
 docs/
   setup.md            # 公開セットアップ手順(依頼者作業)
   requirements.md     # 要件定義書

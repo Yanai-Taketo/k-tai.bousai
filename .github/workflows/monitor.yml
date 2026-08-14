@@ -1,15 +1,23 @@
 # 死活・鮮度監視(設計書§6、要件N-11)。15分毎。
 # 異常時はワークフロー失敗(=GitHubからのメール通知)+監視Issueを起票する。
+# あわせて2つの長期無人運用対策を行う:
+# - keepaliveコミット: 公開リポジトリで60日間活動が無いとscheduledワークフローが自動無効化
+#   されるため、最終コミットから30日経過していたら空実体のkeepaliveファイルを更新して予防する。
+# - 毎分トリガーの死活確認: Worker/PAT失効は「5分フォールバックへの静かな劣化」となり
+#   鮮度監視では検知できないため、直近24時間にworkflow_dispatch起動が1件も無ければ異常とする
+#   (気象庁フィードは天気予報だけでも毎日複数回更新されるため、24時間ゼロは起こり得ない)。
+# 検証記録: docs/research/2026-08-14-trigger-verification.md
 name: monitor
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "7-52/15 * * * *"
 
 permissions:
-  contents: read
+  contents: write
   issues: write
+  actions: read
 
 jobs:
   check:
@@ -20,8 +28,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: keepalive(最終コミットから30日経過時のみ空コミット)
+        run: |
+          last=$(git log -1 --format=%ct)
+          now=$(date +%s)
+          if [ $(( (now - last) / 86400 )) -ge 30 ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            date -u +%Y-%m-%dT%H:%M:%SZ > .github/keepalive
+            git add .github/keepalive
+            git commit -m "keepalive: scheduleワークフローの60日自動無効化を予防"
+            git push
+          fi
+
       - name: フィード・公開サイトの鮮度確認
         run: python3 tools/monitor.py
+
+      - name: 毎分トリガーの死活確認(Variable MINUTE_TRIGGER=1 設定後のみ)
+        if: vars.MINUTE_TRIGGER == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          since=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+          n=$(gh api -X GET "repos/${{ github.repository }}/actions/workflows/build-deploy.yml/runs" \
+            -f event=workflow_dispatch -f "created=>${since}" -f per_page=1 --jq .total_count)
+          if [ "$n" = "0" ]; then
+            echo "::error::直近24時間にworkflow_dispatch起動がありません。Cloudflare Workerの停止またはPAT失効の可能性(5分フォールバックで縮退運転中)。worker側のログとPATの有効期限を確認してください。"
+            exit 1
+          fi
 
       - name: 障害Issueを起票(同種のopen Issueが無い場合のみ)
         if: failure()
@@ -32,7 +66,7 @@ jobs:
           existing=$(gh issue list --label monitor --state open --json number --jq length)
           if [ "$existing" = "0" ]; then
             gh issue create \
-              --title "監視異常: フィードまたは公開サイトの鮮度低下 ($(date -u +%Y-%m-%dT%H:%MZ))" \
+              --title "監視異常: 鮮度低下または毎分トリガー停止 ($(date -u +%Y-%m-%dT%H:%MZ))" \
               --label monitor \
               --body "monitor.ymlが異常を検知しました。実行ログを確認してください: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           fi

@@ -51,8 +51,9 @@ generator/          # 生成システム(Python 3.11+, 標準ライブラリの�
 site/               # 生成物(Actionsのartifactとしてのみ存在。リポジトリにはコミットしない)
 worker/             # Cloudflare Workers Cronトリガー(フィード更新検知→workflow_dispatch)
 .github/workflows/
-  build-deploy.yml  # 生成+2系統デプロイ(workflow_dispatch + schedule 5分毎)
-  monitor.yml       # 死活・鮮度監視(15分毎)
+  build-deploy.yml       # 生成+2系統デプロイ(workflow_dispatch専用)
+  fallback-schedule.yml  # 5分毎schedule→build-deployをdispatch(60日無効化の道連れ防止で分離)
+  monitor.yml            # 死活・鮮度監視(15分毎)+keepalive+毎分トリガー死活確認
 prototype/          # フェーズ0の実証コード(参照用に凍結)
 ```
 
@@ -62,8 +63,8 @@ prototype/          # フェーズ0の実証コード(参照用に凍結)
 ## 3. 更新機構(N-5: 反映5分以内)
 
 1. **Workers Cron(毎分)**: 高頻度フィードに条件付きGET(`If-Modified-Since`)→ 直近90秒以内の`<updated>`があれば GitHub API `workflow_dispatch` を呼ぶ。ステートレス設計(Workers KVの無料書き込み上限1,000回/日を回避)。CPU消費は数ms(無料枠10ms内)。
-2. **Actions schedule(5分毎)**: トリガー欠落・Workers障害時のフォールバック。無条件に生成を実行。
-3. **build-deploy.yml**: `concurrency: group=deploy, cancel-in-progress: true` で多重起動を吸収。手順: 長期フィード取得→全電文取得(並列・失敗リトライ)→生成→2系統デプロイ。所要目標90秒以内。
+2. **Actions schedule(5分毎・別ファイル)**: トリガー欠落・Workers障害時のフォールバック。`fallback-schedule.yml`がGITHUB_TOKEN(公式明記の例外でdispatch可)により`build-deploy.yml`を起動する。**同一ファイルにscheduleを置かない**——公開リポジトリの60日不活性によるschedule自動無効化はファイル単位で、同居させるとWorkerからのdispatch受け口まで道連れになるため(検証記録: `research/2026-08-14-trigger-verification.md`)。cron分は毎時0分(公式が名指しする高負荷帯)を避けてオフセット。
+3. **build-deploy.yml**: `concurrency: group=deploy, cancel-in-progress: false` で多重起動を直列化(デプロイ中断を避ける)。手順: 長期フィード取得→全電文取得(並列・失敗リトライ)→生成→2系統デプロイ。所要目標90秒以内。
 4. **ステートレス再生成**: 前回状態を持たず、毎回「長期フィード(数日分の全入電)」から現在有効な電文集合を再構築する。冪等で、取りこぼし・二重処理の問題が構造的に発生しない。取得量削減のため電文本文はETagベースのActionsキャッシュを併用(任意最適化)。
 
 想定反映時間: 検知(≤60s)+dispatch/キュー(10〜60s)+生成・デプロイ(30〜90s)= **約2〜4分**(要件N-5の5分以内)。
@@ -92,7 +93,7 @@ prototype/          # フェーズ0の実証コード(参照用に凍結)
 
 ## 6. 監視・通知(N-11)
 
-- **monitor.yml(15分毎)**: ①公開中ページの取得時刻が閾値(30分)超なら異常、②フィード`<updated>`の停滞検知、③2系統の死活確認(HTTP 200)。異常時はActionsのfailure(=GitHubからのメール通知)+Issueの自動起票。
+- **monitor.yml(15分毎)**: ①公開中ページの取得時刻が閾値(30分)超なら異常、②フィード`<updated>`の停滞検知、③2系統の死活確認(HTTP 200)、④毎分トリガーの死活確認(直近24時間にworkflow_dispatch起動ゼロならWorker停止/PAT失効とみなす。Variable `MINUTE_TRIGGER=1`で有効化)。異常時はActionsのfailure(=GitHubからのメール通知)+Issueの自動起票。あわせて最終コミットから30日経過時にkeepaliveコミットを行い、60日不活性によるschedule自動無効化を予防する。
 - ビルド失敗はActionsの標準通知。
 - 劣化警告(R-4)は監視とは独立に、生成時にフィード鮮度から自動判定して埋め込む。
 

@@ -1,13 +1,15 @@
 # 生成と2系統デプロイ(設計書§2〜§3)。
 # 起動: Cloudflare Workerからのworkflow_dispatch(毎分、フィード更新検知時のみ)
-#       + scheduleフォールバック(5分毎。既定ブランチでのみ動作)。
+#       + fallback-schedule.ymlからのdispatch(5分毎)。
+# scheduleを本ファイルに置かない理由: 公開リポジトリでは60日間リポジトリ活動が無いと
+# scheduledワークフローがファイル単位で自動無効化され、同居するworkflow_dispatch受け口まで
+# 「Cannot trigger a workflow_dispatch on a disabled workflow」で道連れになるため
+# (検証記録: docs/research/2026-08-14-trigger-verification.md)。
 # 多重起動はconcurrencyで直列化(cancelしない: デプロイ中断を避ける)。
 name: build-deploy
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/5 * * * *"
 
 concurrency:
   group: deploy

@@ -1,0 +1,32 @@
+# scheduleフォールバック(設計書§3)。5分毎にbuild-deployをworkflow_dispatchで起動する。
+#
+# build-deploy.ymlとファイルを分離している理由: 公開リポジトリでは60日間リポジトリ活動が
+# 無いとscheduledワークフローが「ファイル単位」で自動無効化されるため、scheduleとdispatch
+# 受け口を同居させると、無効化時にWorkerからの毎分dispatchまで道連れで止まる。分離すれば
+# 止まるのはこのフォールバックだけで、主系(Worker→build-deploy)は影響を受けない。
+# ※不活性自体はmonitor.ymlのkeepaliveコミットで予防する。
+#
+# cronの分を毎時0分からずらしているのは、GitHub公式ドキュメントが毎時0分をscheduleの
+# 高負荷帯(遅延・ドロップの主因)と明記しているため。
+# GITHUB_TOKENによるworkflow_dispatchは「新しいランを作らない」規則の公式明記の例外で、
+# PAT不要で確実にランが作成される。
+# 検証記録: docs/research/2026-08-14-trigger-verification.md
+name: fallback-schedule
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "3-58/5 * * * *"
+
+permissions:
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: build-deployを起動
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build-deploy.yml --repo "${{ github.repository }}" --ref "${{ github.ref_name }}"

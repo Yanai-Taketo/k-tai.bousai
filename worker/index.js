@@ -37,7 +37,7 @@ export default {
     }
     if (!fresh) return;
     const repo = env.GITHUB_REPO; // 例: "Yanai-Taketo/k-tai.bousai"
-    await fetch(
+    const r = await fetch(
       `https://api.github.com/repos/${repo}/actions/workflows/build-deploy.yml/dispatches`,
       {
         method: "POST",
@@ -50,5 +50,11 @@ export default {
         body: JSON.stringify({ ref: env.GITHUB_BRANCH || "main" }),
       },
     );
+    if (!r.ok) {
+      // 401/403=PAT失効・権限不足、404/422=ワークフロー無効化等。ダッシュボードの
+      // ログ(wrangler tail)で確認できるよう記録する。リポジトリ側でも monitor.yml が
+      // 「24時間dispatchなし」で検知してIssueを起票する(二重の検知経路)。
+      console.error(`workflow_dispatch失敗: HTTP ${r.status} ${await r.text()}`);
+    }
   },
 };
