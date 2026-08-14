@@ -17,6 +17,14 @@
 
 ## 2. Cloudflare Pages(主系)
 
+> **なぜ「Git連携(既存のGitリポジトリをインポート)」ではなくDirect Uploadなのか**:
+> Git連携のビルドは無料プランで**月500回まで**の制限がある(Cloudflare公式 Pages Limits)。
+> 本サイトは5分毎+フィード更新検知でデプロイするため月8,000回超となり、約2日で枠を使い切って
+> 以後Cloudflare側の更新が止まる。`wrangler`によるDirect Uploadはビルドシステムを通らないため
+> この制限の対象外。また、Git連携は生成HTMLを毎回リポジトリへコミットする構成になり、
+> 履歴の肥大化とActionsへの書き込み権限付与(現在はread only)という別の問題も生む。
+> APIトークンは下記の通り最小権限(Pages Editのみ)で作成し、漏えい時の影響を限定する。
+
 1. Cloudflareアカウントを作成(無料プラン)。
 2. ダッシュボード → Workers & Pages → Create → **Pages** → **Direct Upload** でプロジェクトを作成
    (プロジェクト名例: `k-tai-bousai`。初回は空のダミーファイルのアップロードで良い)。
