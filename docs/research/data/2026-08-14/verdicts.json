@@ -1,0 +1,372 @@
+[
+ {
+  "dimension": "demand-channel",
+  "claim_id": "R2-01",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/linkdata/sonota_r06_01.pdf",
+  "evidence": "PDFを直接取得し全文検証。p.19に「能登半島地震の被災地を対象とした本調査では、テレビ放送を最初に利用した割合は38.5%であった。一方、SNSを利用した割合は15.0%、ラジオ放送は2.9%であった」と明記。同ページに全国対象調査「テレビ放送:64.2%」、注記に「2024年3月に全国のWEBモニターを対象に…合計2,060件の回答」。調査概要ページで回答数はモニターアンケート1,034件(2024/11/21-26)+オープンアンケート58件(2025/1/24-2/26)=計1,092件。p.21に「テレビ放送を最初に利用した割合を居住地域別にみると、地域Aに居住している人は地域B,Cに居住している人と比較して割合が低かった」「地震による被害が大きい地域Aでは、発災時にテレビ放送を利用できない被災者がいたと考えられる」。報道資料ページ(01tsushin02_02000177.html、Shift-JISをデコードして確認)は令和7年5月27日付・回答総数1,092名で一致。なお原文には「アンケート調査の選択肢が異なるため…単純に両調査の数値を比較できない点に注意」の注記があり、claimのdetail欄でも認識済み。"
+ },
+ {
+  "dimension": "demand-channel",
+  "claim_id": "R2-02",
+  "verdict": "partially_confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/linkdata/sonota_r06_01.pdf",
+  "corrected_claim": "同調査のスライド27-28(情報種別×利用手段ランキング)では、14の情報種別のうち13種別で地上波放送が1位(33〜68%)だが、「家族、友人、知人の安否」のみLINE(家族・友人・知人等)53%が1位・携帯電話47%が2位で、地上波は上位5位圏外。地上波が5割超で圧倒的なのは災害・避難系情報(52〜68%)であり、生活一般情報では33〜44%まで下がる。行政機関HPは9〜18%、検索サイトは8〜12%、防災アプリは10〜17%。避難所・避難場所(13%で2位)、電気・ガス・水道復旧(15%で2位)、救急・病院・薬(18%で2位)、行政手続き(18%で2位)など、ライフライン・救急や生活・行政系情報では行政機関HPが最大18%で2位に浮上する。報告書はスライド23で、発災前に有用と想定された割合より発災時利用が低かったメディア(赤枠)の理由として「即時性が低いため発災時に利用しなかった(行政機関HP等)」と分析している。",
+  "evidence": "スライド28の表を画像化して全セル確認。地震の規模や発生場所=地上波68%・防災アプリ17%・携帯電話15%・気象アプリ13%・検索サイト12%(claimのdetailと完全一致)。しかし「家族、友人、知人の安否」はLINE(家族等)53%が1位・携帯47%が2位で地上波はトップ5に不在のため「全種別で地上波が1位」は不正確。また地上波1位種別の範囲は33%(ガソリン・灯油)〜68%であり「52〜68%」も不正確(店舗35%・食料や水の配給44%等)。防災アプリは交通機関の情報で10%があり「12〜17%」もわずかにずれる。行政機関HP 9〜18%・検索サイト8〜12%は一致。スライド23「即時性が低いため発災時に利用しなかった(行政機関HP等)」は原文どおりで、発災前想定比で発災時利用が低い群(赤枠)への分類も一致。"
+ },
+ {
+  "dimension": "demand-channel",
+  "claim_id": "R2-03",
+  "verdict": "confirmed",
+  "checked_url": "https://j-ba.or.jp/news/files/%E3%80%8C%E8%83%BD%E7%99%BB%E5%8D%8A%E5%B3%B6%E5%9C%B0%E9%9C%87%E6%99%82%E3%81%AE%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%E3%81%AE%E5%BD%B9%E5%89%B2%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E7%B7%8F%E5%90%88%E8%AA%BF%E6%9F%BB%E3%80%8D%E5%A0%B1%E5%91%8A%E6%9B%B8.pdf",
+  "evidence": "PDFを直接取得し検証。調査仕様: 「2024年1月1日に大津波警報が発令された13自治体(石川県:七尾市、輪島市、珠洲市…富山県:氷見市)」「本震発生時に対象地域内にいた15-69歳男女」「721人」「インターネット調査」「2024年5月13～20日」で全て一致。避難: 「発災当日…避難した人は、回答者全体の55.2%」「避難した人に対して避難のきっかけとなった情報源をひとつだけ聞いた(図表8)。テレビが最も多く、これに続く周りの人からの勧め、防災無線の3つが主要な情報源であった。インターネット経由の情報や呼びかけが避難のきっかけになったとの回答者は非常に少ない」(原文どおり)。大津波警報: 「聞いた手段はテレビが約3分の2(64.3%)と圧倒的に多く」で一致。"
+ },
+ {
+  "dimension": "demand-channel",
+  "claim_id": "R2-04",
+  "verdict": "partially_confirmed",
+  "checked_url": "https://j-ba.or.jp/news/files/%E3%80%8C%E8%83%BD%E7%99%BB%E5%8D%8A%E5%B3%B6%E5%9C%B0%E9%9C%87%E6%99%82%E3%81%AE%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%E3%81%AE%E5%BD%B9%E5%89%B2%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E7%B7%8F%E5%90%88%E8%AA%BF%E6%9F%BB%E3%80%8D%E5%A0%B1%E5%91%8A%E6%9B%B8.pdf",
+  "corrected_claim": "民放連能登調査2-5節「停電時に使用した情報手段」(見出し「停電時にはやはりラジオ」)では、発災後1週間以内に自身がいた場所で停電が発生した人は回答者全体の約28%。停電中の使用率が最も高い情報端末はラジオで、テレビ、通話、防災アプリ/サイトなどが続くが、ラジオとテレビ、通話(モバイル端末)の利用率の差は僅か。停電時に利用したテレビは車載テレビ、カーナビのテレビ機能、避難所設置のテレビと考えられると記載。一方、「東日本大震災と全道停電となった北海道胆振東部地震では、ラジオの評価がもっとも高かった」という記述は停電時設問ではなく、2-3節「避難時の情報源別有用度」(発災後の避難時に役に立った情報源、過去3調査と同一設問での比較)の文脈に書かれたものである。なお能登では避難時のラジオの利用者中「役に立った」は約56%で、過去3調査の75〜90%より低く、調査対象地域のラジオ普及率の低さや夜間中波混信が要因と推測されている。",
+  "evidence": "2-5節原文: 「発災後、自身がいた場所(自宅、避難所等)で停電が発生した人は、回答者全体の約28%であった。停電中の使用率が最も高い情報端末はラジオで、テレビ、通話、防災アプリ/サイトなどが続く。しかし、ラジオとテレビ、通話(モバイル端末)の利用率の差は僅かである。停電時に利用したテレビは車載テレビ、カーナビのテレビ機能、避難所設置のテレビと考えられる」— ここまで一致。ただし引用文「東日本大震災と全道停電となった北海道胆振東部地震では、ラジオの評価がもっとも高かった」は2-3節の避難時有用度の段落(「役に立ったと評価する回答は過去の調査より少ない(東日本大震災と…)」)にあり、停電時設問の過去調査比較として書かれたものではない。趣旨(過去の大規模停電災害でラジオが最有力だった)は支持されるが、設問の帰属が不正確。"
+ },
+ {
+  "dimension": "demand-channel",
+  "claim_id": "R2-05",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h24/html/nc131110.html",
+  "evidence": "Shift-JISページをデコードし本文を直接確認。「震災発生時は即時性の高いラジオの評価が他のメディアと比較し高くなっており、AMラジオの評価が60.1%と最も高く、次いでFMラジオが続いている」「『震災当初はラジオが唯一の情報入手手段であった。』」「震災直後になると、安否確認等を行うため双方向性を有する携帯電話や携帯メール、映像を伴うメディアである地上テレビ放送に対する評価が向上し、4月末には、ラジオに対する評価を上回る状況になっている」「当初は評価が低かったインターネットについて、行政機関・報道機関のホームページや検索サイト等、地域性の高い情報を収集可能という観点で評価が高まる傾向がみられた」— 全て原文どおり。出典表記も「総務省『災害時における情報通信の在り方に関する調査』(平成24年)」で一致。"
+ },
+ {
+  "dimension": "demand-channel",
+  "claim_id": "R2-06",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h24/html/nc131240.html",
+  "evidence": "Shift-JISページをデコードし本文を直接確認。「役に立った情報源をみると、『テレビ』が89.9%と高く、次いで『ニュースサイト』が56.3%、『新聞』が44.3%、『家族・友人・知人からのメールや電話』が37.5%、『ラジオ』が25.4%」「最も役に立った情報源では、『テレビ』が63.1%で他の情報源を大きく引き離し、次いで、『ニュースサイト』が12.1%」— 全数値一致。「欲しい情報が得られた」比率もテレビ86.3%・ニュースサイト71.8%で一致。「停電した地域が少なかった関東圏を対象とした調査では、ウェブ調査結果にもかかわらず情報入手手段としてのテレビが非常に重要であることが示されている」との注記もあり、出典は「東京大学大学院情報学環『情報学研究 調査研究編 2012 No.28』『東日本大震災における首都圏住民の震災時の情報行動』」で一致。"
+ },
+ {
+  "dimension": "demand-channel",
+  "claim_id": "R2-07",
+  "verdict": "partially_confirmed",
+  "checked_url": "https://www.moba-ken.jp/project/disaster/disaster20240704.html",
+  "corrected_claim": "NTTドコモ モバイル社会研究所「2024年一般向けモバイル動向調査」(2024年1月、全国15〜79歳、有効回答6,440、Web調査)では、災害時(大雨・台風想定)の情報取得方法はテレビ77.3%が1位、「ホームページの閲覧」58.8%が2位、SNS56.4%、エリアメール・緊急速報メール48.2%、スマホアプリ32.7%、ラジオ27.6%。年代差はSNSで極端(10代89.7%→70代29.0%)だが、ホームページ閲覧は全年代49.5〜64.4%と年代差が小さい。ホームページ閲覧率は40代が64.4%で全年代中最も高いが、40代内での最多手段はテレビ72.4%であり、ホームページ閲覧は40代内では2位である。",
+  "evidence": "ページ本文と添付CSV(20240704_01.csv/02.csv)を直接取得して確認。CSV01: テレビ77.3・ホームページ閲覧58.8・SNS56.4・エリアメール等48.2・(スマホ)アプリ32.7・ラジオ27.6で一致。CSV02: SNSは10代89.7→70代29.0、HP閲覧は49.5(10代)〜64.4(40代)で範囲一致。調査概要「Web/全国15〜79歳男女/有効回答数6,440/2024年1月」も一致。ただしCSV02の40代行はテレビ72.4%>HP閲覧64.4%であり、「40代では64.4%で最多手段」は誤り(64.4%は年代間でのHP閲覧最高値であって、40代内の1位はテレビ)。"
+ },
+ {
+  "dimension": "demand-channel",
+  "claim_id": "R2-08",
+  "verdict": "confirmed",
+  "checked_url": "https://www.pref.toyama.jp/documents/42925/kenminankehoukokusyo.pdf",
+  "evidence": "PDFを直接取得し検証。調査概要: 「富山県内に居住する住民基本台帳に記載された18歳以上の男女3,000人を…無作為に抽出」「令和6年6月17日～7月21日」「郵送調査(回収はWEBによる回答を併用)」「1,708件(有効回答率56.9%)」で全て一致。情報源(問、N=1623): 「『テレビ』が82.1%で最も高く、次いで『緊急地震速報』が56.9%、『SNS(県・市公式LINE、X(旧ツイッター)等)』が20.5%」、年齢別表で「SNSは『20代以下』で56.2%と最も高く、年齢が高くなるに従って急激に低くなり『70代以上』では5.6%」— 全て原文どおり。片付けごみ(問28-2、N=300): 「『市町村や県のホームページ』が31.3%と最も高く、次いで『テレビ、ラジオ』が20.0%」で、行政・生活情報では公式Webが首位という主張も一致。"
+ },
+ {
+  "dimension": "recurrence-2024",
+  "claim_id": "R4-01",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jma.go.jp/jma/press/2108/20a/press_HPtaisaku20210820.html",
+  "evidence": "8/20発表本文(令和3年8月20日)に「12時40分頃から同日23時30分頃にかけて、気象庁ホームページが閲覧しにくい状況となった」「過去の災害時における最大規模のアクセス集中に耐えられるよう対策をとっていましたが、今回はそれ以上のアクセスがあり」「15日と20日に緊急的にシステムを機能強化しました。また、コンテンツの軽量化やシステムの設定を見直すことにより、システムへの負荷を軽減する措置を実施」と明記。リニューアル日は同庁報道発表HTML(令和3年2月16日, /jma/press/2102/16a/20210216_jmahp_renewal.html)に「気象庁ホームページを２月24日13時よりリニューアルします」と明記。報道発表リストで8/14当日に「佐賀県、長崎県に大雨特別警報発表」「福岡県に大雨特別警報発表」「広島県に大雨特別警報発表」を確認し「西日本大雨特別警報下」も裏付け。8/15お知らせPDF(/jma/press/2108/15b/hp.pdf)には参考として国土交通省「川の防災情報」とNHK「あなたの天気・防災」のURLを掲げ他サイト利用を依頼しており、detailの記述とも一致。12:40〜23:30は約10時間50分で「約11時間」は妥当な丸め。"
+ },
+ {
+  "dimension": "recurrence-2024",
+  "claim_id": "R4-02",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jma.go.jp/jma/press_list.js",
+  "evidence": "press_list.js(2026-08-14時点)とpress_list_past.js(約1MB)を実際にダウンロードして機械検索を再現。press_list.jsは223件(令和7年35件+令和8年188件)で、直近は2026-08-14の阿蘇山発表、「令和８年熊本地震」第8報(2026-08-10)等も収録され対象期間をカバー。令和6〜8年で「障害・閲覧・アクセス・支障」に該当するのは「ひまわり９号の観測障害」(2024-11-11ほか)、「東南海ケーブル式常時海底地震観測システムの障害」(2024-06-05ほか)、「南鳥島の遠地津波観測計障害」(2025-06-27, 2026-07-30)のみで、HP閲覧障害・アクセス集中の発表はゼロ。HP閲覧障害系の最後の発表は令和5年3月27日「気象庁ホームページの障害発生と復旧について」(/jma/press/2303/27a/20230327_oshirase.pdf)で、主張の「2023-03-27を最後に存在しない」と一致。"
+ },
+ {
+  "dimension": "recurrence-2024",
+  "claim_id": "R4-03",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/linkdata/sonota_r06_01.pdf",
+  "evidence": "PDF本文(表紙「令和６年能登半島地震におけるデジタル活用動向等に関する調査 報告資料」、三菱総合研究所)から逐語で確認: 「サーバ室がダウンした影響でホームページが更新できず、新たにXアカウントを立ち上げた。最初はフォロワー数が少なく、公式アカウントとして信じてもらうことが難しかった」「停電によりホームページの更新も不可能であったため、新たにXのアカウントを立ち上げて発信を開始した」(自治体向けホームページ/SNS欄)、「発災直後はホームページを更新して情報発信するほどの余裕がなく、住民が直接自治体に問い合わせてくることが多くあった」。調査は被災地アンケートとインタビューに基づき、被害状況は「2024年9月時点」(石川県「被害等の状況について(第161報)【2024年9月24日14時00分現在】」を出所)と記載され、detailの記述とも一致。"
+ },
+ {
+  "dimension": "recurrence-2024",
+  "claim_id": "R4-05",
+  "verdict": "confirmed",
+  "checked_url": "https://www.mlit.go.jp/report/press/mizukokudo01_hh_000014.html",
+  "evidence": "国交省報道発表(令和3年3月10日)に「３月２３日(火)に全面リニューアル」、携帯版「川の防災情報」(http://i.river.go.jp/)は「リニューアルと併せてサービスを終了」と明記。実測も再現(2026-08-14、ブラウザUAでcurl): www.river.go.jp のHTML 3,740B、/js/app.d06762f8.js 127,545B、/js/chunk-vendors.87d9b880.js 398,601B、/css/app+chunk-vendors 計165,095B(いずれもgzip転送後)で合計694,981B≒約69万バイト、主張の内訳(127.5KB/398.6KB/165.1KB/3.7KB)と完全一致。vendorバンドル内にVue.js・vuetify文字列を確認しVue.js製SPAを裏付け。https://www.river.go.jp/s/ はHTTP 200で同一title「川の防災情報 - 国土交通省」・同一app.jsを参照するほぼ同一のSPAシェル(3,737B)を返し、軽量簡易版は確認できず。"
+ },
+ {
+  "dimension": "recurrence-2024",
+  "claim_id": "R4-06",
+  "verdict": "confirmed",
+  "checked_url": "https://k.river.go.jp/",
+  "evidence": "2026-08-14にトップページを直接取得。title「サービス終了のお知らせ - 川の水位情報」、本文見出し「サイト運用終了のお知らせ」、本文「こちらのサイトは運用を終了しました。」「水位の情報について、今後は川の防災情報でご覧いただけます」(www.river.go.jp へのリンク)を確認。終了日付は本文に記載なしという点も主張どおり。"
+ },
+ {
+  "dimension": "recurrence-2024",
+  "claim_id": "R4-08",
+  "verdict": "partially_confirmed",
+  "checked_url": "https://kn.itmedia.co.jp/kn/articles/2507/28/news026.html",
+  "corrected_claim": "tenki.jp(日本気象協会・ALiNKインターネット共同運営)は2025-01-15 07:51頃からDDoS攻撃によるネットワーク輻輳でWeb版が利用しづらい状態になったと公式発表(1月には複数回の攻撃があり公式発表も複数)。ALiNKへの取材記事(キーマンズネット2025-07-28)によれば攻撃は2025-01-05から始まり約2週間断続的に続き最大60Gbps超で、データセンター運用に影響が及びRTBHでtenki.jpへの全アクセスをブラックホールにリダイレクトする運用となり、約8時間かけて事態を収束させた(その間アクセスしづらい状況が継続)。tenki.jpは2024年度の年間約60億PV・1時間あたり50〜150万セッションを日常処理し「震災や台風接近でもびくともしなかった」集中アクセスに強い設計だったが停止した。",
+  "evidence": "JWA公式(https://www.jwa.or.jp/news/2025/01/25120/, 2025-01-15)で「1月15日07時51分ごろから」「DDoS攻撃によるネットワーク輻輳」によりWEB版が利用しづらい事象を確認。キーマンズネット記事本文で「2025年1月5日から始まったDDoS攻撃」「最大で60Gbps超の攻撃」「2週間ほど断続的にしつこく攻撃が続いた」「RTBH(Remote Triggered Black Hole)でtenki.jpへのアクセスを全てブラックホールにリダイレクトする運用になってしまいました」「こうして8時間ほどかけて事態を収束させたが、その間、tenki.jpにアクセスしづらい状況が続いてしまった」を確認。ただし原文は「tenki.jpは、2024年度の一年間で約60億PVのトラフィックを集める」であり主張の「月間60億PV」は誤り(年間)。また「異常気象時に通常と変わらないサービス提供」という鉤括弧付き文言は両出典に存在せず、対応する原文は「1時間あたり50〜150万セッション程度のトラフィックを日常的に処理」「これまで震災や台風接近でもびくともしなかったtenki.jpが止まってしまった」。「アクセス全面遮断が約8時間継続」も原文の「8時間ほどかけて事態を収束」とは表現が異なる。"
+ },
+ {
+  "dimension": "recurrence-2024",
+  "claim_id": "R4-13",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jma.go.jp/jma/press/2507/31a/202507311115.html",
+  "evidence": "出典の気象庁報道発表「令和７年７月30日08時25分頃のカムチャツカ半島付近の地震(第４報)」本文を確認し、津波警報・注意報の状況のみでHP閲覧障害・アクセス集中への言及がないことを確認。さらに独立の敵対的検索を再実施: (1)「南海トラフ地震臨時情報 2024年8月8日 気象庁ホームページ つながりにくい アクセス集中」、(2)「2025年7月30日 カムチャツカ 津波警報 …閲覧できない アクセス集中」、(3) 日経xTECH/ITmedia/Impress/piyolog等ドメイン限定検索、(4)「\"津波警報\" 2025年7月 \"アクセス集中\"」——いずれも両事象での気象庁HP・自治体HPの閲覧困難を報じる公式発表・主要報道はヒットせず(ヒットしたのは2021年8月事例の記事「気象庁のWebサイトがアクセス集中で閲覧困難に」等のみ)。気象庁報道発表リストの機械検索(R4-02で再現)でも令和6〜8年にHP閲覧障害の発表は皆無で整合。主張自体が「輻輳が全く無かったことの証明ではない」と限定しており、その範囲で出典・検索結果と一致。"
+ },
+ {
+  "dimension": "evacuation-route",
+  "claim_id": "R3-01",
+  "verdict": "confirmed",
+  "checked_url": "https://www.fmmc.or.jp/Portals/0/images/commons/publish/%E8%B3%87%E6%96%99%EF%BC%94%EF%BC%93%EF%BC%8D%EF%BC%96%E3%80%80%EF%BC%AC%E3%82%A2%E3%83%A9%E3%83%BC%E3%83%88%E3%81%AE%E5%9B%BD%E3%81%B8%E3%81%AE%E7%A7%BB%E8%A1%8C%E3%81%AB%E5%90%91%E3%81%91%E3%81%A6.pdf",
+  "evidence": "PDF本文を全文抽出して確認。表紙に「資料４３－６」「『Ｌアラートの国への移行に向けて』」「２０２５年７月１０日 Ｌアラート運営諮問委員会事務局」。本文2.1)に「FMMC が運用し提供しているＬアラートサービスは、2026 年 12 月１日（予定）をもって、国に移行する。（ＦＭＭＣが提供するＬアラートサービスは終了する）※現在のサービスは総務省が運用し提供するＬアラートサービスになる。」と一字一句主張どおりの記載。補足として総務省普及促進ページ(02ryutsu06_03000032.html)にも「令和8年12月1日から、総務省がLアラートの運用を担う」旨を確認。"
+ },
+ {
+  "dimension": "evacuation-route",
+  "claim_id": "R3-02",
+  "verdict": "confirmed",
+  "checked_url": "https://www.fmmc.or.jp/Portals/0/images/commons/download/CMNS-A20-002_V1_14.pdf",
+  "evidence": "PDF(管理No CMNS-A20-002、第1.14版、改正履歴に「2021年5月18日 1.14」)をpdftotextで全文抽出。別紙４「Ｌアラート サービス利用資格審査基準」で、1.情報発信者、2.特定情報伝達者、3.一般情報伝達者、4.特別利用者、5.協力事業者の全5種別に【基準１】「原則として法人格を有する団体であること」を確認。第9条「本サービスの利用申込者は利用規約等の内容を承諾の上、当該団体の代表者が申込を行うものとし」、第11条に基づく利用資格審査、一般情報伝達者は基準6で「対面審査で認められること」も確認。受信側の全種別(伝達者・特別利用者・協力事業者)が「団体」前提のため「個人が機械可読で受信する制度上の道はない」という帰結も本文と整合(なお「原則として」の限定は法人格に係るもので、団体要件自体は全種別共通)。※検証はsource_urlのFMMC掲載版で実施。「総務省ページ掲載」の点は本検証では未確認だが主張の本質に影響しない。"
+ },
+ {
+  "dimension": "evacuation-route",
+  "claim_id": "R3-03",
+  "verdict": "confirmed",
+  "checked_url": "https://www.fmmc.or.jp/Portals/0/images/commons/publish/commons_advisory467.pdf",
+  "evidence": "資料４６-７「国移管に伴う申込・審査受付停止について」(FMMC、２０２６年７月１４日)本文: 「2026年12月のＬアラートサービス運営主体変更に伴う事務手続き等のため、Ｌアラートサービス利用申し込みの受付を、以下の日程で停止する。１．一般情報伝達者（地方公共団体・特定情報伝達者は除く）の新規申し込み 期限 2026年6月30日 ※FMMCホームページ上で案内中 ２．１．以外の新規申し込み（３．を除く） 期限 2026年9月30日」。なお３は二次審査中の一般情報伝達者(二次審査期限2026年9月30日、10月中に新規登録)で主張と矛盾しない。「新規申込受付は2026年12月1日開始予定」の部分は総務省普及促進ページ(https://www.soumu.go.jp/menu_seisaku/ictseisaku/ictriyou/02ryutsu06_03000032.html)で「新規利用申請の受付…令和8年12月1日から開始します」を直接確認。"
+ },
+ {
+  "dimension": "evacuation-route",
+  "claim_id": "R3-04",
+  "verdict": "confirmed",
+  "checked_url": "https://www.fmmc.or.jp/Portals/0/images/commons/publish/commons_advisory466_1.pdf",
+  "evidence": "資料４６-６「国移管に伴う同意書対応について」(FMMC、２０２６年７月１４日)本文で確認: 提出書類は「Ｌアラートサービス提供に係る契約上の地位移転及び運営主体変更に関する同意書」(=契約上の地位移転方式)、対象「1,540団体（4月末時点、契約ベース）」、進捗「※7/3(金)時点 同意書受理：540件（35.1％）」、「公共情報コモンズWiki（利用者サイト）に、新利用規約・FAQなどを掲載」「※閲覧にはログインIDおよびパスワードが必要です」(=一般未公開)。資料45-2(commons_advisory452.pdf、「Ｌアラート サービス利用規約の改正について」2026年3月5日)も取得し「財団による審査内容、審査結果も引き継ぐことが必要」および規約第11条改正案「変更後の運営主体は当該サービス利用申込者の利用資格審査結果を引き継ぐ」を確認。個人・個人事業主への開放を示す記載は両資料になし。「法人中心の枠組み継続の公算が大きい」は推定として適切にヘッジされている。"
+ },
+ {
+  "dimension": "evacuation-route",
+  "claim_id": "R3-05",
+  "verdict": "confirmed",
+  "checked_url": "https://www.bousai.go.jp/taisaku/soboweb/index.html",
+  "evidence": "WebFetchは503のためcurlで同URLの本文(HTTP 200)を取得し確認。本文: 「令和６年4月より運用を開始した新総合防災情報システム（SOBO-WEB）は、各省庁、地方自治体等の約1,900機関が利用し、EEI（災害対応基本共有情報）に基づき情報を集約するもので…災害対応機関間における情報の利活用拡大を目指しています」。令和6年4月=2024年4月、約1,900機関とも主張と一致。ページ上のリンクは説明PDF(新総合防災情報システム、地震DIS、津波DIS等)のみで、一般向けオープンデータ・API提供に関する記載は一切なし。資料45-2にも「内閣府新総合防災情報システム（SOBO-WEB）との連携に向けた改正」の項があり、機関間連携である点とも整合。"
+ },
+ {
+  "dimension": "evacuation-route",
+  "claim_id": "R3-08",
+  "verdict": "confirmed",
+  "checked_url": "https://www.osaka-bousai.net/geojson/hinan.geojson",
+  "evidence": "2026-08-14にcurlで再実測: hinan.geojson=HTTP 200・206,711バイト(主張と完全一致)、認証不要。中身はFeatureCollection(name:hatsurei、EPSG:3857)でMultiPolygonのfeatureが41件、propertiesはblockcd/refugetype/lasdec1/lasdec2(refugetype属性の存在を確認、lasdec=自治体コードで41自治体分と整合)。hinanjo.geojson=HTTP 200・152バイトで features:\"\"(空=開設中避難所ゼロ)も一致。トップページ(https://www.osaka-bousai.net/)のフッターに「Copyright 2022 Osaka Prefecture. All rights reserved.」を確認し、ページ内JSからgeojson(city_master.geojson等)を参照する内部描画用フィードである点、API/オープンデータとしての案内や再利用許諾表記が見当たらない点も確認。"
+ },
+ {
+  "dimension": "evacuation-route",
+  "claim_id": "R3-10",
+  "verdict": "partially_confirmed",
+  "checked_url": "https://support.yahoo-net.jp/PccWeather/s/article/H000007750",
+  "corrected_claim": "Yahoo!天気・災害は公式ヘルプ「リンク、二次利用について」(H000007750)で「Yahoo!天気・災害の各情報について、二次利用はご遠慮ください」と明記している。また、同社ヘルプの「リンク、二次利用、著作権について」(H000015794)は「クロールやスクレイピングといった機械的に情報収集を行う行為」を禁止し「不適切と判断したアクセスは、遮断させていただく場合があります」と記載するが、これはYahoo! JAPAN全体ではなくYahoo!検索を対象としたヘルプである(本文冒頭が「Yahoo!検索は、お客様ご自身による検索利用を目的としたサービスです」)。したがってcrisis.yahoo.co.jp(天気・災害)からの機械可読取得が規約上不可という結論は、主として天気・災害ヘルプの二次利用禁止によって支持される。",
+  "evidence": "H000007750の本文で「Yahoo!天気・災害の各情報について、二次利用はご遠慮ください。」を確認(引用一致)。ただし同ページにクロール/スクレイピング禁止の記載はなし。H000015794はhttps://support.yahoo-net.jp/PccSearch/s/article/H000015794に存在し、「クロールやスクレイピングといった機械的に情報収集を行う行為、そうした情報を利用する行為…は禁止しております」「不適切と判断したアクセスは、遮断させていただく場合があります」を確認したが、本文は「Yahoo!検索は、お客様ご自身による検索利用を目的としたサービスです」とYahoo!検索に限定した規定であり、「Yahoo! JAPAN全体のヘルプ」という主張の帰属は不正確。結論(二次利用・機械的取得は規約上不可)の趣旨自体は天気・災害ヘルプの二次利用禁止で支持される。"
+ },
+ {
+  "dimension": "content-value",
+  "claim_id": "R1-01",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/linkdata/sonota_r06_01.pdf",
+  "evidence": "PDFをダウンロードしp.27を画像で直接判読。「発災時に収集した情報(複数回答)」の棒グラフ値は主張と完全一致: 地震の規模や発生場所69.3、余震の見通し49.5、地震の被害情報(危険な場所の情報)58.0、津波の被害情報57.7、避難勧告・避難指示48.5、避難所・避難場所情報38.2、家族・友人・知人の安否51.8。ライフライン系の低さ(復旧見通し25.0、配給26.1、交通28.6、救急13.7)も一致。スライド本文にも「災害に関する情報や避難・安否に関する情報の割合が高い」と明記。調査メタデータもPDF内「調査期間 2024年11月21日～2024年11月26日」「1034件」「WEBアンケート」、フッター「Copyright © Mitsubishi Research Institute」で確認。報道資料公表日は総務省報道資料ページ(https://www.soumu.go.jp/menu_news/s-news/01tsushin02_02000177.html)で「令和7年5月27日」を確認。唯一の留意点: 余震の見通し49.5%は家族安否51.8%を2.3pt下回るが、主張は「上回るか同等」と表現しており誇張の範囲ではない。"
+ },
+ {
+  "dimension": "content-value",
+  "claim_id": "R1-02",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/linkdata/sonota_r06_01.pdf",
+  "evidence": "p.27右表「情報収集に利用した手段(回答率の高い順)」の「避難勧告、避難指示」行を画像で判読: 地上波放送(66%)、防災アプリ(14%)、携帯電話(11%)、行政機関ホームページ(9%)、LINE(政府・行政機関等)(8%)の順で主張と完全一致。地震情報系4項目も地上波放送65〜68%が1位、防災アプリ12〜17%、気象アプリ11〜13%、検索サイト10〜12%で、detailの記述とも一致。「Webページはマイナーな入手経路」「リンク誘導での補完が実態に沿う」という解釈は出典データから合理的に導ける範囲。"
+ },
+ {
+  "dimension": "content-value",
+  "claim_id": "R1-03",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/linkdata/sonota_r06_01.pdf",
+  "evidence": "p.34「(3)応急対応期の利用状況 ②収集した情報と利用した手段」を画像で判読。応急対応期の値は主張と完全一致: 食料や水の配給情報40.0(発災時26.1)、電気・ガス・水道の復旧見通し39.1(同25.0)、交通機関や道路情報41.4(同28.6)、避難所・避難場所情報47.3(同38.2)、行政手続き25.6。引用文もスライド本文に逐語で存在:「検索サイトの利用が発災時から増えており、能動的に必要な情報を収集する人が増えていたと考えられる」。手段表でも電気・ガス・水道の復旧見通しは2位行政機関ホームページ(17%)、行政手続きは2位行政機関ホームページ(28%)で一致。p.28にも「ライフライン・救急や生活に関する情報では行政機関HPの順位が高い」と明記。detailの安否LINE(家族・友人・知人等)55%もp.34の表1位で確認。"
+ },
+ {
+  "dimension": "content-value",
+  "claim_id": "R1-04",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jma.go.jp/jma/kishou/shingikai/kentoukai/tsutaekata/part5/tsutaekata5_shiryou_enq.pdf",
+  "evidence": "PDFをダウンロードしp.6(6/23)のQ5表を画像で直接判読。全体(n=2,100)の値は主張と完全一致: 「大雨特別警報」を見聞きしたので44.5、台風が接近しているという情報を聞いたので43.5、数日前からの大雨の情報を聞いたので43.3、河川の「氾濫危険情報」や「氾濫発生情報」を見聞きしたので41.0、避難勧告や避難指示を聞いたので35.5。detailの雨や風が強まったので40.8、警戒レベルについて放送していたので31.4も一致。調査概要ページで「令和2年2月7日 気象庁」「7県」「有効回収2,100サンプル(各県300)」「令和元年12月20日～12月25日」を確認。"
+ },
+ {
+  "dimension": "content-value",
+  "claim_id": "R1-05",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jma.go.jp/jma/kishou/shingikai/kentoukai/tsutaekata/part5/tsutaekata5_shiryou_enq.pdf",
+  "evidence": "同PDF p.6のQ6表を画像で判読。全体(n=2,100)の値は主張と完全一致: 災害のときにはテレビを積極的に見るようにしている59.5(1位)、インターネットで天気の情報を検索するようにしている56.7(2位)、スマホに防災アプリを入れている29.6、ハザードマップをよく見るようにしている24.8。ネット検索56.7%は過半数であり「被災地住民の過半数の習慣」という表現は正確。"
+ },
+ {
+  "dimension": "content-value",
+  "claim_id": "R1-06",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jma.go.jp/jma/kishou/books/hakusho/2019/index3.html",
+  "evidence": "3つの出典をすべて直接確認。(1)気象庁白書「気象業務はいま2019」該当ページに原文「1日で約1,800万ページビュー、特に、台風が接近している時などはアクセス数が増加し、5,000万ページビューを超えることもあります」を確認。(2)J-CAST記事(2020.08.22、https://www.j-cast.com/2020/08/22392556.html)本文に「20年4月までの1年間に、1ページ1回として79億回のアクセスがあったという」とあり、記事HTML内で「広報室の担当者」への取材に基づく記述であることも確認。(3)日本気象協会tenki.jp媒体ページ(https://www.jwa.or.jp/services-solutions/media-solutions/weather-forecasting-media-tenkijp/)に「年間ページビュー数は59億PV(2023/04～2024/03のWeb+旧基準値App合計の小数点以下切り捨て)」を確認。数値・出所区分(一次/二次)とも主張どおり。"
+ },
+ {
+  "dimension": "content-value",
+  "claim_id": "R1-08",
+  "verdict": "confirmed",
+  "checked_url": "https://www.bousai.go.jp/jishin/tsunami/hinan/pdf/20121221_chousa1_1.pdf",
+  "evidence": "PDFをダウンロードし本文テキストを直接確認。調査概要:「岩手県・宮城県・福島県内の津波浸水地域を含む27市町の居住者に対して、訪問留置方式でアンケートを実施」「調査協力を依頼した13,646人のうち、回答のあった11,400人を対象として分析・集計」。避難のきっかけ:「避難のきっかけは、揺れ具合の判断によるものが5割弱であった。大津波警報によるものと周囲からの呼び掛けによるものがそれぞれ3割弱」。情報伝達:「大津波警報を見聞きした人は約6割」「見聞きした人の5割強が防災行政無線経由。また、見聞きした人の約5割が地震後おおよそ10分以内に把握」。避難しなかった理由:「『大津波警報が発表されたのを知らなかった』が2割弱」。「地震当日中に津波から避難した人は約8割」も本文に一致。URL自体が20121221であり2012年12月公表とも整合。"
+ },
+ {
+  "dimension": "content-value",
+  "claim_id": "R1-09",
+  "verdict": "confirmed",
+  "checked_url": "https://www.bousai.go.jp/fusuigai/suigai_dosyaworking/pdf/honbun.pdf",
+  "evidence": "PDFをダウンロードし本文テキストを直接確認。表紙は「平成30年7月豪雨を踏まえた水害・土砂災害からの避難のあり方について(報告) 平成30年12月 中央防災会議 防災対策実行会議」。本文に「ＮＨＫが広島県、岡山県、愛媛県で行った被災地アンケートでは、『最初に避難するきっかけとなったのは何か』との質問に対し…『周辺環境の悪化』との回答が33.5％と最も多い」、別箇所に「『消防や警察、近所の人、家族や親族の呼びかけ』をきっかけにして避難した人が31.8％(防災無線：7.4％、テレビ・ラジオ：4.5％)となっており、直接的な避難の促しが避難行動をとるためには効果的」と記載され、数値・出所とも主張と完全一致。detailの正常性バイアスへの言及も本文「自分は大丈夫という思い込み(正常性バイアス)によって避難行動をとらなかった」で確認(引用の「私は大丈夫」は正確には「自分は大丈夫」)。テレビ・ラジオ4.5%という低さから「避難開始の直接トリガーとしては弱い」とする解釈は出典データに整合。"
+ },
+ {
+  "dimension": "nhk-competitors",
+  "claim_id": "R2-01",
+  "verdict": "confirmed",
+  "checked_url": "https://news.web.nhk/newsweb",
+  "evidence": "2026-08-14に素のcurl(認証・Cookie一切なし)で再実測: HTTP 200、本文1,271,270バイトの全ニュースHTMLを取得。ページHTML内に「このページを見るにはご利用意向の確認をお願いします。」「ご利用意向の確認をお願いします。」「内容について確認しました」の文言が全て逐語一致で存在。ログイン要求ではなく意向確認ダイアログのみという記述もHTML構造と整合。www.web.nhk/notification側にも「ご利用意向の確認」文言があることを併せて確認。"
+ },
+ {
+  "dimension": "nhk-competitors",
+  "claim_id": "R2-02",
+  "verdict": "confirmed",
+  "checked_url": "https://www.web.nhk/notification",
+  "evidence": "ページHTML(HTTP 200)内に「NHK ONEはどなたでもご利用になれます。受信契約がお済みの世帯の方は、別途の契約や追加のご負担なく利用できます。契約をされていない世帯の方が利用した場合は、放送法に基づき契約が必要です。」が一字一句そのまま存在。「受信契約について詳しく確認する」等の関連文言も確認。注記: 施行日2025-10-01自体はこのページには書かれていないが、改正放送法が2025-10-01施行でNHK ONEが同日開始という点はITmedia・Wikipedia(NHK ONE)等の複数の独立情報源で裏付けられ、主張の建付け(利用が契約義務を発生させる)はページ文言と一致。"
+ },
+ {
+  "dimension": "nhk-competitors",
+  "claim_id": "R2-05",
+  "verdict": "confirmed",
+  "checked_url": "https://news.web.nhk/newsweb",
+  "evidence": "curl再実測(2026-08-14): https://www3.nhk.or.jp/news/ はHTTP 301でhttps://news.web.nhk/newswebへリダイレクト(redirect_urlで確認)。移行先トップHTMLは非圧縮1,271,270バイト、Accept-Encoding:gzipで239,393バイト。主張値(1,271,037/239,298)とは0.04%以内の差で、更新され続けるニュースページとして完全に整合。ただしdetail欄の「k.nhk.jp は notice.html へリダイレクト」は不正確: k.nhk.jp/ は現在HTTP 200で「NHKオンライン テキスト版」トップ(3,860バイト, Shift_JIS)を直接返し、notice.html(一部サービス終了のお知らせ)へのリンクを含むのみでリダイレクトはしない。claim本文の判定には影響なし。"
+ },
+ {
+  "dimension": "nhk-competitors",
+  "claim_id": "R2-06",
+  "verdict": "confirmed",
+  "checked_url": "https://agora.ex.nii.ac.jp/cps/weather/warning/",
+  "evidence": "ページタイトル「特別警報・警報・注意報データベース（リアルタイム更新） | 気象庁防災情報XML」が完全一致。本文に「2012年12月以降の過去の履歴や統計情報」「津波に関する警報・注意報は対象外です。」「正確な情報は気象庁の気象警報・注意報をご確認下さい。」が逐語一致で存在。再実測(2026-08-14): HTML生23,923バイト/gzip4,405バイト(主張値24,783/4,455と4%以内の差)、「最終更新：2026年08月14日21時36分39秒」・件数9,829,800件を表示(主張の21:11時点9,829,777件から25分で23件増=リアルタイム更新中の同一DBとして整合)。数KB級gzipの軽量テキストページで稼働中であることを確認。"
+ },
+ {
+  "dimension": "nhk-competitors",
+  "claim_id": "R2-07",
+  "verdict": "confirmed",
+  "checked_url": "https://github.com/search?q=jmaxml&type=repositories",
+  "evidence": "GitHub検索API(認証済み)で再実行: 「jmaxml」total_count=17(主張と完全一致)、「気象庁 防災情報XML」=13(一致)、「jma atom feed」=1(dictoss/jma-atomfeed-reader、一致)。「jma static site」は生ヒット3件だが全て気象庁と無関係(個人サイト・不動産)で「該当0件」の趣旨どおり。名指しリポジトリも一致: ciscorn/jmaxml(Rust, 11★)、p2pquake/jmaxml-seis-parser-go(Go, 6★)、PixelNest256/jmaxml(Python, 3★)。「気象庁」スター順上位30件も再確認し、内容はパーサ・GISデータ・ビューア・LINE/Slack通知ボット・形式変換が中心で、「フィード→軽量静的サイト生成」を行うプロジェクトは確認できず、否定的結論(不存在)も再現された。"
+ },
+ {
+  "dimension": "nhk-competitors",
+  "claim_id": "R2-09",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jma.go.jp/jp/m/",
+  "evidence": "curl再実測(2026-08-14): www.jma.go.jp/jp/m/ はHTTP 200でcontent-length: 4083、server: AmazonS3(CloudFront経由)、last-modified: Thu, 06 Feb 2025 05:40:21 GMT。本文に「気象庁ホームページの古いアドレスは使用出来なくなりました。」が逐語一致(約5秒後に/bosai/へmeta refreshする案内ページ)。現行防災ページ https://www.jma.go.jp/bosai/ は再実測で非圧縮938,702バイト/gzip249,536バイトと「gzip70KB超」を大きく上回り、script要素72個のクライアントサイド描画型SPA(タイトル「気象庁｜あなたの街の防災情報」)であることも確認。公的機関側に軽量テキストページが現存しないという結論を支持。"
+ },
+ {
+  "dimension": "reach",
+  "claim_id": "TD-01",
+  "verdict": "confirmed",
+  "checked_url": "https://prtimes.jp/main/html/rd/p/000000335.000129774.html",
+  "evidence": "発行者はLINEヤフー株式会社、発行日2024年3月4日11時。本文に「『Yahoo!検索』における2016年1月から2024年1月までの『防災』の検索数を分析したところ」とあり、急増タイミングは「『実際に災害が発生した時』、『東日本大震災の日(3月11日)』、『防災の日(9月1日)』であることがわかりました」、冒頭に「ある日突然急増し、すぐに減少するという傾向がわかりました」と明記。海外地震についても「2023年2月6日に発生し5万人以上が犠牲となったトルコ・シリア地震の際には、『防災グッズ』の検索数が大きく増えることはありませんでした」と記載。主張の数値・日付・固有名詞・引用はすべて原文と一致(末尾の「固定客を作るのは困難」は調査結果からの解釈部分)。"
+ },
+ {
+  "dimension": "reach",
+  "claim_id": "TD-02",
+  "verdict": "confirmed",
+  "checked_url": "https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf",
+  "evidence": "PDFをダウンロードしpdftotext(-layout)で原文確認。冒頭に「General Guidelines September 11, 2025」とあり版の日付が一致。YMYL例示表(Section 2.3)で「Evacuation routes for a tsunami」が「Clear YMYL Topic」列に置かれ、説明文は「Explanation: Inaccurate information on evacuation routes could cause significant harm to people.」と一字一句一致。さらに「Important: For pages about clear YMYL topics, we have very high Page Quality rating standards because low quality pages on such topics could potentially negatively impact a person's health, financial stability, or safety, or the welfare or well-being of society.」も原文どおり。detail記載の「Weather forecast」が「May be YMYL Topic」列にある点も確認(「In most situations, slightly inaccurate information about the weather forecast will not cause harm」)。「個人サイトが上位に出るのは構造的に困難」は文書自体の記述ではなく解釈だが、引用された事実はすべて正確。"
+ },
+ {
+  "dimension": "reach",
+  "claim_id": "TD-03",
+  "verdict": "confirmed",
+  "checked_url": "https://support.google.com/sosalerts/?hl=ja",
+  "evidence": "Google SOSアラート公式ヘルプに「Google では、世界各地の政府機関、災害初期対応要員、信頼できる報道機関、NGO から情報を入手しています。」と主張どおりの情報源リストが明記。また「災害の種類やユーザーの現在地に応じて、地方自治体や国の当局、国際機関による最新情報が表示されます」との記述も確認(detailの「優先的に表示される」はこの文の要約)。「個人サイトの露出枠は事実上ない」は設計からの推論部分だが、引用された情報源の記述は原文と一致。"
+ },
+ {
+  "dimension": "reach",
+  "claim_id": "TD-05",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/h29/html/nc152220.html",
+  "evidence": "curlで原文取得(Shift_JIS)し確認。総務省平成29年版情報通信白書「第2節 熊本地震におけるICT利活用状況に関する調査結果」のページで、「時系列別に情報収集に利用した手段をみると、発災時から復旧期までの期間を通じて携帯通話の利用が最も多く、次いで地上波放送、SNS(LINE(家族・友人・知人等))となっている」と記載。引用句「熊本地震においては日常生活で利用している情報収集手段と同様の手段が利用できたため」も原文に完全一致(文脈:事前に有用と考えられていたAMラジオ・エリアメール等の利用率が伸びなかった理由として)。detailの検索サイト評価「概ね地上波放送と類似した評価」「正確性の点で平均を下回っており」、行政機関ホームページの「時間の経過により利用者が増加する傾向」も原文どおり。出典表記は総務省「熊本地震におけるICT利活用状況に関する調査」(平成28年)。"
+ },
+ {
+  "dimension": "reach",
+  "claim_id": "TD-08",
+  "verdict": "confirmed",
+  "checked_url": "https://www.itmedia.co.jp/news/articles/2009/01/news106.html",
+  "evidence": "記事日付は2020年9月1日。「配信開始から1年で、ダウンロード数は82万を超えたとしている」「年間で6000万円ほど支出している」「気象業務支援センターなどさまざまな機関との回線費用やクラウドの設備費、人件費などが掛かっており」「現状は別事業の収益を当てて賄っている赤字状態のため、独立採算に向けて収益化を検討した」と記載。サポーターズクラブは月額250円(税込・通知地点6点への拡大等)と月額480円(限定コンテンツ追加)の2プランで、主張の数値はすべて記事本文と一致。"
+ },
+ {
+  "dimension": "reach",
+  "claim_id": "TD-11",
+  "verdict": "confirmed",
+  "checked_url": "https://www.businessinsider.jp/article/283643/",
+  "evidence": "記事は「2023年9月1日初出の記事を元に追記・編集」で2024年3月10日公開版。「ゲヒルンは2023年8月7日、特務機関NERVアカウントでの停電情報と避難情報の投稿停止を発表」、Twitter API v2のビジネス向け「Pro」プランは「月額5000ドル(約73万円)で月間30万投稿」、フォロワー数「195万超」、「NERV防災アプリ・ActivityPubでの配信に順次切り替えていく方針」と主張の数値・日付がすべて記事本文と一致。なおNERV公式声明の文言は「X APIのレート制限が厳しいため」であり、料金制度(高額・投稿数制限)への言及は代表・石森氏のコメント「高い金額なのに投稿(できる)数が少ない」として記事中で裏付けられている。"
+ },
+ {
+  "dimension": "reach",
+  "claim_id": "TD-12",
+  "verdict": "partially_confirmed",
+  "checked_url": "https://medium.com/code-for-japan/development-of-tokyo-metropolitans-novel-coronavirus-covid-19-countermeasures-site-b982edae61d および https://raw.githubusercontent.com/tokyo-metropolitan-gov/covid19/master/FORKED_SITES.md",
+  "evidence": "Medium記事(2020-04-02)で「Code for Japan ... was commissioned to develop the official site」(受託)、「Since the public launch of the site on March 3rd, it has had over 1 million views per day」(3月3日公開・1日100万PV超)、「over 100 volunteers」、オープンソース化により「approximately 30 organizations ... already creating their sites based on the source code」を確認。ただし開発期間は「within days」とあり「約1週間」の明記はない。FORKED_SITES.mdを実際に取得して集計した結果、表の掲載は計65行(東京都本家1+全国版1+派生63)で「約60の派生サイト」は概ね正確だが、都道府県コード集計では徳島県(36)の掲載がなく、カバーは46/47都道府県。「全47都道府県をカバー」は不正確。また約24件が「リンク切れ」とマークされている。",
+  "corrected_claim": "東京都新型コロナウイルス感染症対策サイトはCode for Japanが受託し2020年3月3日に公開(公式ブログでは「within days(数日)」で開発と記述)、公開以降1日100万PV超、コードをGitHubでオープンソース公開した結果、100人超のボランティアの貢献と有志により全国へ派生した(2020年4月時点で約30団体)。GitHubの公式派生サイト一覧(FORKED_SITES.md)には東京都本家・全国版を含め約65サイト(派生は約63)が登録されているが、カバーは47都道府県中46(徳島県の掲載なし)で、約24件はリンク切れとマークされている。小規模チームでも「オープンソース化+自治体・シビックテック経路」で公的認知と全国規模の到達を得られることを示す事例である点は変わらない。"
+ },
+ {
+  "dimension": "reach",
+  "claim_id": "TD-15",
+  "verdict": "confirmed",
+  "checked_url": "https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r06/html/nd122c00.html",
+  "evidence": "curlで原文取得(Shift_JIS)し確認。令和6年版情報通信白書のコラム「災害時における偽・誤情報への対応」に、X(Twitter Japan社)によれば「『人工地震』であるとの言葉を含む投稿が約10万件、『窃盗団』…に関する投稿が約200件、『支援要請』(偽の寄付を募るもの)に関する投稿が約350件、『救助要請』に関する投稿が約21,000件」(いずれも「偽・誤情報を含む投稿の主なもの」として列挙)。NICTのD-SUMM分析では「発災後24時間の間に投稿された救助を求める報告の数(総報告数16,739のうち1,091)が、2016年の熊本地震の際の報告数(総報告数19,095のうち573)と比較して倍増した。この1,091件のうち254件の投稿で矛盾報告が検出され、デマと推定できたのは104件」「熊本地震の救助を求める報告数(573)の中で、偽情報とみられたものは1件」と主張の数値がすべて一致。正確な情報源として「政府・自治体のホームページ、取材と編集に裏打ちされた情報発信を行う放送などのほか、ファクトチェック団体による情報も情報源として有用」と記載され、個人サイトは挙げられていない。"
+ },
+ {
+  "dimension": "operations",
+  "claim_id": "R5-01",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jmbsc.or.jp/jp/online/20240401_futan-kin/futan-kin_20240401.pdf",
+  "evidence": "PDF直接読取。開設時50,000円(電文形式・初回のみ)、基本4,200円(全国領域)、インターネット1,500円、注意報・警報13,800円、地震・火山・津波9,000円、緊急地震速報(警報)19,000円、設定変更10,000円/回<新設>、全て税別、合計式の記載を全て原文で確認。19,500円+税の計算も正しい。"
+ },
+ {
+  "dimension": "operations",
+  "claim_id": "R5-02",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jmbsc.or.jp/jp/online/online.html",
+  "evidence": "online.htmlとc-onlineF.htmlを実取得。法人限定・個人排除の記載は無し。「配信事業部 契約担当」宛(haisin@jmbsc.or.jp)へ問合せ後「担当が確認後に、お申込み及びデータ受信に必要な文書類をお送りいたします」と記載。約款・規程・書式へのリンク無し。「領域制度の適用可否は、利用希望者の申請を受け、厳正な審査を実施」もc-onlineF.htmlで確認。"
+ },
+ {
+  "dimension": "operations",
+  "claim_id": "R5-03",
+  "verdict": "confirmed",
+  "checked_url": "https://xml.kishou.go.jp/xmlpull.html",
+  "evidence": "xmlpull.htmlで「毎分更新し、直近少なくとも10分入電を掲載」「毎時更新し、数日間の全入電を掲載」、免責2項、「1日10GB以上のダウンロード…IPアドレスを遮断します」を確認。トップページに「PUSH型の提供環境につきましては、令和2年9月1日をもって終了」と明記、ユーザー登録不要も記載。"
+ },
+ {
+  "dimension": "operations",
+  "claim_id": "R5-04",
+  "verdict": "confirmed",
+  "checked_url": "https://www.data.jma.go.jp/developer/xml/feed/extra.xml",
+  "evidence": "2026-08-14にcurlで再実測。3フィード全てServer: AmazonS3、via cloudfront.net、cache-control: max-age=60、gzip。実測gzipサイズ: eqvol 3,156B(完全一致)、regular 14,345B、extra 29,750B、extra非圧縮561,611B≈548KB。毎分変動する内容ゆえ数%差は妥当。毎分3本取得で月2.04GB(0.068GB/日)となり月約2GB・遮断基準未満の結論を裏付ける。"
+ },
+ {
+  "dimension": "operations",
+  "claim_id": "R5-05",
+  "verdict": "confirmed",
+  "checked_url": "https://www.jma.go.jp/jma/press/2102/05b/20210126_shougai3.pdf",
+  "evidence": "令和3年2月5日報道発表(第3報)PDF読取。次期通信ネットワーク整備でのネットワーク機器設定誤りが直接原因、一括切替設定に支援センター東京システム(虎ノ門庁舎)が含まれず接続失敗、図2に地震火山関連情報未配信「26日18時29分〜27日03時35分」(約9時間6分)と明記。2名集中・体制未拡充、連絡不備、切戻し誤認も原文どおり。"
+ },
+ {
+  "dimension": "operations",
+  "claim_id": "R5-10",
+  "verdict": "confirmed",
+  "checked_url": "https://blog.cloudflare.com/18-november-2025-outage/",
+  "evidence": "公式ポストモーテム確認。ClickHouse権限変更で重複行→Bot Management featureファイルがハードコード上限200 feature超過。冒頭に「at 11:20 UTC…began experiencing significant failures to deliver core network traffic」(タイムライン上の顧客向け初エラーは11:28)。14:30主要影響解消、17:06完全復旧、「Cloudflare's worst outage since 2019」。Workers KV・Turnstile・Access・ダッシュボードログイン障害、取込堅牢化・global kill switch等の対策も記載どおり。"
+ },
+ {
+  "dimension": "operations",
+  "claim_id": "R5-14",
+  "verdict": "confirmed",
+  "checked_url": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+  "evidence": "「soft bandwidth limit of 100 GB per month」「soft limit of 10 builds per hour…does not apply…custom GitHub Actions workflow」「no larger than 1 GB」「If your site exceeds these usage quotas, we may not be able to serve your site」を確認。SLA記載なし。「not intended for or allowed to be used as a free web-hosting service to run your online business, e-commerce site」等の商用禁止も原文どおり。"
+ },
+ {
+  "dimension": "operations",
+  "claim_id": "R5-16",
+  "verdict": "confirmed",
+  "checked_url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows",
+  "evidence": "「High load times include the start of every hour」「If the load is sufficiently high enough, some queued jobs may be dropped」、公開リポジトリで60日間活動なしのscheduled workflow自動無効化、cron最小間隔5分、毎時0分回避の推奨を全て原文で確認。"
+ }
+]
