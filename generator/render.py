@@ -11,6 +11,7 @@ import os
 import re
 
 from .jmautil import fmt_dt
+from .parse_typhoon import display_name
 
 e = html.escape
 
@@ -75,6 +76,7 @@ def page(title, body, generated, root="./", banner=""):
         f'<a href="{root}">全国トップ</a> | '
         f'<a href="{root}eq">地震</a> | '
         f'<a href="{root}tsunami">津波</a> | '
+        f'<a href="{root}typhoon">台風</a> | '
         f'<a href="{root}about">このサイトについて</a></p>'
         "</body></html>"
     )
@@ -209,7 +211,7 @@ def render_pref(name, warn, sokuho, fd, fw, generated, banner):
     return page(f"{name}の防災情報", "".join(body), generated, root="../", banner=banner)
 
 
-def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
+def render_index(pref_rows, quakes, tsunami, sokuho_all, typhoons, generated, banner):
     """全国トップ(モック案D準拠・決定#17/#21)。pref_rows: [(severity, name, code)]
 
     重要情報欄は発表中のものだけを表示し、平時は1行に縮退する。
@@ -236,6 +238,13 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
         important = True
         links = " ".join(f'<a href="p/{e(c)}">{e(n)}</a>' for n, c in group)
         body.append(f"<p>{badge(sev, label)}{links}</p>")
+    for t in [x for x in (typhoons or []) if not x["dissipated"]]:
+        important = True
+        cur = next((i for i in t["infos"] if i["kind"].startswith("実況")), None)
+        where = f"({e(cur['location'])})" if cur and cur["location"] else ""
+        body.append(
+            f'<p>{e(display_name(t))}{where} → <a href="typhoon">台風情報</a></p>'
+        )
     for code, s in sokuho_all[:5]:
         important = True
         body.append(
@@ -243,7 +252,7 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
             f"<small class=n>{e(fmt_dt(s['report_dt']))} 気象庁発表</small></p>"
         )
     if not important:
-        body.append("<p>現在、特別警報・危険警報・警報および津波警報等はありません。</p>")
+        body.append("<p>現在、特別警報・危険警報・警報、津波警報等、台風はありません。</p>")
 
     body.append("<h2>都道府県を選ぶ(地方順)</h2>")
     sev_by_code = {c: s for s, _n, c in pref_rows}
@@ -447,6 +456,107 @@ def render_tsunami(ts, generated, banner):
             '<p>到達予想時刻・予想される高さは<a href="https://www.jma.go.jp/bosai/">気象庁</a>で確認してください。</p>'
         )
     return page("津波情報", "".join(body), generated, banner=banner)
+
+
+TYPHOON_LEGEND = (
+    "<h2>台風の強さ・大きさ</h2>"
+    "<p class=n>強さ: 強い(最大風速33m/s以上)/非常に強い(44m/s以上)/猛烈な(54m/s以上)。"
+    "大きさ: 大型(強風域の半径500km以上)/超大型(800km以上)。"
+    "予報円は台風の中心が70%の確率で入る範囲です。"
+    "「ゆっくり」「ほとんど停滞」「なし」などは気象庁の発表表現をそのまま掲載しています。</p>"
+)
+
+
+def _typhoon_now_rows(cur):
+    """実況の縦2列表(旧気象庁の非JS向けページと同じ、狭い画面で破綻しない形)。"""
+    rows = []
+    if cur["location"]:
+        rows.append(("存在地域", cur["location"]))
+    size_int = " ".join(x for x in (cur["size"], cur["intensity"]) if x)
+    if size_int or cur["class"]:
+        rows.append(("大きさ・強さ", size_int or cur["class"]))
+    if cur["coord"]:
+        rows.append(("中心位置", cur["coord"]))
+    if cur["direction"] or cur["speed"]:
+        sp = cur["speed"]
+        sp = f"毎時{sp}km" if sp.isdigit() else sp
+        rows.append(("進行方向・速さ", f"{cur['direction']} {sp}".strip()))
+    if cur["pressure"]:
+        p = cur["pressure"]
+        rows.append(("中心気圧", f"{p}hPa" if p.isdigit() else p))
+    if cur["wind_max"]:
+        w = cur["wind_max"]
+        rows.append(("最大風速", f"中心付近で{w}m/s" if w.isdigit() else w))
+    if cur["wind_gust"]:
+        w = cur["wind_gust"]
+        rows.append(("最大瞬間風速", f"{w}m/s" if w.isdigit() else w))
+    if cur["storm"]:
+        rows.append(("暴風域(25m/s以上)", cur["storm"]))
+    if cur["gale"]:
+        rows.append(("強風域(15m/s以上)", cur["gale"]))
+    return rows
+
+
+def render_typhoon(typhoons, generated, banner):
+    """台風ページ。平時は1行に縮退し、ページ自体は常設する(ブックマーク維持)。"""
+    body = ["<h1>台風情報</h1>"]
+    active = [t for t in typhoons if not t["dissipated"]]
+    if not active:
+        body.append("<p>現在、台風は発生していません。</p>")
+        if typhoons:
+            for t in typhoons[:3]:
+                body.append(
+                    f"<p class=n>{e(display_name(t))}は{e(t['remark'] or '解消しました')}"
+                    f"({e(fmt_dt(t['report_dt']))} 気象庁発表)</p>"
+                )
+        body.append(TYPHOON_LEGEND)
+        return page("台風情報", "".join(body), generated, banner=banner)
+
+    for t in active:
+        cur = next((i for i in t["infos"] if i["kind"].startswith("実況")), None)
+        fcs = [i for i in t["infos"] if i["kind"].startswith("予報")]
+        body.append(
+            f"<h2>{e(display_name(t))} <small class=n>(気象庁 "
+            f"{e(fmt_dt(t['report_dt']))}発表 第{e(t['serial'])}号)</small></h2>"
+        )
+        if cur:
+            rows = _typhoon_now_rows(cur)
+            body.append(
+                f"<p class=n>実況 {e(fmt_dt(cur['dt']))}</p><table>"
+                + "".join(f"<tr><th scope=row>{e(k)}</th><td>{e(v)}</td></tr>" for k, v in rows)
+                + "</table>"
+            )
+        if fcs:
+            head = (
+                "<tr><th scope=col>日時</th><th scope=col>存在地域</th>"
+                "<th scope=col>強さ</th><th scope=col>中心位置</th>"
+                "<th scope=col>進行方向・速さ</th><th scope=col>中心気圧</th>"
+                "<th scope=col>最大風速</th><th scope=col>予報円の半径</th></tr>"
+            )
+            trs = []
+            for f in fcs:
+                sp = f["speed"]
+                sp = f"毎時{sp}km" if sp.isdigit() else sp
+                trs.append(
+                    f"<tr><th scope=row>{e(fmt_dt(f['dt']))}</th>"
+                    f"<td>{e(f['location'])}</td>"
+                    f"<td>{e(' '.join(x for x in (f['size'], f['intensity']) if x))}</td>"
+                    f"<td>{e(f['coord'])}</td>"
+                    f"<td>{e((f['direction'] + ' ' + sp).strip())}</td>"
+                    f"<td>{e(f['pressure'] + 'hPa' if f['pressure'].isdigit() else f['pressure'])}</td>"
+                    f"<td>{e(f['wind_max'] + 'm/s' if f['wind_max'].isdigit() else f['wind_max'])}</td>"
+                    f"<td>{e(f['circle'] + 'km' if f['circle'].isdigit() else f['circle'])}</td></tr>"
+                )
+            tid = f"tf{e(t['event_id'])}"
+            body.append(
+                f'<h3 id={tid}>予報</h3>'
+                f'<div class=tw role=region aria-labelledby={tid} tabindex=0>'
+                f"<table>{head}{''.join(trs)}</table></div>"
+            )
+
+    body.append('<p><a href="./">お住まいの地域の警報・注意報を確認する</a></p>')
+    body.append(TYPHOON_LEGEND)
+    return page("台風情報", "".join(body), generated, banner=banner)
 
 
 def render_about(generated):

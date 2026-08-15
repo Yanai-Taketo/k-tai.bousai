@@ -16,11 +16,12 @@ import sys
 
 from . import freshness
 from .fetch import FetchError, JmaXmlFeedSource
-from .jmautil import JST
+from .jmautil import JST, parse_dt
 from .offices import OFFICES
 from .parse_eqtsunami import parse_vtse41, parse_vxse51, parse_vxse53
 from .parse_forecast import parse_vpfd51, parse_vpfw50
 from .parse_sokuho import SOKUHO_TYPES, parse_sokuho
+from .parse_typhoon import TYPHOON_TYPES, parse_vptw
 from .parse_warnings import WARNING_TYPES, merge_office, parse_vpwwxx
 from .render import (
     eq_detail_rel,
@@ -30,6 +31,7 @@ from .render import (
     render_index,
     render_pref,
     render_tsunami,
+    render_typhoon,
     write_page,
 )
 
@@ -50,6 +52,17 @@ def classify_entries(entries):
         if m:
             out.append((m.group("type"), m.group("office"), en))
     return out
+
+
+def within(updated, cutoff):
+    """フィードのupdated(UTC「Z」表記)がcutoff以降かを日時として比較する。
+
+    文字列比較は不可: フィードは "2026-08-15T08:01:28Z"、cutoffはJSTの
+    "+09:00" 表記になるため、同じ時刻でも大小関係が壊れる(実際に台風・
+    気象防災速報の24時間判定を誤らせていた)。
+    """
+    dt = parse_dt(updated)
+    return dt is not None and dt >= cutoff
 
 
 def latest_per_key(classified, types):
@@ -106,13 +119,23 @@ def main(argv=None):
 
     # --- 対象電文の選定 ---
     warn_latest = latest_per_key(feeds["extra"] or [], set(WARNING_TYPES))
-    sokuho_cutoff = (now - datetime.timedelta(hours=24)).isoformat()
+    sokuho_cutoff = now - datetime.timedelta(hours=24)
     sokuho_entries = [
         (office, en)
         for ttype, office, en in (feeds["extra"] or [])
-        if ttype in SOKUHO_TYPES and en["updated"] >= sokuho_cutoff
+        if ttype in SOKUHO_TYPES and within(en["updated"], sokuho_cutoff)
     ]
     fc_latest = latest_per_key(feeds["regular"] or [], {"VPFD51", "VPFW50"})
+
+    # 台風: 同一TC(EventID)に複数の電文種別(VPTW60〜65)が出るため、URLの種別+官署でなく
+    # 電文の中身(EventID)で束ねる必要がある。ここでは直近24時間分を候補として取得する。
+    ty_cutoff = now - datetime.timedelta(hours=24)
+    ty_entries = [
+        en for ttype, _o, en in (feeds["extra"] or [])
+        if ttype in TYPHOON_TYPES and within(en["updated"], ty_cutoff)
+    ]
+    ty_entries.sort(key=lambda x: x["updated"], reverse=True)
+    ty_entries = ty_entries[:40]
 
     eq_entries = [en for t, _o, en in (feeds["eqvol"] or []) if t == "VXSE53"]
     eq51_entries = [en for t, _o, en in (feeds["eqvol"] or []) if t == "VXSE51"]
@@ -128,6 +151,7 @@ def main(argv=None):
     urls.update(en["href"] for en in eq_entries[:15])
     urls.update(en["href"] for en in eq51_entries[:3])
     urls.update(en["href"] for en in ts_entries[:1])
+    urls.update(en["href"] for en in ty_entries)
 
     print(f"電文取得: {len(urls)}件")
     telegrams, errors = src.fetch_many(sorted(urls))
@@ -213,6 +237,23 @@ def main(argv=None):
             quakes.insert(0, q)
             seen_events.add(q["event_id"])
 
+    # --- 解析: 台風(TCごとに最新の情報番号を採用) ---
+    typhoons = {}
+    for en in ty_entries:
+        data = tel(en["href"])
+        if data is None:
+            continue
+        try:
+            t = parse_vptw(data)
+        except Exception as ex:  # noqa: BLE001
+            anomalies.append(f"台風電文解析失敗: {ex}")
+            continue
+        eid = t["event_id"]
+        prev = typhoons.get(eid)
+        if prev is None or t["report_dt"] > prev["report_dt"]:
+            typhoons[eid] = t
+    typhoon_list = sorted(typhoons.values(), key=lambda t: t["event_id"])
+
     tsunami = None
     if ts_entries:
         data = tel(ts_entries[0]["href"])
@@ -245,7 +286,7 @@ def main(argv=None):
         write_page(
             args.site,
             "index.html",
-            render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner),
+            render_index(pref_rows, quakes, tsunami, sokuho_all, typhoon_list, generated, banner),
         )
     )
     sizes.append(write_page(args.site, "eq.html", render_eq(quakes, generated, banner)))
@@ -257,6 +298,9 @@ def main(argv=None):
             )
     sizes.append(
         write_page(args.site, "tsunami.html", render_tsunami(tsunami, generated, banner))
+    )
+    sizes.append(
+        write_page(args.site, "typhoon.html", render_typhoon(typhoon_list, generated, banner))
     )
     sizes.append(write_page(args.site, "about.html", render_about(generated)))
 

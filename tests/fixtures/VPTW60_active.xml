@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 活動中の台風(実況+推定1時間後+予報)のフィクスチャ。
+     現在の配信には台風非発生期のため完全な例が無いため、公式解説資料
+     「台風解析・予報情報電文(新形式)_解説資料」の記載例に忠実に構成した合成電文。
+     実配信の VPTW60_td.xml(熱帯低気圧化した実電文)と併用して検証する。 -->
+<Report xmlns="http://xml.kishou.go.jp/jmaxml1/" xmlns:jmx_eb="http://xml.kishou.go.jp/jmaxml1/elementBasis1/">
+<Control>
+<Title>台風解析・予報情報（５日予報）（Ｈ３０）</Title>
+<Status>通常</Status>
+<PublishingOffice>気象庁</PublishingOffice>
+</Control>
+<Head xmlns="http://xml.kishou.go.jp/jmaxml1/informationBasis1/">
+<Title>台風解析・予報情報</Title>
+<ReportDateTime>2026-08-15T06:45:00+09:00</ReportDateTime>
+<TargetDateTime>2026-08-15T06:00:00+09:00</TargetDateTime>
+<EventID>TC2612</EventID>
+<InfoType>発表</InfoType>
+<Serial>12</Serial>
+<InfoKind>台風解析・予報情報（５日予報）</InfoKind>
+<Headline><Text/></Headline>
+</Head>
+<Body xmlns="http://xml.kishou.go.jp/jmaxml1/body/meteorology1/" xmlns:jmx_eb="http://xml.kishou.go.jp/jmaxml1/elementBasis1/">
+<MeteorologicalInfos type="台風情報">
+
+<MeteorologicalInfo>
+<DateTime type="実況">2026-08-15T06:00:00+09:00</DateTime>
+<Item>
+<Kind><Property><Type>呼称</Type>
+<TyphoonNamePart>
+<Name>NOGURI</Name><NameKana>ノグリー</NameKana><Number>2612</Number><Remark/>
+</TyphoonNamePart>
+</Property></Kind>
+<Kind><Property><Type>階級</Type>
+<ClassPart>
+<jmx_eb:TyphoonClass type="熱帯擾乱種類">台風(TY)</jmx_eb:TyphoonClass>
+<jmx_eb:AreaClass type="大きさ階級"/>
+<jmx_eb:IntensityClass type="強さ階級">強い</jmx_eb:IntensityClass>
+</ClassPart>
+</Property></Kind>
+<Kind><Property><Type>中心</Type>
+<CenterPart>
+<jmx_eb:Coordinate description="北緯２４．５度東経１３１．８度" type="中心位置（度）">+24.5+131.8/</jmx_eb:Coordinate>
+<Location>南大東島の南南東約１６０ｋｍ</Location>
+<jmx_eb:Direction unit="１６方位漢字" type="移動方向">北</jmx_eb:Direction>
+<jmx_eb:Speed description="１時間に１５キロ" unit="km/h" type="移動速度">15</jmx_eb:Speed>
+<jmx_eb:Pressure description="中心気圧９５０ヘクトパスカル" unit="hPa" type="中心気圧">950</jmx_eb:Pressure>
+</CenterPart>
+</Property></Kind>
+<Kind><Property><Type>風</Type>
+<WindPart>
+<jmx_eb:WindSpeed type="最大風速" unit="m/s" condition="中心付近" description="中心付近の最大風速４０メートル">40</jmx_eb:WindSpeed>
+<jmx_eb:WindSpeed type="最大瞬間風速" unit="m/s" description="最大瞬間風速６０メートル">60</jmx_eb:WindSpeed>
+</WindPart>
+</Property></Kind>
+<Area>
+<Name>台風</Name>
+<jmx_eb:Circle type="暴風域">
+<jmx_eb:Axes><jmx_eb:Axis>
+<jmx_eb:Direction description="全域" condition="全域" unit="８方位漢字" type="方向"/>
+<jmx_eb:Radius description="１１０キロ" unit="km" type="半径">110</jmx_eb:Radius>
+</jmx_eb:Axis></jmx_eb:Axes>
+</jmx_eb:Circle>
+<jmx_eb:Circle type="強風域">
+<jmx_eb:Axes>
+<jmx_eb:Axis>
+<jmx_eb:Direction description="南東" unit="８方位漢字" type="方向">南東</jmx_eb:Direction>
+<jmx_eb:Radius description="３３０キロ" unit="km" type="半径">330</jmx_eb:Radius>
+</jmx_eb:Axis>
+<jmx_eb:Axis>
+<jmx_eb:Direction description="北西" unit="８方位漢字" type="方向">北西</jmx_eb:Direction>
+<jmx_eb:Radius description="２２０キロ" unit="km" type="半径">220</jmx_eb:Radius>
+</jmx_eb:Axis>
+</jmx_eb:Axes>
+</jmx_eb:Circle>
+</Area>
+</Item>
+</MeteorologicalInfo>
+
+<MeteorologicalInfo>
+<DateTime type="予報 ２４時間後">2026-08-16T06:00:00+09:00</DateTime>
+<Item>
+<Kind><Property><Type>階級</Type>
+<ClassPart>
+<jmx_eb:TyphoonClass type="熱帯擾乱種類">台風(TY)</jmx_eb:TyphoonClass>
+<jmx_eb:AreaClass type="大きさ階級"/>
+<jmx_eb:IntensityClass type="強さ階級">非常に強い</jmx_eb:IntensityClass>
+</ClassPart>
+</Property></Kind>
+<Kind><Property><Type>中心</Type>
+<CenterPart>
+<ProbabilityCircle type="予報円">
+<jmx_eb:BasePoint description="北緯２７．２度東経１３０．９度" type="中心位置（度）">+27.2+130.9/</jmx_eb:BasePoint>
+<jmx_eb:Axes><jmx_eb:Axis>
+<jmx_eb:Direction description="全域" condition="全域" unit="８方位漢字" type="方向"/>
+<jmx_eb:Radius description="１０５キロ" unit="km" type="半径">105</jmx_eb:Radius>
+</jmx_eb:Axis></jmx_eb:Axes>
+</ProbabilityCircle>
+<Location>沖縄の東</Location>
+<jmx_eb:Direction unit="１６方位漢字" type="移動方向">北</jmx_eb:Direction>
+<jmx_eb:Speed description="１時間に１５キロ" unit="km/h" type="移動速度">15</jmx_eb:Speed>
+<jmx_eb:Pressure description="中心気圧９４５ヘクトパスカル" unit="hPa" type="中心気圧">945</jmx_eb:Pressure>
+</CenterPart>
+</Property></Kind>
+<Kind><Property><Type>風</Type>
+<WindPart>
+<jmx_eb:WindSpeed type="最大風速" unit="m/s" condition="中心付近" description="中心付近の最大風速４５メートル">45</jmx_eb:WindSpeed>
+<jmx_eb:WindSpeed type="最大瞬間風速" unit="m/s" description="最大瞬間風速６５メートル">65</jmx_eb:WindSpeed>
+</WindPart>
+</Property></Kind>
+<Area><Name>熱帯低気圧</Name></Area>
+</Item>
+</MeteorologicalInfo>
+
+<MeteorologicalInfo>
+<DateTime type="予報 ７２時間後">2026-08-18T06:00:00+09:00</DateTime>
+<Item>
+<Kind><Property><Type>階級</Type>
+<ClassPart>
+<jmx_eb:TyphoonClass type="熱帯擾乱種類">台風(TY)</jmx_eb:TyphoonClass>
+<jmx_eb:AreaClass type="大きさ階級">大型</jmx_eb:AreaClass>
+<jmx_eb:IntensityClass type="強さ階級">非常に強い</jmx_eb:IntensityClass>
+</ClassPart>
+</Property></Kind>
+<Kind><Property><Type>中心</Type>
+<CenterPart>
+<ProbabilityCircle type="予報円">
+<jmx_eb:BasePoint description="北緯３１．５度東経１３２．０度" type="中心位置（度）">+31.5+132.0/</jmx_eb:BasePoint>
+<jmx_eb:Axes><jmx_eb:Axis>
+<jmx_eb:Direction description="全域" condition="全域" unit="８方位漢字" type="方向"/>
+<jmx_eb:Radius description="３１０キロ" unit="km" type="半径">310</jmx_eb:Radius>
+</jmx_eb:Axis></jmx_eb:Axes>
+</ProbabilityCircle>
+<Location>日本の南</Location>
+<jmx_eb:Direction unit="１６方位漢字" type="移動方向">北東</jmx_eb:Direction>
+<jmx_eb:Speed description="ゆっくり" condition="ゆっくり" unit="km/h" type="移動速度"/>
+<jmx_eb:Pressure description="中心気圧９４０ヘクトパスカル" unit="hPa" type="中心気圧">940</jmx_eb:Pressure>
+</CenterPart>
+</Property></Kind>
+<Kind><Property><Type>風</Type>
+<WindPart>
+<jmx_eb:WindSpeed type="最大風速" unit="m/s" condition="中心付近" description="中心付近の最大風速４５メートル">45</jmx_eb:WindSpeed>
+<jmx_eb:WindSpeed type="最大瞬間風速" unit="m/s" description="最大瞬間風速６０メートル">60</jmx_eb:WindSpeed>
+</WindPart>
+</Property></Kind>
+<Area><Name>熱帯低気圧</Name></Area>
+</Item>
+</MeteorologicalInfo>
+
+</MeteorologicalInfos>
+</Body>
+</Report>
