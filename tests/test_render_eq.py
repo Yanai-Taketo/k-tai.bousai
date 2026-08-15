@@ -165,6 +165,22 @@ class TestNoIntensity(unittest.TestCase):
         self.assertNotIn("調査中", html)
 
 
+class TestEqListLayout(unittest.TestCase):
+    def test_detail_link_is_on_the_time_cell(self):
+        """詳細へのリンクは先頭列の発生時刻に置く(行頭に揃え、走査しやすくする)。"""
+        q = parse_vxse53(fixture("VXSE53_sample.xml"))
+        html = render_eq([q], "08月15日 12:00", "")
+        self.assertIn('<th scope=row><a href="eq/20260814224256">', html)
+        # 震央地名はリンクにしない
+        self.assertNotIn('<a href="eq/20260814224256">岩手県沖</a>', html)
+
+    def test_rows_have_four_columns(self):
+        q = parse_vxse53(fixture("VXSE53_sample.xml"))
+        html = render_eq([q], "08月15日 12:00", "")
+        for col in ("発生時刻", "震央地名", "規模", "最大震度"):
+            self.assertIn(f"<th scope=col>{col}</th>", html)
+
+
 class TestEqDetailHugeQuake(unittest.TestCase):
     def test_falls_back_to_area_and_stays_in_budget(self):
         """1,920市町村の巨大地震でも予算内に収まり、縮約した旨を明示する。"""

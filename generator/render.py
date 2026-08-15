@@ -436,13 +436,16 @@ def render_eq(quakes, generated, banner):
     ]
     for q in quakes:
         href = eq_detail_href(q)
-        where = e(q["hypo"]) or "調査中"
+        # リンクは先頭列の発生時刻に置く(行頭で押しやすく、走査の起点が揃う。
+        # Yahoo!天気・災害の地震履歴表も発生時刻をリンクにしている)。
+        when = e(fmt_dt(q["origin"]))
         if href:
-            where = f'<a href="{href}">{where}</a>'
+            when = f'<a href="{href}">{when}</a>'
+        where = e(q["hypo"]) or "—"
         if q["kind"] and "速報" in q["kind"]:
             where += ' <small class=n>(速報)</small>'
         rows.append(
-            f"<tr><th scope=row>{e(fmt_dt(q['origin']))}</th><td>{where}</td>"
+            f"<tr><th scope=row>{when}</th><td>{where}</td>"
             f"<td>{('M' + e(q['mag'])) if q['mag'] else '—'}</td>"
             # 震度が電文に無いのは「未確定」とは限らない(遠地地震など国内で震度を
             # 観測していない場合も同じ)。断定を避けて「—」とし、詳細ページで補う。
@@ -453,7 +456,7 @@ def render_eq(quakes, generated, banner):
         + "".join(rows)
         + "</table></div>"
     )
-    body.append("<p class=n>震央地名を選ぶと各地の震度が見られます。</p>")
+    body.append("<p class=n>発生時刻を選ぶと各地の震度が見られます。</p>")
     return page("地震情報", "".join(body), generated, banner=banner)
 
 
