@@ -12,7 +12,13 @@ import re
 import unittest
 
 from generator.parse_eqtsunami import int_label, int_rank, parse_vxse51, parse_vxse53
-from generator.render import EQ_GZIP_BUDGET, eq_detail_rel, minify, render_eq_detail
+from generator.render import (
+    EQ_GZIP_BUDGET,
+    eq_detail_href,
+    eq_detail_rel,
+    minify,
+    render_eq_detail,
+)
 
 FIX = os.path.join(os.path.dirname(__file__), "fixtures")
 
@@ -109,12 +115,27 @@ class TestEqDetailRealTelegram(unittest.TestCase):
         self.assertIn("震度１", html)
         self.assertLessEqual(gz_size(html), EQ_GZIP_BUDGET)
 
-    def test_detail_rel_path(self):
+    def test_detail_paths_are_directory_style(self):
+        """URLはディレクトリ形式(Cloudflareの.html→拡張子なし308を避けるため)。"""
         q = parse_vxse53(fixture("VXSE53_sample.xml"))
-        self.assertEqual(eq_detail_rel(q), "eq/20260814224256.html")
+        self.assertEqual(eq_detail_rel(q), "eq/20260814224256/index.html")
+        self.assertEqual(eq_detail_href(q), "20260814224256/")
         self.assertIsNone(eq_detail_rel({"event_id": ""}))
-        # ファイル名に使えない文字は除去する
-        self.assertEqual(eq_detail_rel({"event_id": "../../etc/passwd"}), "eq/etcpasswd.html")
+        self.assertIsNone(eq_detail_href({"event_id": ""}))
+        # パス名に使えない文字は除去する(パストラバーサル防止)
+        self.assertEqual(
+            eq_detail_rel({"event_id": "../../etc/passwd"}), "eq/etcpasswd/index.html"
+        )
+
+    def test_no_html_suffix_links_anywhere(self):
+        """生成HTML内に .html で終わる内部リンクが残っていないこと。"""
+        q = parse_vxse53(fixture("VXSE53_sample.xml"))
+        html = render_eq_detail(q, "08月15日 12:00", "")
+        internal = [
+            h for h in re.findall(r'href="([^"]+)"', html) if not h.startswith("http")
+        ]
+        self.assertTrue(internal)
+        self.assertEqual([h for h in internal if h.endswith(".html")], [])
 
 
 class TestEqDetailHugeQuake(unittest.TestCase):

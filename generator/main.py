@@ -239,7 +239,7 @@ def main(argv=None):
             generated,
             banner,
         )
-        sizes.append(write_page(args.site, f"p/{code}.html", html_text))
+        sizes.append(write_page(args.site, f"p/{code}/index.html", html_text))
 
     sizes.append(
         write_page(
@@ -248,7 +248,7 @@ def main(argv=None):
             render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner),
         )
     )
-    sizes.append(write_page(args.site, "eq.html", render_eq(quakes, generated, banner)))
+    sizes.append(write_page(args.site, "eq/index.html", render_eq(quakes, generated, banner)))
     for q in quakes:
         rel = eq_detail_rel(q)
         if rel:
@@ -256,9 +256,9 @@ def main(argv=None):
                 write_page(args.site, rel, render_eq_detail(q, generated, banner))
             )
     sizes.append(
-        write_page(args.site, "tsunami.html", render_tsunami(tsunami, generated, banner))
+        write_page(args.site, "tsunami/index.html", render_tsunami(tsunami, generated, banner))
     )
-    sizes.append(write_page(args.site, "about.html", render_about(generated)))
+    sizes.append(write_page(args.site, "about/index.html", render_about(generated)))
 
     with open(os.path.join(args.site, "_headers"), "w") as f:
         f.write(HEADERS)

@@ -47,8 +47,15 @@ def badge(severity, name):
     return e(name)
 
 
-def page(title, body, generated, root="", banner=""):
-    """共通レイアウト。rootは相対パスの接頭辞(下層ページは "../")。"""
+def page(title, body, generated, root="./", banner=""):
+    """共通レイアウト。
+
+    URLはディレクトリ形式(/p/130000/ 等)に統一する。Cloudflare Pagesは
+    `.html` で終わるURLを拡張子なしURLへ308リダイレクトするため、`.html`を
+    リンクすると主系で毎回1往復余分にかかる(低速回線では0.2〜0.5秒の損)。
+    ディレクトリ形式なら両系統ともリダイレクトなしで配信される。
+    rootは階層に応じた接頭辞("./" / "../" / "../../")。
+    """
     warn = f'<div class=warn>{banner}</div>' if banner else ""
     return (
         "<!DOCTYPE html><html lang=ja><head><meta charset=utf-8>"
@@ -63,10 +70,10 @@ def page(title, body, generated, root="", banner=""):
         "<strong>避難や身を守る行動の判断は、必ずお住まいの自治体・気象庁の発表に従ってください。</strong>"
         "圏外・基地局停波時は本サイトも閲覧できません(緊急速報メール・ラジオ等をご利用ください)。</p>"
         f"<p class=n>出典: <a href=\"https://www.jma.go.jp/\">気象庁ホームページ</a> | "
-        f'<a href="{root}index.html">全国トップ</a> | '
-        f'<a href="{root}eq.html">地震</a> | '
-        f'<a href="{root}tsunami.html">津波</a> | '
-        f'<a href="{root}about.html">このサイトについて</a></p>'
+        f'<a href="{root}">全国トップ</a> | '
+        f'<a href="{root}eq/">地震</a> | '
+        f'<a href="{root}tsunami/">津波</a> | '
+        f'<a href="{root}about/">このサイトについて</a></p>'
         "</body></html>"
     )
 
@@ -197,7 +204,7 @@ def render_pref(name, warn, sokuho, fd, fw, generated, banner):
                 body.append(f"<p><small>{e(s['name'])}の気温(最低/最高): {days}</small></p>")
 
     body.append(LEVEL_GUIDE)
-    return page(f"{name}の防災情報", "".join(body), generated, root="../", banner=banner)
+    return page(f"{name}の防災情報", "".join(body), generated, root="../../", banner=banner)
 
 
 def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
@@ -218,19 +225,19 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
             f"{e(i['kind'])}: {e('、'.join(i['areas'][:8]))}" for i in tsunami["items"][:4]
         )
         body.append(
-            f'<p class=warn><strong>【津波情報 発表中】</strong>{areas} → <a href="tsunami.html">詳細</a></p>'
+            f'<p class=warn><strong>【津波情報 発表中】</strong>{areas} → <a href="tsunami/">詳細</a></p>'
         )
     for sev, label in ((5, "特別警報"), (4, "危険警報"), (3, "警報")):
         group = [(n, c) for s, n, c in pref_rows if s == sev]
         if not group:
             continue
         important = True
-        links = " ".join(f'<a href="p/{e(c)}.html">{e(n)}</a>' for n, c in group)
+        links = " ".join(f'<a href="p/{e(c)}/">{e(n)}</a>' for n, c in group)
         body.append(f"<p>{badge(sev, label)}{links}</p>")
     for code, s in sokuho_all[:5]:
         important = True
         body.append(
-            f'<p><a href="p/{e(code)}.html">{e(s["title"])}</a> '
+            f'<p><a href="p/{e(code)}/">{e(s["title"])}</a> '
             f"<small class=n>{e(fmt_dt(s['report_dt']))} 気象庁発表</small></p>"
         )
     if not important:
@@ -244,9 +251,9 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
             sev = sev_by_code.get(c, 0)
             short = e(SHORT_NAMES.get(c, c))
             if sev >= 3:
-                links.append(f'<a href="p/{c}.html"><span class="b s{sev}">{short}</span></a>')
+                links.append(f'<a href="p/{c}/"><span class="b s{sev}">{short}</span></a>')
             else:
-                links.append(f'<a href="p/{c}.html">{short}</a>')
+                links.append(f'<a href="p/{c}/">{short}</a>')
         body.append(f"<p class=r><b>{e(region)}</b> {' '.join(links)}</p>")
     body.append(
         '<p class=n>色付きの県は発表中: <span class="b s5">特別警報</span> '
@@ -263,7 +270,7 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
             f"<p>{e(fmt_dt(q['origin']))}ころ {e(q['hypo'])} "
             + (f"M{e(q['mag'])} " if q["mag"] else "")
             + (f"最大震度{e(int_label(q['maxint']))}" if q["maxint"] else "最大震度調査中")
-            + ' → <a href="eq.html">一覧</a></p>'
+            + ' → <a href="eq/">一覧</a></p>'
         )
 
     return page("防災情報 文字版", "".join(body), generated, banner=banner)
@@ -274,10 +281,22 @@ EQ_GZIP_BUDGET = 6 * 1024  # 設計書§4の /eq 予算
 _ID_SAFE = re.compile(r"[^0-9A-Za-z_-]")
 
 
-def eq_detail_rel(q):
-    """地震詳細ページの相対パス。EventIDが無い電文はNone(詳細ページを作らない)。"""
+def eq_event_slug(q):
+    """EventIDをURL/ファイル名として安全な文字列にする。無ければNone。"""
     eid = _ID_SAFE.sub("", q.get("event_id") or "")
-    return f"eq/{eid}.html" if eid else None
+    return eid or None
+
+
+def eq_detail_rel(q):
+    """地震詳細ページの出力パス。EventIDが無い電文はNone(詳細ページを作らない)。"""
+    slug = eq_event_slug(q)
+    return f"eq/{slug}/index.html" if slug else None
+
+
+def eq_detail_href(q):
+    """地震一覧ページ(/eq/)から詳細ページへの相対リンク。"""
+    slug = eq_event_slug(q)
+    return f"{slug}/" if slug else None
 
 
 def _group_intensity(rows, gran):
@@ -366,7 +385,7 @@ def _eq_detail_body(q, gran):
     else:
         body.append("<p class=n>各地の震度は発表されていません(震源に関する情報等)。</p>")
 
-    body.append('<p><a href="../eq.html">地震情報の一覧へ</a></p>')
+    body.append('<p><a href="../">地震情報の一覧へ</a></p>')
     return "".join(body)
 
 
@@ -379,7 +398,7 @@ def render_eq_detail(q, generated, banner):
     html_text = ""
     for gran in ("city", "area", "pref"):
         html_text = page(
-            title, _eq_detail_body(q, gran), generated, root="../", banner=banner
+            title, _eq_detail_body(q, gran), generated, root="../../", banner=banner
         )
         if len(gzip.compress(minify(html_text).encode("utf-8"), 9)) <= EQ_GZIP_BUDGET:
             return html_text
@@ -393,7 +412,7 @@ def render_eq(quakes, generated, banner):
     if not quakes:
         body.append("<p>直近の地震情報はありません。</p>")
     for q in quakes:
-        rel = eq_detail_rel(q)
+        rel = eq_detail_href(q)
         head = (
             f"<strong>{e(fmt_dt(q['origin']))}ころ</strong> {e(q['hypo'])} "
             + (f"M{e(q['mag'])} " if q["mag"] else "")
@@ -404,7 +423,7 @@ def render_eq(quakes, generated, banner):
             f"<p>{head}{link}"
             f"<br><small class=n>{e(q['kind'])} / 気象庁発表 {e(fmt_dt(q['report_dt']))}</small></p>"
         )
-    return page("地震情報", "".join(body), generated, banner=banner)
+    return page("地震情報", "".join(body), generated, root="../", banner=banner)
 
 
 def render_tsunami(ts, generated, banner):
@@ -425,7 +444,7 @@ def render_tsunami(ts, generated, banner):
         body.append(
             '<p>到達予想時刻・予想される高さは<a href="https://www.jma.go.jp/bosai/">気象庁</a>で確認してください。</p>'
         )
-    return page("津波情報", "".join(body), generated, banner=banner)
+    return page("津波情報", "".join(body), generated, root="../", banner=banner)
 
 
 def render_about(generated):
@@ -454,4 +473,4 @@ def render_about(generated):
         "本サイトの生成システムはオープンソース(MITライセンス)で公開しています: "
         '<a href="https://github.com/Yanai-Taketo/k-tai.bousai">GitHub</a></p>'
     )
-    return page("このサイトについて", body, generated)
+    return page("このサイトについて", body, generated, root="../")
