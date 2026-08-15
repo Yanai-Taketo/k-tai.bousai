@@ -59,15 +59,17 @@
 | トップ | 2,178 B |
 | 地震一覧 / 台風 / 津波 | 1,623 / 1,506 / 1,223 B |
 
-**128kbps・往復遅延300msでの表示完了時間**(Chromium+DevTools Protocolで帯域を模擬。
-ローカル配信のため非圧縮での計測=実環境より不利な条件)
+**128kbps・往復遅延300msでの表示完了時間**
+(`prototype/measure/measure-site.mjs` で計測。ローカル配信のため非圧縮=実環境より不利な条件)
 
-| ページ | 表示完了 | 転送量 |
+| ページ | 表示完了 | 転送量(非圧縮) |
 |---|---|---|
-| トップ | 753 ms | 6.4 KB |
-| 府県(東京) | 750 ms | 6.7 KB |
-| 地震詳細 | 656 ms | 5.0 KB |
-| 津波 | 488 ms | 2.5 KB |
+| 府県(東京) | 754 ms | 6.9 KB |
+| このサイトについて | 665 ms | 5.3 KB |
+| トップ | 659 ms | 5.8 KB |
+| 地震詳細 | 595 ms | 3.5 KB |
+| 台風 | 586 ms | 3.2 KB |
+| 津波 | 489 ms | 2.7 KB |
 
 **更新の実績**: 反映間隔の中央値3分・最大11分、直近40実行で失敗0件。
 
@@ -106,6 +108,11 @@ python3 -m unittest discover -s tests
 
 # トリガー判定ロジックのテスト(6件)
 cd worker && node --test
+
+# 128kbps低速回線での表示時間を計測
+python3 -m generator.main --site /tmp/site
+(cd /tmp/site && python3 -m http.server 8123 &)
+cd prototype/measure && node measure-site.mjs
 ```
 
 生成物はリポジトリにコミットしません(履歴の肥大化を避けるため)。
