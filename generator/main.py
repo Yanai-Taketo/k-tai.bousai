@@ -19,7 +19,9 @@ from .fetch import FetchError, JmaXmlFeedSource
 from .jmautil import JST, parse_dt
 from .offices import OFFICES
 from .parse_eqtsunami import parse_vtse41, parse_vxse51, parse_vxse53
+from .parse_flood import FLOOD_TYPES, merge_office as merge_flood, parse_vxko
 from .parse_forecast import parse_vpfd51, parse_vpfw50
+from .parse_heat import HEAT_TYPES, is_current as heat_is_current, parse_vpft50
 from .parse_sokuho import SOKUHO_TYPES, parse_sokuho
 from .parse_typhoon import TYPHOON_TYPES, parse_vptw
 from .parse_warnings import WARNING_TYPES, merge_office, parse_vpwwxx
@@ -137,6 +139,17 @@ def main(argv=None):
     ty_entries.sort(key=lambda x: x["updated"], reverse=True)
     ty_entries = ty_entries[:40]
 
+    # 指定河川洪水予報(直近24時間)・熱中症警戒アラート(直近36時間。前日17時発表が
+    # 翌日いっぱい有効なため窓を広めに取り、対象日で最終判定する)
+    flood_entries = [
+        (office, en) for ttype, office, en in (feeds["extra"] or [])
+        if ttype in FLOOD_TYPES and within(en["updated"], now - datetime.timedelta(hours=24))
+    ][:80]
+    heat_entries = [
+        (office, en) for ttype, office, en in (feeds["extra"] or [])
+        if ttype in HEAT_TYPES and within(en["updated"], now - datetime.timedelta(hours=36))
+    ][:60]
+
     eq_entries = [en for t, _o, en in (feeds["eqvol"] or []) if t == "VXSE53"]
     eq51_entries = [en for t, _o, en in (feeds["eqvol"] or []) if t == "VXSE51"]
     ts_entries = [en for t, _o, en in (feeds["eqvol"] or []) if t == "VTSE41"]
@@ -152,6 +165,8 @@ def main(argv=None):
     urls.update(en["href"] for en in eq51_entries[:3])
     urls.update(en["href"] for en in ts_entries[:1])
     urls.update(en["href"] for en in ty_entries)
+    urls.update(en["href"] for _o, en in flood_entries)
+    urls.update(en["href"] for _o, en in heat_entries)
 
     print(f"電文取得: {len(urls)}件")
     telegrams, errors = src.fetch_many(sorted(urls))
@@ -237,6 +252,42 @@ def main(argv=None):
             quakes.insert(0, q)
             seen_events.add(q["event_id"])
 
+    # --- 解析: 指定河川洪水予報(府県ごとに河川単位で統合) ---
+    flood_by_office = {}
+    for office, en in sorted(flood_entries, key=lambda x: x[1]["updated"]):
+        data = tel(en["href"])
+        if data is None:
+            continue
+        try:
+            flood_by_office.setdefault(office, []).append(parse_vxko(data))
+        except Exception as ex:  # noqa: BLE001
+            anomalies.append(f"洪水予報解析失敗 {office}: {ex}")
+    floods = {}
+    for office, ps in flood_by_office.items():
+        rivers = merge_flood(ps)
+        if rivers:
+            latest = max(ps, key=lambda p: p["report_dt"])
+            floods[office] = {
+                "rivers": rivers,
+                "report_dt": latest["report_dt"],
+                "publisher": latest["publisher"],
+                "headline": latest["headline"],
+            }
+
+    # --- 解析: 熱中症警戒アラート(府県ごとに最新・対象日が過ぎていないもの) ---
+    heat_by_office = {}
+    for office, en in sorted(heat_entries, key=lambda x: x[1]["updated"]):
+        data = tel(en["href"])
+        if data is None:
+            continue
+        try:
+            a = parse_vpft50(data)
+        except Exception as ex:  # noqa: BLE001
+            anomalies.append(f"熱中症アラート解析失敗 {office}: {ex}")
+            continue
+        if heat_is_current(a, now):
+            heat_by_office[office] = a
+
     # --- 解析: 台風(TCごとに最新の情報番号を採用) ---
     typhoons = {}
     for en in ty_entries:
@@ -281,6 +332,8 @@ def main(argv=None):
             sokuho_by_office.get(code, []),
             fd_by_office.get(fc_code),
             fw_by_office.get(fc_code),
+            floods.get(code),
+            heat_by_office.get(code),
             generated,
             banner,
         )

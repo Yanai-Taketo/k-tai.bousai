@@ -11,6 +11,7 @@ import os
 import re
 
 from .jmautil import fmt_dt
+from .parse_heat import PUBLISHER as HEAT_PUBLISHER
 from .parse_typhoon import display_name
 
 e = html.escape
@@ -107,7 +108,7 @@ LEVEL_GUIDE = (
 )
 
 
-def render_pref(name, warn, sokuho, fd, fw, generated, banner):
+def render_pref(name, warn, sokuho, fd, fw, floods, heat, generated, banner):
     """府県ページ(モック案C準拠): 帯+概況→警報表→速報→天気予報→警戒レベル。
 
     警報・注意報は1テーブルに統合(行=発表区域、列2本固定、「発表なし」明記)。
@@ -163,6 +164,37 @@ def render_pref(name, warn, sokuho, fd, fw, generated, banner):
             )
         else:
             body.append("<p>警報・注意報は発表されていません。</p>")
+
+    # 指定河川の洪水予報。氾濫は警報レベル体系の一部だが、区域の軸が市町村でなく
+    # 河川なので警報表とは別の表にする。共同発表のため出典を気象庁単独にしない。
+    if floods:
+        rows = ["<tr><th scope=col>河川名</th><th scope=col>発表中の情報</th></tr>"]
+        for river, kind in floods["rivers"]:
+            rows.append(
+                f"<tr><th scope=row>{e(river)}</th>"
+                f"<td>{badge(severity_of(kind), kind)}</td></tr>"
+            )
+        body.append(
+            f'<h2 id=fl>指定河川の洪水予報 <small class=n>({e(floods["publisher"])} '
+            f'{e(fmt_dt(floods["report_dt"]))}発表)</small></h2>'
+            "<div class=tw role=region aria-labelledby=fl tabindex=0><table>"
+            + "".join(rows)
+            + "</table></div>"
+        )
+        if floods.get("headline"):
+            body.append(f"<p>{e(floods['headline'])}</p>")
+
+    # 熱中症警戒アラート(環境省・気象庁の共同発表)。本文は1,400字超あるため
+    # 冒頭の要旨と予想最高気温だけを原文のまま載せる。
+    if heat:
+        body.append(
+            f'<h2>{e(heat["title"])} <small class=n>({HEAT_PUBLISHER} '
+            f'{e(fmt_dt(heat["report_dt"]))}発表)</small></h2>'
+        )
+        if heat["lead"]:
+            body.append(f"<p>{e(heat['lead'])}</p>")
+        if heat["temps"]:
+            body.append(f"<p><small>予想最高気温: {e(heat['temps'])}</small></p>")
 
     if sokuho:
         body.append("<h2>気象防災速報(直近24時間)</h2>")

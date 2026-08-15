@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://xml.kishou.go.jp/jmaxml1/" xmlns:jmx="http://xml.kishou.go.jp/jmaxml1/" xmlns:jmx_add="http://xml.kishou.go.jp/jmaxml1/addition1/">
+<Control>
+  <Title>熱中症警戒アラート</Title>
+  <DateTime>2026-08-15T07:55:00Z</DateTime>
+  <Status>通常</Status>
+  <EditorialOffice>和歌山地方気象台</EditorialOffice>
+  <PublishingOffice>環境省 気象庁</PublishingOffice>
+</Control>
+<Head xmlns="http://xml.kishou.go.jp/jmaxml1/informationBasis1/">
+  <Title>和歌山県熱中症警戒アラート</Title>
+  <ReportDateTime>2026-08-15T17:00:00+09:00</ReportDateTime>
+  <TargetDateTime>2026-08-16T00:00:00+09:00</TargetDateTime>
+  <EventID>JPOE260047</EventID>
+  <InfoType>発表</InfoType>
+  <Serial>1</Serial>
+  <InfoKind>同一現象用平文情報</InfoKind>
+  <InfoKindVersion>1.0_0</InfoKindVersion>
+  <Headline>
+    <Text/>
+  </Headline>
+</Head>
+<Body xmlns="http://xml.kishou.go.jp/jmaxml1/body/meteorology1/">
+  <Notice/>
+  <Comment>
+    <Text type="本文">和歌山県では、明日（１６日）は、気温が著しく高く熱中症になりやすい危険な暑さになることが予想されます。熱中症予防のための行動をとってください。
+
+＜熱中症予防のための行動＞
+・屋内では、エアコンを適切に使用し、涼しい環境で過ごしてください。
+・屋外への外出は、なるべく短時間にする、暑い時間を避けるなどを心がけてください。また、日傘や帽子を活用してください。
+・屋内・屋外を問わず、こまめに水分補給・塩分補給をしてください。
+・高齢者、子ども、持病のある方、からだに障害のある方、肥満の方等の熱中症になりやすい方々は、特に熱中症予防のための行動をとってください。また、身近な方からも、熱中症になりやすい方々へ、見守り・声かけをしてください。
+・施設の管理者やイベント主催者等は、暑さ指数を確認の上、施設の利用者やイベント参加者等に対して、熱中症予防に関する呼びかけなどを行ってください。
+
+［明日（１６日）の日最高暑さ指数（ＷＢＧＴ）（予測）］
+かつらぎ２９、友ケ島３３、和歌山２７、高野山２３、清水２８、龍神２７、川辺２９、栗栖川２９、新宮２９、西川２８、潮岬２９
+
+暑さ指数（ＷＢＧＴ：Ｗｅｔ Ｂｕｌｂ Ｇｌｏｂｅ Ｔｅｍｐｅｒａｔｕｒｅ）は気温、湿度、日射量などから計算される、熱中症の発生リスクを示した指標です。
+全国の情報提供地点における暑さ指数は、環境省の「熱中症予防情報サイト」で提供しています。お近くの地点における暑さ指数を「熱中症予防情報サイト」で確認し、熱中症予防のための行動をとってください。
+［暑さ指数（ＷＢＧＴ）の目安］
+　３１以上：危険
+　２８以上３１未満：厳重警戒
+　２５以上２８未満：警戒
+　２５未満：注意
+
+［明日（１６日）の予想最高気温］
+和歌山３１度、潮岬２９度
+
+この情報は暑さ指数（ＷＢＧＴ）を３３以上と予測したときに発表する、自分の身を守るための気づきを促す情報です。予測対象日の前日１７時頃または当日５時頃に発表します。
+なお、予測対象日の前日１７時頃に情報（第１号）を発表した地域に対しては、当日５時頃における最新の予測が３３未満に低下した場合でも情報（第２号）を発表し、熱中症への注意を呼びかけます。</Text>
+  </Comment>
+</Body>
+</Report>

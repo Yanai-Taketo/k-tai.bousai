@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://xml.kishou.go.jp/jmaxml1/" xmlns:jmx="http://xml.kishou.go.jp/jmaxml1/">
+  <Control>
+    <Title>指定河川洪水予報</Title>
+    <DateTime>2026-08-13T21:37:48Z</DateTime>
+    <Status>通常</Status>
+    <EditorialOffice>仙台管区気象台</EditorialOffice>
+    <PublishingOffice>仙台河川国道事務所 仙台管区気象台</PublishingOffice>
+  </Control>
+  <Head xmlns="http://xml.kishou.go.jp/jmaxml1/informationBasis1/">
+    <Title>名取川レベル２氾濫注意報解除</Title>
+    <ReportDateTime>2026-08-14T06:30:00+09:00</ReportDateTime>
+    <TargetDateTime>2026-08-14T06:30:00+09:00</TargetDateTime>
+    <EventID>820202000100</EventID>
+    <InfoType>発表</InfoType>
+    <Serial>2</Serial>
+    <InfoKind>指定河川洪水予報</InfoKind>
+    <InfoKindVersion>1.1_1</InfoKindVersion>
+    <Headline>
+      <Text>〔解除〕名取川では、氾濫注意水位を下回る</Text>
+      <Information type="指定河川洪水予報（予報区域）">
+        <Item>
+          <Kind>
+            <Name>レベル２氾濫注意報解除</Name>
+            <Code>10</Code>
+            <Condition>レベル２氾濫注意報解除</Condition>
+          </Kind>
+          <Areas codeType="指定河川洪水予報（予報区域）">
+            <Area>
+              <Name>名取川</Name>
+              <Code>820202000100</Code>
+            </Area>
+          </Areas>
+        </Item>
+      </Information>
+      <Information type="指定河川洪水予報（河川）">
+        <Item>
+          <Kind>
+            <Name>レベル２氾濫注意報解除</Name>
+            <Code>10</Code>
+            <Condition>レベル２氾濫注意報解除</Condition>
+          </Kind>
+          <Areas codeType="河川">
+            <Area>
+              <Name>名取川</Name>
+              <Code>8202020001</Code>
+            </Area>
+          </Areas>
+        </Item>
+      </Information>
+      <Information type="指定河川洪水予報（府県予報区等）">
+        <Item>
+          <Kind>
+            <Name>レベル２氾濫注意報解除</Name>
+            <Code>10</Code>
+            <Condition>レベル２氾濫注意報解除</Condition>
+          </Kind>
+          <Areas codeType="気象情報／府県予報区・細分区域等">
+            <Area>
+              <Name>宮城県</Name>
+              <Code>040000</Code>
+            </Area>
+          </Areas>
+        </Item>
+      </Information>
+    </Headline>
+  </Head>
+  <Body xmlns="http://xml.kishou.go.jp/jmaxml1/body/meteorology1/" xmlns:jmx_eb="http://xml.kishou.go.jp/jmaxml1/elementBasis1/">
+    <Warning type="指定河川洪水予報">
+      <Item>
+        <Kind>
+          <Property>
+            <Type>主文</Type>
+            <Text>名取川の名取橋基準観測所（仙台市）では、「氾濫注意水位」を下回りました。</Text>
+          </Property>
+        </Kind>
+        <Areas codeType="河川">
+          <Area>
+            <Name>名取川</Name>
+            <Code>8202020001</Code>
+          </Area>
+        </Areas>
+        <Stations>
+          <Station>
+            <Name>名取橋</Name>
+            <Code type="水位観測所">82020200010000004</Code>
+            <Location>仙台市</Location>
+          </Station>
+        </Stations>
+      </Item>
+      <Item>
+        <Kind>
+          <Name>浸水想定地区</Name>
+          <Code>1</Code>
+          <Status>対象地域</Status>
+          <Property>
+            <Type>浸水想定地区</Type>
+            <Text>氾濫による浸水が想定される地区※</Text>
+          </Property>
+        </Kind>
+        <Areas>
+          <Area codeType="水位観測所">
+            <Name>名取橋</Name>
+            <Code>82020200010000004</Code>
+            <Prefecture>宮城県</Prefecture>
+            <PrefectureCode>04000</PrefectureCode>
+            <City>仙台市</City>
+            <CityCode>0410000</CityCode>
+            <SubCityList>宮城野区岡田 宮城野区岡田西町 宮城野区蒲生 宮城野区鶴巻 宮城野区福室 宮城野区福田町 若林区伊在 若林区井土 若林区堰場 若林区沖野 若林区卸町東 若林区下飯田 若林区河原町 若林区霞目 若林区古城 若林区荒井 若林区荒浜 若林区荒浜新 若林区今泉 若林区三本塚 若林区若林 若林区種次 若林区舟丁 若林区上飯田 若林区新弓ノ町 若林区長喜城 若林区鶴代町 若林区藤塚 若林区南材木町 若林区南石切町 若林区二木 若林区日辺 若林区八軒小路 若林区飯田 若林区文化町 若林区六郷 若林区六丁の目 若林区六丁の目東町 太白区あすと長町 太白区郡山 太白区根岸町 太白区山田 太白区四郎丸 太白区鹿野 太白区諏訪町 太白区西多賀 太白区西中田 太白区泉崎 太白区太子堂 太白区袋原 太白区大野田 太白区中田 太白区中田町 太白区長町 太白区長町南 太白区東郡山 太白区東大野田 太白区東中田 太白区南大野田 太白区八本松 太白区富沢 太白区富沢南 太白区富田 太白区柳生</SubCityList>
+          </Area>
+          <Area codeType="水位観測所">
+            <Name>名取橋</Name>
+            <Code>82020200010000004</Code>
+            <Prefecture>宮城県</Prefecture>
+            <PrefectureCode>04000</PrefectureCode>
+            <City>岩沼市</City>
+            <CityCode>0421100</CityCode>
+            <SubCityList>下野郷</SubCityList>
+          </Area>
+          <Area codeType="水位観測所">
+            <Name>名取橋</Name>
+            <Code>82020200010000004</Code>
+            <Prefecture>宮城県</Prefecture>
+            <PrefectureCode>04000</PrefectureCode>
+            <City>名取市</City>
+            <CityCode>0420700</CityCode>
+            <SubCityList>下増田 下余田 牛野 高舘吉田 高舘熊野堂 高柳 手倉田 小塚原 上余田 植松 杉ヶ袋 増田 大曲 田高 杜せきのした 美田園 閖上 閖上佛文寺</SubCityList>
+          </Area>
+        </Areas>
+      </Item>
+    </Warning>
+    <MeteorologicalInfos type="雨量情報">
+      <MeteorologicalInfo>
+        <DateTime>2026-08-14T06:20:00+09:00</DateTime>
+        <Item>
+          <Kind>
+            <Name>雨量</Name>
+            <Property>
+              <Type>雨量</Type>
+              <Text>多いところで1時間に30ミリの雨が降っています。
+この雨は今後次第に弱まるでしょう。</Text>
+            </Property>
+          </Kind>
+        </Item>
+      </MeteorologicalInfo>
+      <TimeSeriesInfo>
+        <TimeDefines>
+          <TimeDefine timeId="1">
+            <DateTime>2026-08-12T06:20:00+09:00</DateTime>
+            <Duration>PT48H</Duration>
+            <Name>１２日６時２０分から１４日６時２０分までの流域平均雨量</Name>
+          </TimeDefine>
+          <TimeDefine timeId="2">
+            <DateTime>2026-08-14T06:20:00+09:00</DateTime>
+            <Duration>PT3H</Duration>
+            <Name>１４日６時２０分から１４日９時２０分までの流域平均雨量の見込み</Name>
+          </TimeDefine>
+        </TimeDefines>
+        <Item>
+          <Kind>
+            <Name>雨量</Name>
+            <Property>
+              <Type>雨量</Type>
+              <PrecipitationPart>
+                <jmx_eb:Precipitation type="流域平均雨量" unit="ミリ" refID="1">89</jmx_eb:Precipitation>
+                <jmx_eb:Precipitation type="流域平均雨量" unit="ミリ" refID="2">1</jmx_eb:Precipitation>
+              </PrecipitationPart>
+            </Property>
+          </Kind>
+          <Area>
+            <Name>名取川流域</Name>
+          </Area>
+        </Item>
+      </TimeSeriesInfo>
+    </MeteorologicalInfos>
+    <MeteorologicalInfos type="水位・流量情報">
+      <TimeSeriesInfo>
+        <TimeDefines>
+          <TimeDefine timeId="1">
+            <DateTime>2026-08-14T06:20:00+09:00</DateTime>
+            <Name>現況</Name>
+          </TimeDefine>
+          <TimeDefine timeId="2">
+            <DateTime>2026-08-14T07:20:00+09:00</DateTime>
+            <Name>１時間後</Name>
+          </TimeDefine>
+          <TimeDefine timeId="3">
+            <DateTime>2026-08-14T08:20:00+09:00</DateTime>
+            <Name>２時間後</Name>
+          </TimeDefine>
+          <TimeDefine timeId="4">
+            <DateTime>2026-08-14T09:20:00+09:00</DateTime>
+            <Name>３時間後</Name>
+          </TimeDefine>
+          <TimeDefine timeId="5">
+            <DateTime>2026-08-14T10:20:00+09:00</DateTime>
+            <Name>４時間後</Name>
+          </TimeDefine>
+          <TimeDefine timeId="6">
+            <DateTime>2026-08-14T11:20:00+09:00</DateTime>
+            <Name>５時間後</Name>
+          </TimeDefine>
+          <TimeDefine timeId="7">
+            <DateTime>2026-08-14T12:20:00+09:00</DateTime>
+            <Name>６時間後</Name>
+          </TimeDefine>
+        </TimeDefines>
+        <Item>
+          <Kind>
+            <Name>水位</Name>
+            <Property>
+              <Type>水位</Type>
+              <WaterLevelPart>
+                <jmx_eb:WaterLevel type="水位" refID="1" unit="m" condition="正常">6.01</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="レベル" refID="1">1</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="水位" refID="2" unit="m" condition="正常">5.79</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="レベル" refID="2">1</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="水位" refID="3" unit="m" condition="正常">5.67</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="レベル" refID="3">1</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="水位" refID="4" unit="m" condition="正常">5.63</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="レベル" refID="4">1</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="水位" refID="5" unit="m" condition="正常">5.61</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="レベル" refID="5">1</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="水位" refID="6" unit="m" condition="正常">5.59</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="レベル" refID="6">1</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="水位" refID="7" unit="m" condition="正常">5.59</jmx_eb:WaterLevel>
+                <jmx_eb:WaterLevel type="レベル" refID="7">1</jmx_eb:WaterLevel>
+              </WaterLevelPart>
+            </Property>
+          </Kind>
+          <Station>
+            <Name>名取橋</Name>
+            <Code type="水位観測所">82020200010000004</Code>
+            <Location>仙台市</Location>
+          </Station>
+        </Item>
+      </TimeSeriesInfo>
+    </MeteorologicalInfos>
+    <OfficeInfo>
+      <Office type="水位関係">
+        <Name>仙台河川国道事務所</Name>
+        <Code>21033</Code>
+        <ContactInfo>国土交通省　仙台河川国道事務所　流域治水課 022-304-1827</ContactInfo>
+        <URI>https://www.river.go.jp/</URI>
+      </Office>
+      <Office type="気象関係">
+        <Name>仙台管区気象台</Name>
+        <Code>47590</Code>
+        <ContactInfo>気象庁 仙台管区気象台 気象防災部予報課 022-297-8003</ContactInfo>
+        <URI>https://www.jma.go.jp/</URI>
+      </Office>
+    </OfficeInfo>
+    <AdditionalInfo>
+      <FloodForecastAddition>
+        <HydrometricStationPart>
+          <Area codeType="水位観測所">
+            <Name>名取橋</Name>
+            <Code>82020200010000004</Code>
+            <SubCityList>宮城県仙台市宮城野区岡田 宮城県仙台市宮城野区岡田西町 宮城県仙台市宮城野区蒲生 宮城県仙台市宮城野区鶴巻 宮城県仙台市宮城野区福室 宮城県仙台市宮城野区福田町 宮城県仙台市若林区伊在 宮城県仙台市若林区井土 宮城県仙台市若林区堰場 宮城県仙台市若林区沖野 宮城県仙台市若林区卸町東 宮城県仙台市若林区下飯田 宮城県仙台市若林区河原町 宮城県仙台市若林区霞目 宮城県仙台市若林区古城 宮城県仙台市若林区荒井 宮城県仙台市若林区荒浜 宮城県仙台市若林区荒浜新 宮城県仙台市若林区今泉 宮城県仙台市若林区三本塚 宮城県仙台市若林区若林 宮城県仙台市若林区種次 宮城県仙台市若林区舟丁 宮城県仙台市若林区上飯田 宮城県仙台市若林区新弓ノ町 宮城県仙台市若林区長喜城 宮城県仙台市若林区鶴代町 宮城県仙台市若林区藤塚 宮城県仙台市若林区南材木町 宮城県仙台市若林区南石切町 宮城県仙台市若林区二木 宮城県仙台市若林区日辺 宮城県仙台市若林区八軒小路 宮城県仙台市若林区飯田 宮城県仙台市若林区文化町 宮城県仙台市若林区六郷 宮城県仙台市若林区六丁の目 宮城県仙台市若林区六丁の目東町 宮城県仙台市太白区あすと長町 宮城県仙台市太白区郡山 宮城県仙台市太白区根岸町 宮城県仙台市太白区山田 宮城県仙台市太白区四郎丸 宮城県仙台市太白区鹿野 宮城県仙台市太白区諏訪町 宮城県仙台市太白区西多賀 宮城県仙台市太白区西中田 宮城県仙台市太白区泉崎 宮城県仙台市太白区太子堂 宮城県仙台市太白区袋原 宮城県仙台市太白区大野田 宮城県仙台市太白区中田 宮城県仙台市太白区中田町 宮城県仙台市太白区長町 宮城県仙台市太白区長町南 宮城県仙台市太白区東郡山 宮城県仙台市太白区東大野田 宮城県仙台市太白区東中田 宮城県仙台市太白区南大野田 宮城県仙台市太白区八本松 宮城県仙台市太白区富沢 宮城県仙台市太白区富沢南 宮城県仙台市太白区富田 宮城県仙台市太白区柳生 宮城県岩沼市下野郷 宮城県名取市下増田 宮城県名取市下余田 宮城県名取市牛野 宮城県名取市高舘吉田 宮城県名取市高舘熊野堂 宮城県名取市高柳 宮城県名取市手倉田 宮城県名取市小塚原 宮城県名取市上余田 宮城県名取市植松 宮城県名取市杉ヶ袋 宮城県名取市増田 宮城県名取市大曲 宮城県名取市田高 宮城県名取市杜せきのした 宮城県名取市美田園 宮城県名取市閖上 宮城県名取市閖上佛文寺</SubCityList>
+            <Location>仙台市</Location>
+          </Area>
+          <ChargeSection>名取川
+右岸：仙台市名取川頭首工から海
+左岸：仙台市名取川頭首工から海</ChargeSection>
+          <Criteria>
+            <jmx_eb:WaterLevel type="レベル１水防団待機水位" unit="m" condition="有効">5.50</jmx_eb:WaterLevel>
+            <jmx_eb:WaterLevel type="レベル２氾濫注意水位" unit="m" condition="有効">6.50</jmx_eb:WaterLevel>
+            <jmx_eb:WaterLevel type="レベル３避難判断水位" unit="m" condition="有効">8.30</jmx_eb:WaterLevel>
+            <jmx_eb:WaterLevel type="レベル４氾濫危険水位" unit="m" condition="有効">9.20</jmx_eb:WaterLevel>
+            <jmx_eb:WaterLevel type="レベル４計画高水位等" unit="m" condition="有効">11.50</jmx_eb:WaterLevel>
+          </Criteria>
+        </HydrometricStationPart>
+      </FloodForecastAddition>
+    </AdditionalInfo>
+  </Body>
+</Report>
