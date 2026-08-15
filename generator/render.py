@@ -294,15 +294,15 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, typhoons, generated, ba
         for c in codes:
             sev = sev_by_code.get(c, 0)
             short = e(SHORT_NAMES.get(c, c))
-            if sev >= 3:
+            if sev >= 2:
                 links.append(f'<a href="p/{c}"><span class="b s{sev}">{short}</span></a>')
             else:
                 links.append(f'<a href="p/{c}">{short}</a>')
         body.append(f"<p class=r><b>{e(region)}</b> {' '.join(links)}</p>")
     body.append(
         '<p class=n>色付きの県は発表中: <span class="b s5">特別警報</span> '
-        '<span class="b s4">危険警報</span> <span class="b s3">警報</span> / '
-        "注意報は各府県ページで</p>"
+        '<span class="b s4">危険警報</span> <span class="b s3">警報</span> '
+        '<span class="b s2">注意報</span> / 印なし=発表なし</p>'
     )
 
     if quakes:
