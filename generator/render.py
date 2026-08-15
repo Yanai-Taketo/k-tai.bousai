@@ -14,18 +14,27 @@ from .jmautil import fmt_dt
 
 e = html.escape
 
+# 配色は気象庁「気象庁ホームページにおける配色に関する設定指針」の公式RGBに準拠。
+# 赤#ff2800の文字色は黒(白字は3.78:1でWCAG AA不合格、黒字5.6:1で合格——
+# research/2026-08-14-layout-research.md のコントラスト実測)。
 CSS = (
     "body{font-family:sans-serif;line-height:1.55;margin:0 auto;padding:8px;max-width:40em;"
     "background:#fff;color:#111}h1{font-size:1.15em;margin:.4em 0}"
     "h2{font-size:1em;border-bottom:1px solid #999;margin:1em 0 .3em}"
     "ul{margin:.3em 0;padding-left:1.4em}a{color:#0645ad}small,.n{color:#444}"
     ".hd{background:#eee;padding:4px 8px;font-size:.85em}"
-    ".b{display:inline-block;padding:0 .35em;border-radius:3px;font-weight:bold}"
-    ".s5{background:#111;color:#fff;border:1px solid #666}.s4{background:#a0a;color:#fff}"
-    ".s3{background:#d02000;color:#fff}.s2{background:#f5e08a;color:#111}"
+    ".b{display:inline-block;padding:0 .3em;border-radius:2px;margin:0 .2em .1em 0;font-weight:bold}"
+    ".s5{background:#0c000c;color:#fff;border:1px solid #888}.s4{background:#a0a;color:#fff}"
+    ".s3{background:#ff2800;color:#111}.s2{background:#f2e700;color:#111;border:1px solid #999}"
+    ".band{padding:4px 8px;margin:.6em 0;font-weight:bold}"
+    "table{border-collapse:collapse;margin:.3em 0;width:100%}"
+    "th,td{border:1px solid #aaa;padding:2px 6px;text-align:left;vertical-align:top;font-size:.95em}"
+    ".tw{overflow-x:auto}.tw:focus{outline:2px solid #06c}"
+    ".r{margin:.25em 0}.r b{display:inline-block;min-width:5.5em;color:#444}"
     ".warn{border-left:4px solid #d00;padding:4px 8px;background:#fee;margin:.5em 0}"
     "@media(prefers-color-scheme:dark){body{background:#111;color:#eee}a{color:#8cb4ff}"
-    "small,.n{color:#aaa}.hd{background:#222}.warn{background:#411;border-color:#f66}}"
+    "small,.n{color:#aaa}.hd{background:#222}th,td{border-color:#555}"
+    ".warn{background:#411;border-color:#f66}.r b{color:#aaa}.tw:focus{outline-color:#8cb4ff}}"
 )
 
 
@@ -61,7 +70,8 @@ def page(title, body, generated, root="", banner=""):
 
 
 def minify(s):
-    return re.sub(r">\s+<", "><", s)
+    # 改行を含む空白のみ除去する。リンク間の意図的な半角スペース(県名の区切り)は保持。
+    return re.sub(r">[ \t]*\n\s*<", "><", s)
 
 
 def write_page(site_dir, rel, content):
@@ -74,30 +84,71 @@ def write_page(site_dir, rel, content):
     return rel, len(data), len(gzip.compress(data, 9))
 
 
+LEVEL_GUIDE = (
+    "<h2>警戒レベルと取るべき行動</h2><ul>"
+    '<li><span class="b s5">特別警報</span>レベル5相当: 命の危険。直ちに安全確保</li>'
+    '<li><span class="b s4">危険警報</span>レベル4相当: 危険な場所から全員避難</li>'
+    '<li><span class="b s3">警報</span>レベル3相当: 高齢者等は危険な場所から避難</li>'
+    '<li><span class="b s2">注意報</span>レベル2: 自らの避難行動を確認</li></ul>'
+)
+
+
 def render_pref(name, warn, sokuho, fd, fw, generated, banner):
-    """府県ページ: 警報・注意報+気象防災速報+天気予報(1リクエストで完結)。"""
+    """府県ページ(モック案C準拠): 帯+概況→警報表→速報→天気予報→警戒レベル。
+
+    警報・注意報は1テーブルに統合(行=発表区域、列2本固定、「発表なし」明記)。
+    一次細分区域の区切り行は区域階層表(area.json由来)の整備後に追加する。
+    """
+    from .parse_warnings import severity_of
+
     body = [f"<h1>{e(name)}の防災情報</h1>"]
 
-    body.append("<h2>気象警報・注意報</h2>")
+    # 最大レベルの帯(警報以上のときのみ)と概況文は警報セクションの前に置く
+    if warn is not None:
+        max_sev = warn["max_severity"]
+        if max_sev >= 3:
+            top_names, top_areas = [], []
+            for area, kinds in warn["areas"]:
+                for k in kinds:
+                    if severity_of(k["name"]) == max_sev:
+                        if k["name"] not in top_names:
+                            top_names.append(k["name"])
+                        top_areas.append(area)
+                        break
+            areas_txt = "、".join(top_areas[:3]) + ("ほか" if len(top_areas) > 3 else "")
+            body.append(
+                f'<p class="band s{max_sev}">{e("、".join(top_names[:2]))} 発表中'
+                f"({e(areas_txt)})</p>"
+            )
+        for h in warn["headlines"][:2]:
+            if h:
+                body.append(f"<p>{e(h)}</p>")
+
+    body.append("<h2 id=wh>気象警報・注意報</h2>")
     if warn is None:
         body.append("<p class=n>警報・注意報の電文を取得できませんでした。"
                     '<a href="https://www.jma.go.jp/bosai/warning/">気象庁</a>で確認してください。</p>')
     else:
         body.append(f"<p class=n>気象庁発表: {e(fmt_dt(warn['report_dt']))}</p>")
-        for h in warn["headlines"][:2]:
-            if h:
-                body.append(f"<p>{e(h)}</p>")
-        shown = False
-        for area, kinds in warn["areas"]:
-            if not kinds:
-                continue
-            shown = True
-            from .parse_warnings import severity_of
-
-            items = "、".join(badge(severity_of(k["name"]), k["name"]) for k in kinds)
-            body.append(f"<p><strong>{e(area)}</strong>: {items}</p>")
-        if not shown:
-            body.append("<p>現在、発表中の警報・注意報はありません。</p>")
+        if warn["max_severity"] >= 2:
+            rows = ["<tr><th scope=col>発表区域</th><th scope=col>発表中の警報・注意報</th></tr>"]
+            for area, kinds in warn["areas"]:
+                if kinds:
+                    chips = " ".join(
+                        badge(severity_of(k["name"]), k["name"]) for k in kinds
+                    )
+                    rows.append(f"<tr><th scope=row>{e(area)}</th><td>{chips}</td></tr>")
+                else:
+                    rows.append(
+                        f"<tr><th scope=row>{e(area)}</th><td class=n>発表なし</td></tr>"
+                    )
+            body.append(
+                "<div class=tw role=region aria-labelledby=wh tabindex=0><table>"
+                + "".join(rows)
+                + "</table></div>"
+            )
+        else:
+            body.append("<p>警報・注意報は発表されていません。</p>")
 
     if sokuho:
         body.append("<h2>気象防災速報(直近24時間)</h2>")
@@ -143,55 +194,72 @@ def render_pref(name, warn, sokuho, fd, fw, generated, banner):
             if days:
                 body.append(f"<p><small>{e(s['name'])}の気温(最低/最高): {days}</small></p>")
 
+    body.append(LEVEL_GUIDE)
     return page(f"{name}の防災情報", "".join(body), generated, root="../", banner=banner)
 
 
 def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
-    """全国トップ。pref_rows: [(severity, name, code)]"""
+    """全国トップ(モック案D準拠・決定#17/#21)。pref_rows: [(severity, name, code)]
+
+    重要情報欄は発表中のものだけを表示し、平時は1行に縮退する。
+    県リンクは地方順固定で、警報以上のときだけ県名自体を色チップ化する。
+    """
+    from .offices import REGIONS, SHORT_NAMES
+
     body = ["<h1>防災情報(文字版)</h1>"]
 
+    body.append("<h2>いま発表中の重要情報</h2>")
+    important = False
     if tsunami and tsunami["active"]:
+        important = True
         areas = "、".join(
             f"{e(i['kind'])}: {e('、'.join(i['areas'][:8]))}" for i in tsunami["items"][:4]
         )
         body.append(
             f'<p class=warn><strong>【津波情報 発表中】</strong>{areas} → <a href="tsunami.html">詳細</a></p>'
         )
-
-    if sokuho_all:
-        body.append("<h2>気象防災速報(直近24時間)</h2><ul>")
-        for code, s in sokuho_all[:8]:
-            body.append(
-                f'<li><a href="p/{e(code)}.html">{e(s["title"])}</a> <small>{e(fmt_dt(s["report_dt"]))}</small></li>'
-            )
-        body.append("</ul>")
-
-    body.append("<h2>都道府県の気象警報・注意報と天気予報</h2>")
-    groups = (
-        (5, "特別警報 発表中"),
-        (4, "危険警報 発表中"),
-        (3, "警報 発表中"),
-        (2, "注意報のみ"),
-        (0, "発表なし"),
-    )
-    for sev, label in groups:
-        group = [r for r in pref_rows if r[0] == sev]
+    for sev, label in ((5, "特別警報"), (4, "危険警報"), (3, "警報")):
+        group = [(n, c) for s, n, c in pref_rows if s == sev]
         if not group:
             continue
-        links = " ".join(f'<a href="p/{e(c)}.html">{e(n)}</a>' for _s, n, c in group)
-        head = badge(sev, label) if sev >= 2 else e(label)
-        body.append(f"<p>{head}<br>{links}</p>")
+        important = True
+        links = " ".join(f'<a href="p/{e(c)}.html">{e(n)}</a>' for n, c in group)
+        body.append(f"<p>{badge(sev, label)}{links}</p>")
+    for code, s in sokuho_all[:5]:
+        important = True
+        body.append(
+            f'<p><a href="p/{e(code)}.html">{e(s["title"])}</a> '
+            f"<small class=n>{e(fmt_dt(s['report_dt']))} 気象庁発表</small></p>"
+        )
+    if not important:
+        body.append("<p>現在、特別警報・危険警報・警報および津波警報等はありません。</p>")
+
+    body.append("<h2>都道府県を選ぶ(地方順)</h2>")
+    sev_by_code = {c: s for s, _n, c in pref_rows}
+    for region, codes in REGIONS:
+        links = []
+        for c in codes:
+            sev = sev_by_code.get(c, 0)
+            short = e(SHORT_NAMES.get(c, c))
+            if sev >= 3:
+                links.append(f'<a href="p/{c}.html"><span class="b s{sev}">{short}</span></a>')
+            else:
+                links.append(f'<a href="p/{c}.html">{short}</a>')
+        body.append(f"<p class=r><b>{e(region)}</b> {' '.join(links)}</p>")
+    body.append(
+        '<p class=n>色付きの県は発表中: <span class="b s5">特別警報</span> '
+        '<span class="b s4">危険警報</span> <span class="b s3">警報</span> / '
+        "注意報は各府県ページで</p>"
+    )
 
     if quakes:
         q = quakes[0]
-        body.append("<h2>最新の地震</h2>")
-        for q in quakes[:3]:
-            body.append(
-                f"<p>{e(fmt_dt(q['origin']))}ごろ {e(q['hypo'])} "
-                + (f"M{e(q['mag'])} " if q["mag"] else "")
-                + f"最大震度{e(q['maxint'] or '調査中')}</p>"
-            )
-        body.append('<p><a href="eq.html">地震情報一覧へ</a></p>')
+        body.append(
+            "<h2>最新の地震</h2>"
+            f"<p>{e(fmt_dt(q['origin']))}ころ {e(q['hypo'])} "
+            + (f"M{e(q['mag'])} " if q["mag"] else "")
+            + f"最大震度{e(q['maxint'] or '調査中')} → <a href=\"eq.html\">一覧</a></p>"
+        )
 
     return page("防災情報 文字版", "".join(body), generated, banner=banner)
 
@@ -202,7 +270,7 @@ def render_eq(quakes, generated, banner):
         body.append("<p>直近の地震情報はありません。</p>")
     for q in quakes:
         body.append(
-            f"<p><strong>{e(fmt_dt(q['origin']))}ごろ</strong> {e(q['hypo'])} "
+            f"<p><strong>{e(fmt_dt(q['origin']))}ころ</strong> {e(q['hypo'])} "
             + (f"M{e(q['mag'])} " if q["mag"] else "")
             + f"最大震度{e(q['maxint'] or '調査中')}"
             f"<br><small>{e(q['kind'])} / 気象庁発表 {e(fmt_dt(q['report_dt']))}</small></p>"

@@ -239,7 +239,6 @@ def main(argv=None):
         )
         sizes.append(write_page(args.site, f"p/{code}.html", html_text))
 
-    pref_rows.sort(key=lambda r: (-r[0], r[2]))
     sizes.append(
         write_page(
             args.site,
