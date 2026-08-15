@@ -23,8 +23,10 @@ from .parse_forecast import parse_vpfd51, parse_vpfw50
 from .parse_sokuho import SOKUHO_TYPES, parse_sokuho
 from .parse_warnings import WARNING_TYPES, merge_office, parse_vpwwxx
 from .render import (
+    eq_detail_rel,
     render_about,
     render_eq,
+    render_eq_detail,
     render_index,
     render_pref,
     render_tsunami,
@@ -247,6 +249,12 @@ def main(argv=None):
         )
     )
     sizes.append(write_page(args.site, "eq.html", render_eq(quakes, generated, banner)))
+    for q in quakes:
+        rel = eq_detail_rel(q)
+        if rel:
+            sizes.append(
+                write_page(args.site, rel, render_eq_detail(q, generated, banner))
+            )
     sizes.append(
         write_page(args.site, "tsunami.html", render_tsunami(tsunami, generated, banner))
     )

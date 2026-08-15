@@ -32,9 +32,11 @@ CSS = (
     ".tw{overflow-x:auto}.tw:focus{outline:2px solid #06c}"
     ".r{margin:.25em 0}.r b{display:inline-block;min-width:5.5em;color:#444}"
     ".warn{border-left:4px solid #d00;padding:4px 8px;background:#fee;margin:.5em 0}"
+    ".safe{border-left:4px solid #06c;padding:2px 8px;background:#eef4ff}"
     "@media(prefers-color-scheme:dark){body{background:#111;color:#eee}a{color:#8cb4ff}"
     "small,.n{color:#aaa}.hd{background:#222}th,td{border-color:#555}"
-    ".warn{background:#411;border-color:#f66}.r b{color:#aaa}.tw:focus{outline-color:#8cb4ff}}"
+    ".warn{background:#411;border-color:#f66}.r b{color:#aaa}.tw:focus{outline-color:#8cb4ff}"
+    ".safe{background:#132039;border-color:#5a8ad6}}"
 )
 
 
@@ -253,27 +255,154 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, generated, banner):
     )
 
     if quakes:
+        from .parse_eqtsunami import int_label
+
         q = quakes[0]
         body.append(
             "<h2>最新の地震</h2>"
             f"<p>{e(fmt_dt(q['origin']))}ころ {e(q['hypo'])} "
             + (f"M{e(q['mag'])} " if q["mag"] else "")
-            + f"最大震度{e(q['maxint'] or '調査中')} → <a href=\"eq.html\">一覧</a></p>"
+            + (f"最大震度{e(int_label(q['maxint']))}" if q["maxint"] else "最大震度調査中")
+            + ' → <a href="eq.html">一覧</a></p>'
         )
 
     return page("防災情報 文字版", "".join(body), generated, banner=banner)
 
 
+EQ_GZIP_BUDGET = 6 * 1024  # 設計書§4の /eq 予算
+
+_ID_SAFE = re.compile(r"[^0-9A-Za-z_-]")
+
+
+def eq_detail_rel(q):
+    """地震詳細ページの相対パス。EventIDが無い電文はNone(詳細ページを作らない)。"""
+    eid = _ID_SAFE.sub("", q.get("event_id") or "")
+    return f"eq/{eid}.html" if eid else None
+
+
+def _group_intensity(rows, gran):
+    """観測結果を震度降順・県ごとにまとめる。
+
+    gran: "city"=市町村名まで / "area"=細分区域まで / "pref"=県名のみ。
+    粒度を落とすときは、まとめた単位の最大震度を採る。
+    """
+    from .parse_eqtsunami import int_rank
+
+    merged = {}
+    order = []
+    for r in rows:
+        if gran == "pref":
+            key, name = (r["pref"],), ""
+        elif gran == "area":
+            key, name = (r["pref"], r["area"] or r["pref"]), r["area"] or r["pref"]
+        else:
+            key, name = (
+                (r["pref"], r["area"], r["city"] or r["area"] or r["pref"]),
+                r["city"] or r["area"] or r["pref"],
+            )
+        if key not in merged:
+            merged[key] = {"int": r["int"], "pref": r["pref"], "name": name}
+            order.append(key)
+        elif int_rank(r["int"]) > int_rank(merged[key]["int"]):
+            merged[key]["int"] = r["int"]
+
+    blocks = []
+    for value in sorted({m["int"] for m in merged.values()}, key=int_rank, reverse=True):
+        prefs, pref_order = {}, []
+        for key in order:
+            m = merged[key]
+            if m["int"] != value:
+                continue
+            if m["pref"] not in prefs:
+                prefs[m["pref"]] = []
+                pref_order.append(m["pref"])
+            if m["name"]:
+                prefs[m["pref"]].append(m["name"])
+        blocks.append((value, [(p, prefs[p]) for p in pref_order]))
+    return blocks
+
+
+def _eq_detail_body(q, gran):
+    """地震詳細ページの本文(粒度指定)。"""
+    from .parse_eqtsunami import int_label
+
+    body = [f"<h1>{e(fmt_dt(q['origin']))}ころの地震</h1>"]
+    body.append(f"<p class=n>{e(q['kind'])} / 気象庁発表 {e(fmt_dt(q['report_dt']))}</p>")
+    for c in q.get("comments", []):
+        body.append(f"<p class=safe><strong>{e(c)}</strong></p>")
+    if q.get("headline"):
+        body.append(f"<p>{e(q['headline'])}</p>")
+
+    rows = [("発生時刻", fmt_dt(q["origin"]) + "ころ")]
+    if q["hypo"]:
+        rows.append(("震央(震源地)", q["hypo"] + (f"({q['coord']})" if q.get("coord") else "")))
+    if q.get("depth"):
+        rows.append(("深さ", q["depth"]))
+    if q["mag"]:
+        rows.append(("規模", f"M{q['mag']}"))
+    rows.append(("最大震度", f"震度{int_label(q['maxint'])}" if q["maxint"] else "調査中"))
+    body.append(
+        "<table>"
+        + "".join(f"<tr><th scope=row>{e(k)}</th><td>{e(v)}</td></tr>" for k, v in rows)
+        + "</table>"
+    )
+
+    blocks = _group_intensity(q.get("obs", []), gran)
+    if blocks:
+        label = {"city": "市町村", "area": "地域", "pref": "都道府県"}[gran]
+        body.append(f"<h2>各地の震度({label}単位・震度の大きい順)</h2>")
+        for value, prefs in blocks:
+            items = "".join(
+                f"<li>{e(p)}" + (f" {e(' '.join(names))}" if names else "") + "</li>"
+                for p, names in prefs
+            )
+            body.append(f"<p><strong>震度{e(int_label(value))}</strong></p><ul>{items}</ul>")
+        if gran != "city":
+            body.append(
+                "<p class=n>観測点が多いため、市町村単位を省略して表示しています。"
+                '詳細は<a href="https://www.jma.go.jp/bosai/map.html#contents=earthquake_map">'
+                "気象庁</a>で確認してください。</p>"
+            )
+    else:
+        body.append("<p class=n>各地の震度は発表されていません(震源に関する情報等)。</p>")
+
+    body.append('<p><a href="../eq.html">地震情報の一覧へ</a></p>')
+    return "".join(body)
+
+
+def render_eq_detail(q, generated, banner):
+    """地震詳細ページ。予算(gzip 6KB)に収まるまで震度一覧の粒度を段階的に落とす。
+
+    巨大地震では市町村単位の観測が数百件になるため、必要時のみ地域→都道府県へ縮約する。
+    """
+    title = f"{fmt_dt(q['origin'])}ころの地震"
+    html_text = ""
+    for gran in ("city", "area", "pref"):
+        html_text = page(
+            title, _eq_detail_body(q, gran), generated, root="../", banner=banner
+        )
+        if len(gzip.compress(minify(html_text).encode("utf-8"), 9)) <= EQ_GZIP_BUDGET:
+            return html_text
+    return html_text
+
+
 def render_eq(quakes, generated, banner):
+    from .parse_eqtsunami import int_label
+
     body = ["<h1>地震情報</h1>"]
     if not quakes:
         body.append("<p>直近の地震情報はありません。</p>")
     for q in quakes:
-        body.append(
-            f"<p><strong>{e(fmt_dt(q['origin']))}ころ</strong> {e(q['hypo'])} "
+        rel = eq_detail_rel(q)
+        head = (
+            f"<strong>{e(fmt_dt(q['origin']))}ころ</strong> {e(q['hypo'])} "
             + (f"M{e(q['mag'])} " if q["mag"] else "")
-            + f"最大震度{e(q['maxint'] or '調査中')}"
-            f"<br><small>{e(q['kind'])} / 気象庁発表 {e(fmt_dt(q['report_dt']))}</small></p>"
+            + f"最大震度{e(int_label(q['maxint'])) if q['maxint'] else '調査中'}"
+        )
+        link = f' → <a href="{rel}">各地の震度</a>' if rel else ""
+        body.append(
+            f"<p>{head}{link}"
+            f"<br><small class=n>{e(q['kind'])} / 気象庁発表 {e(fmt_dt(q['report_dt']))}</small></p>"
         )
     return page("地震情報", "".join(body), generated, banner=banner)
 
