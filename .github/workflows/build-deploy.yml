@@ -10,6 +10,8 @@ name: build-deploy
 
 on:
   workflow_dispatch:
+  push:  # 一時: Secrets設定の検証用(検証後に削除する)
+    branches: [claude/lightweight-disaster-site-research-y8frrn]
 
 concurrency:
   group: deploy
