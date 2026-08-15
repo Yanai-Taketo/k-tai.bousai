@@ -62,8 +62,9 @@ prototype/          # フェーズ0の実証コード(参照用に凍結)
 
 ## 3. 更新機構(N-5: 反映5分以内)
 
-1. **Workers Cron(毎分)**: 高頻度フィードに条件付きGET(`If-Modified-Since`)→ 直近90秒以内の`<updated>`があれば GitHub API `workflow_dispatch` を呼ぶ。ステートレス設計(Workers KVの無料書き込み上限1,000回/日を回避)。CPU消費は数ms(無料枠10ms内)。
-2. **Actions schedule(5分毎・別ファイル)**: トリガー欠落・Workers障害時のフォールバック。`fallback-schedule.yml`がGITHUB_TOKEN(公式明記の例外でdispatch可)により`build-deploy.yml`を起動する。**同一ファイルにscheduleを置かない**——公開リポジトリの60日不活性によるschedule自動無効化はファイル単位で、同居させるとWorkerからのdispatch受け口まで道連れになるため(検証記録: `research/2026-08-14-trigger-verification.md`)。cron分は毎時0分(公式が名指しする高負荷帯)を避けてオフセット。
+1. **Workers Cron(毎分)**: 3フィードの最新`<updated>`と、GitHub APIで取得した**前回build-deploy開始時刻**を比較し、`最新電文 > 前回ビルド開始`なら`workflow_dispatch`を呼ぶ。生成はステートレスな全再生成のため、ある電文より後に始まったビルドにはその電文が必ず含まれる。この比較だけで取りこぼしも重複起動も生じない(Workers KVによる状態保持は不要)。あわせて**前回ビルドから10分超なら無条件で起動**し、更新間隔の上限をCloudflare側で担保する。
+   - ※旧実装(最新entryが90秒以内なら起動)は誤り。実測(2026-08-15)ではフィードに電文が現れるのは`<updated>`から**約75〜120秒後**(中央値120秒)で、毎分ポーリングでは大半を取りこぼし、直近12回の更新のうちWorker由来は1回のみだった。判定ロジックは`worker/index.test.js`で回帰テスト済み(CIのbuild-deployで毎回実行)。
+2. **Actions schedule(5分毎・別ファイル)**: Workers障害時のフォールバック。ただし**実測の到達率は12%(実質23〜80分毎)**であり「5分以内」は成立しない(GitHub公式が高負荷時の遅延・ドロップを明記)。更新間隔の上限保証は上記1のWorker側の下限保証で担保し、こちらは最後の保険と位置づける。`fallback-schedule.yml`がGITHUB_TOKEN(公式明記の例外でdispatch可)により`build-deploy.yml`を起動する。**同一ファイルにscheduleを置かない**——公開リポジトリの60日不活性によるschedule自動無効化はファイル単位で、同居させるとWorkerからのdispatch受け口まで道連れになるため(検証記録: `research/2026-08-14-trigger-verification.md`)。cron分は毎時0分(公式が名指しする高負荷帯)を避けてオフセット。
 3. **build-deploy.yml**: `concurrency: group=deploy, cancel-in-progress: false` で多重起動を直列化(デプロイ中断を避ける)。手順: 長期フィード取得→全電文取得(並列・失敗リトライ)→生成→2系統デプロイ。所要目標90秒以内。
 4. **ステートレス再生成**: 前回状態を持たず、毎回「長期フィード(数日分の全入電)」から現在有効な電文集合を再構築する。冪等で、取りこぼし・二重処理の問題が構造的に発生しない。取得量削減のため電文本文はETagベースのActionsキャッシュを併用(任意最適化)。
 

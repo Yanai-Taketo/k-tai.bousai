@@ -68,6 +68,9 @@
    npx wrangler@4 secret put GITHUB_TOKEN   # ← 上記PATを入力
    ```
 3. `wrangler.toml` の `GITHUB_REPO` / `GITHUB_BRANCH` が実際の値と一致しているか確認。
+   - **Workerのコードを更新したときは `npx wrangler@4 deploy` を再実行する**(Pagesの
+     デプロイはActionsが自動で行うが、Workerは自動更新されない)。判定ロジックの
+     テストは `cd worker && node --test` で実行できる。
 4. Workerの動作を確認できたら、リポジトリの Variable `MINUTE_TRIGGER` = `1` を設定
    (monitor.ymlの毎分トリガー死活確認が有効になる。Worker導入前に設定すると誤検知するので注意)。
 

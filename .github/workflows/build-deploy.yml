@@ -47,6 +47,11 @@ jobs:
       - name: テスト(パーサ回帰)
         run: python3 -m unittest discover -s tests
 
+      # トリガー判定はWorker上で動くため本ジョブでは使われないが、壊れても誰も
+      # 気づかないまま更新頻度が静かに落ちる(2026-08-15の障害)。ここで毎回検査する。
+      - name: テスト(トリガー判定ロジック)
+        run: node --test worker/
+
       - name: GitHub Pages artifactアップロード
         uses: actions/upload-pages-artifact@v3
         with:

@@ -1,0 +1,9 @@
+{
+  "name": "k-tai-bousai-trigger",
+  "private": true,
+  "type": "module",
+  "description": "フィード更新検知トリガー。テスト: node --test",
+  "scripts": {
+    "test": "node --test"
+  }
+}
