@@ -28,21 +28,25 @@ CSS = (
     ".b{display:inline-block;padding:0 .3em;border-radius:2px;margin:0 .2em .1em 0;font-weight:bold}"
     ".s5{background:#0c000c;color:#fff;border:1px solid #888}.s4{background:#a0a;color:#fff}"
     ".s3{background:#ff2800;color:#111}.s2{background:#f2e700;color:#111;border:1px solid #999}"
-    # トップの県一覧: 注意報は常時50県前後に出る「普通の状態」なので無装飾にし、
-    # 例外だけを目立たせる(警報以上=公式配色のチップ / 発表なし=控えめな色)。
-    # 全県を塗ると強調が機能せず模様になるため。
-    ".q{color:#767676}"
+    # トップの県一覧はタイル状に揃える。幅がまちまちのチップを行内に流すと、
+    # 注意報で50県が着色される平常時に不揃いな塊になって読めない。
+    # 幅を揃え地方見出しを帯にすると、同じ着色率でも整って見える
+    # (Yahoo!天気・災害の全国警報ページと同じ構造)。
+    ".rg{background:#eef2f8;padding:2px 8px;font-weight:bold;margin:.7em 0 .25em}"
+    ".g{margin:0}.g a{display:inline-block;min-width:4.4em;text-align:center;"
+    "padding:.3em .45em;margin:0 .3em .3em 0;border-radius:4px;text-decoration:none}"
+    ".s0{background:#eee;color:#555}"
     ".band{padding:4px 8px;margin:.6em 0;font-weight:bold}"
     "table{border-collapse:collapse;margin:.3em 0;width:100%}"
     "th,td{border:1px solid #aaa;padding:2px 6px;text-align:left;vertical-align:top;font-size:.95em}"
     ".tw{overflow-x:auto}.tw:focus{outline:2px solid #06c}"
-    ".r{margin:.25em 0}.r b{display:inline-block;min-width:5.5em;color:#444}"
     ".warn{border-left:4px solid #d00;padding:4px 8px;background:#fee;margin:.5em 0}"
     ".safe{border-left:4px solid #06c;padding:2px 8px;background:#eef4ff}"
     "@media(prefers-color-scheme:dark){body{background:#111;color:#eee}a{color:#8cb4ff}"
     "small,.n{color:#aaa}.hd{background:#222}th,td{border-color:#555}"
-    ".warn{background:#411;border-color:#f66}.r b{color:#aaa}.tw:focus{outline-color:#8cb4ff}"
-    ".safe{background:#132039;border-color:#5a8ad6}}"
+    ".warn{background:#411;border-color:#f66}.tw:focus{outline-color:#8cb4ff}"
+    ".safe{background:#132039;border-color:#5a8ad6}"
+    ".rg{background:#222}.s0{background:#333;color:#bbb}}"
 )
 
 
@@ -294,17 +298,14 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, typhoons, generated, ba
     body.append("<h2>都道府県を選ぶ(地方順)</h2>")
     sev_by_code = {c: s for s, _n, c in pref_rows}
     for region, codes in REGIONS:
-        links = []
+        tiles = []
         for c in codes:
             sev = sev_by_code.get(c, 0)
             short = e(SHORT_NAMES.get(c, c))
-            if sev >= 3:
-                links.append(f'<a href="p/{c}"><span class="b s{sev}">{short}</span></a>')
-            elif sev == 2:
-                links.append(f'<a href="p/{c}">{short}</a>')
-            else:
-                links.append(f'<a class=q href="p/{c}">{short}</a>')
-        body.append(f"<p class=r><b>{e(region)}</b> {' '.join(links)}</p>")
+            tiles.append(f'<a class=s{sev if sev >= 2 else 0} href="p/{c}">{short}</a>')
+        body.append(
+            f"<p class=rg>{e(region)}</p><p class=g>{''.join(tiles)}</p>"
+        )
     body.append(
         '<p class=n>色付きの県は発表中: <span class="b s5">特別警報</span> '
         '<span class="b s4">危険警報</span> <span class="b s3">警報</span> '
