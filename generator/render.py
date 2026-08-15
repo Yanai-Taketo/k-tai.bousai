@@ -66,12 +66,10 @@ def page(title, body, generated, root="./", banner=""):
         f"<title>{e(title)}</title><style>{CSS}</style></head><body>"
         f"<div class=hd>データ取得: {e(generated)} JST | 非公式の軽量ミラーです</div>"
         f"{warn}{body}"
-        "<h2>ご注意</h2>"
-        "<p class=n>本サイトは個人運営の<strong>非公式</strong>サイトです。"
-        "掲載情報はすべて気象庁の発表の転載であり、発表主体・発表時刻は各項目に記載のとおりです。"
-        "情報の正確性・即時性は保証されません。"
-        "<strong>避難や身を守る行動の判断は、必ずお住まいの自治体・気象庁の発表に従ってください。</strong>"
-        "圏外・基地局停波時は本サイトも閲覧できません(緊急速報メール・ラジオ等をご利用ください)。</p>"
+        # 免責は1行に圧縮し全文はaboutへ委譲する(R-5は満たしつつ、津波ページでは
+        # 本体より注意書きが長いという本末転倒を解消。ヘッダにも「非公式」と明示済み)。
+        f'<p class=n><strong>非公式</strong>の転載です。避難などの判断は自治体・気象庁の'
+        f'発表に従ってください。<a href="{root}about">詳しく</a></p>'
         f"<p class=n>出典: <a href=\"https://www.jma.go.jp/\">気象庁ホームページ</a> | "
         f'<a href="{root}">全国トップ</a> | '
         f'<a href="{root}eq">地震</a> | '
@@ -280,7 +278,7 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, typhoons, generated, ba
             "<h2>最新の地震</h2>"
             f"<p>{e(fmt_dt(q['origin']))}ころ {e(q['hypo'])} "
             + (f"M{e(q['mag'])} " if q["mag"] else "")
-            + (f"最大震度{e(int_label(q['maxint']))}" if q["maxint"] else "最大震度調査中")
+            + (f"最大震度{e(int_label(q['maxint']))}" if q["maxint"] else "国内の震度発表なし")
             + ' → <a href="eq">一覧</a></p>'
         )
 
@@ -370,7 +368,9 @@ def _eq_detail_body(q, gran):
         rows.append(("深さ", q["depth"]))
     if q["mag"]:
         rows.append(("規模", f"M{q['mag']}"))
-    rows.append(("最大震度", f"震度{int_label(q['maxint'])}" if q["maxint"] else "調査中"))
+    rows.append(
+        ("最大震度", f"震度{int_label(q['maxint'])}" if q["maxint"] else "国内での震度の発表はありません")
+    )
     body.append(
         "<table>"
         + "".join(f"<tr><th scope=row>{e(k)}</th><td>{e(v)}</td></tr>" for k, v in rows)
@@ -417,23 +417,43 @@ def render_eq_detail(q, generated, banner):
 
 
 def render_eq(quakes, generated, banner):
+    """地震一覧。発生時刻・震央地名・M・最大震度の4列表(各社共通の定番形)。
+
+    各行の情報量を絞る: 電文種別(ほぼ全て「震源・震度」)と発表時刻は繰り返すと
+    ノイズになるため一覧では省き、詳細ページに載せる。震度速報のみの地震は
+    震源が未確定なので「速報」と明示する。
+    """
     from .parse_eqtsunami import int_label
 
-    body = ["<h1>地震情報</h1>"]
+    body = ["<h1 id=eqh>地震情報</h1>"]
     if not quakes:
         body.append("<p>直近の地震情報はありません。</p>")
+        return page("地震情報", "".join(body), generated, banner=banner)
+
+    rows = [
+        "<tr><th scope=col>発生時刻</th><th scope=col>震央地名</th>"
+        "<th scope=col>規模</th><th scope=col>最大震度</th></tr>"
+    ]
     for q in quakes:
-        rel = eq_detail_href(q)
-        head = (
-            f"<strong>{e(fmt_dt(q['origin']))}ころ</strong> {e(q['hypo'])} "
-            + (f"M{e(q['mag'])} " if q["mag"] else "")
-            + f"最大震度{e(int_label(q['maxint'])) if q['maxint'] else '調査中'}"
+        href = eq_detail_href(q)
+        where = e(q["hypo"]) or "調査中"
+        if href:
+            where = f'<a href="{href}">{where}</a>'
+        if q["kind"] and "速報" in q["kind"]:
+            where += ' <small class=n>(速報)</small>'
+        rows.append(
+            f"<tr><th scope=row>{e(fmt_dt(q['origin']))}</th><td>{where}</td>"
+            f"<td>{('M' + e(q['mag'])) if q['mag'] else '—'}</td>"
+            # 震度が電文に無いのは「未確定」とは限らない(遠地地震など国内で震度を
+            # 観測していない場合も同じ)。断定を避けて「—」とし、詳細ページで補う。
+            f"<td><strong>{e(int_label(q['maxint'])) if q['maxint'] else '—'}</strong></td></tr>"
         )
-        link = f' → <a href="{rel}">各地の震度</a>' if rel else ""
-        body.append(
-            f"<p>{head}{link}"
-            f"<br><small class=n>{e(q['kind'])} / 気象庁発表 {e(fmt_dt(q['report_dt']))}</small></p>"
-        )
+    body.append(
+        "<div class=tw role=region aria-labelledby=eqh tabindex=0><table>"
+        + "".join(rows)
+        + "</table></div>"
+    )
+    body.append("<p class=n>震央地名を選ぶと各地の震度が見られます。</p>")
     return page("地震情報", "".join(body), generated, banner=banner)
 
 
@@ -574,6 +594,13 @@ def render_about(generated):
         "<p>避難指示・避難所の開設状況は掲載していません(個人が機械可読で入手できる公式経路が"
         "存在しないため)。<strong>避難に関する情報は、お住まいの自治体の発表・緊急速報メール・"
         "テレビ・ラジオで確認してください。</strong></p>"
+        "<h2>ご注意(免責)</h2>"
+        "<p>本サイトは個人運営の<strong>非公式</strong>サイトです。"
+        "掲載情報はすべて気象庁の発表の転載であり、発表主体・発表時刻は各項目に記載のとおりです。"
+        "情報の正確性・即時性は保証されません。"
+        "<strong>避難や身を守る行動の判断は、必ずお住まいの自治体・気象庁の発表に"
+        "従ってください。</strong>"
+        "圏外・基地局停波時は本サイトも閲覧できません(緊急速報メール・ラジオ等をご利用ください)。</p>"
         "<h2>情報の鮮度と限界</h2>"
         "<p>フィードは無償・ベストエフォート提供のため、配信の遅延・停止があり得ます。"
         "各ページ上部の「データ取得」時刻が古い場合、情報が最新でない可能性があります。"

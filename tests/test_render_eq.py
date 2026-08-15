@@ -17,6 +17,7 @@ from generator.render import (
     eq_detail_href,
     eq_detail_rel,
     minify,
+    render_eq,
     render_eq_detail,
 )
 
@@ -141,6 +142,27 @@ class TestEqDetailRealTelegram(unittest.TestCase):
         ]
         self.assertTrue(internal)
         self.assertEqual([h for h in internal if h.endswith(".html")], [])
+
+
+class TestNoIntensity(unittest.TestCase):
+    def test_absent_intensity_is_not_called_pending(self):
+        """震度が電文に無い場合に「調査中」と断定しない。
+
+        遠地地震(例: インドネシア付近M7.7)は国内で震度を観測しないためMaxIntが
+        無い。これを「調査中」と表示すると、後から震度が出るかのように誤解させる。
+        """
+        q = parse_vxse53(fixture("VXSE53_sample.xml"))
+        q["maxint"] = ""
+        q["obs"] = []
+        html = render_eq_detail(q, "08月15日 12:00", "")
+        self.assertIn("国内での震度の発表はありません", html)
+        self.assertNotIn("調査中", html)
+
+    def test_list_shows_dash(self):
+        q = parse_vxse53(fixture("VXSE53_sample.xml"))
+        q["maxint"] = ""
+        html = render_eq([q], "08月15日 12:00", "")
+        self.assertNotIn("調査中", html)
 
 
 class TestEqDetailHugeQuake(unittest.TestCase):

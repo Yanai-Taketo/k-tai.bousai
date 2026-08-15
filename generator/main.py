@@ -254,6 +254,10 @@ def main(argv=None):
             typhoons[eid] = t
     typhoon_list = sorted(typhoons.values(), key=lambda t: t["event_id"])
 
+    # 一覧は発生時刻の降順にする(フィード順=発表時刻順のままだと、続報や遠地地震で
+    # 発生時刻が前後して読みにくくなる)。発生時刻が無い電文は発表時刻で代替する。
+    quakes.sort(key=lambda q: q.get("origin") or q.get("report_dt") or "", reverse=True)
+
     tsunami = None
     if ts_entries:
         data = tel(ts_entries[0]["href"])
