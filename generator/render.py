@@ -28,9 +28,10 @@ CSS = (
     ".b{display:inline-block;padding:0 .3em;border-radius:2px;margin:0 .2em .1em 0;font-weight:bold}"
     ".s5{background:#0c000c;color:#fff;border:1px solid #888}.s4{background:#a0a;color:#fff}"
     ".s3{background:#ff2800;color:#111}.s2{background:#f2e700;color:#111;border:1px solid #999}"
-    # トップの県一覧は注意報が常時50県前後に付くため、淡色(気象庁配色指針の
-    # 淡い黄 #faf5c0)にして警報以上との差を出す。文字色は黒のままで可読。
-    ".s2t{background:#faf5c0;color:#111;border:1px solid #cbbf6e}"
+    # トップの県一覧: 注意報は常時50県前後に出る「普通の状態」なので無装飾にし、
+    # 例外だけを目立たせる(警報以上=公式配色のチップ / 発表なし=控えめな色)。
+    # 全県を塗ると強調が機能せず模様になるため。
+    ".q{color:#767676}"
     ".band{padding:4px 8px;margin:.6em 0;font-weight:bold}"
     "table{border-collapse:collapse;margin:.3em 0;width:100%}"
     "th,td{border:1px solid #aaa;padding:2px 6px;text-align:left;vertical-align:top;font-size:.95em}"
@@ -297,11 +298,12 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, typhoons, generated, ba
         for c in codes:
             sev = sev_by_code.get(c, 0)
             short = e(SHORT_NAMES.get(c, c))
-            if sev >= 2:
-                cls = "s2t" if sev == 2 else f"s{sev}"
-                links.append(f'<a href="p/{c}"><span class="b {cls}">{short}</span></a>')
-            else:
+            if sev >= 3:
+                links.append(f'<a href="p/{c}"><span class="b s{sev}">{short}</span></a>')
+            elif sev == 2:
                 links.append(f'<a href="p/{c}">{short}</a>')
+            else:
+                links.append(f'<a class=q href="p/{c}">{short}</a>')
         body.append(f"<p class=r><b>{e(region)}</b> {' '.join(links)}</p>")
     body.append(
         '<p class=n>色付きの県は発表中: <span class="b s5">特別警報</span> '
