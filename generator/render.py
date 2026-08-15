@@ -278,7 +278,7 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, typhoons, generated, ba
             "<h2>最新の地震</h2>"
             f"<p>{e(fmt_dt(q['origin']))}ころ {e(q['hypo'])} "
             + (f"M{e(q['mag'])} " if q["mag"] else "")
-            + (f"最大震度{e(int_label(q['maxint']))}" if q["maxint"] else "国内の震度発表なし")
+            + (f"最大震度{e(int_label(q['maxint']))}" if q["maxint"] else f"最大震度{NO_DATA}")
             + ' → <a href="eq">一覧</a></p>'
         )
 
@@ -286,6 +286,10 @@ def render_index(pref_rows, quakes, tsunami, sokuho_all, typhoons, generated, ba
 
 
 EQ_GZIP_BUDGET = 6 * 1024  # 設計書§4の /eq 予算
+
+# 欠測の表記。Yahoo!天気・災害の地震ページに合わせる(海外の地震では最大震度・
+# 深さが発表されない)。気象庁の警報マトリクスも発表対象外を "---" で示している。
+NO_DATA = "---"
 
 _ID_SAFE = re.compile(r"[^0-9A-Za-z_-]")
 
@@ -361,16 +365,22 @@ def _eq_detail_body(q, gran):
     if q.get("headline"):
         body.append(f"<p>{e(q['headline'])}</p>")
 
-    rows = [("発生時刻", fmt_dt(q["origin"]) + "ころ")]
-    if q["hypo"]:
-        rows.append(("震央(震源地)", q["hypo"] + (f"({q['coord']})" if q.get("coord") else "")))
-    if q.get("depth"):
-        rows.append(("深さ", q["depth"]))
-    if q["mag"]:
-        rows.append(("規模", f"M{q['mag']}"))
-    rows.append(
-        ("最大震度", f"震度{int_label(q['maxint'])}" if q["maxint"] else "国内での震度の発表はありません")
-    )
+    # 欠測は行ごと消さずYahoo!天気・災害と同じ「---」で示す。海外の地震では
+    # 最大震度・深さが無い(電文上も「深さ不明」)ため、項目の存在自体は見せる。
+    hypo = q["hypo"] or NO_DATA
+    if q.get("detail_name"):
+        hypo += f"({q['detail_name']})"
+    depth = q.get("depth") or ""
+    if depth in ("", "不明"):
+        depth = NO_DATA
+    rows = [
+        ("発生時刻", fmt_dt(q["origin"]) + "ころ"),
+        ("震源地", hypo),
+        ("最大震度", f"震度{int_label(q['maxint'])}" if q["maxint"] else NO_DATA),
+        ("規模", f"M{q['mag']}" if q["mag"] else NO_DATA),
+        ("深さ", depth),
+        ("緯度/経度", q.get("coord") or NO_DATA),
+    ]
     body.append(
         "<table>"
         + "".join(f"<tr><th scope=row>{e(k)}</th><td>{e(v)}</td></tr>" for k, v in rows)
@@ -441,15 +451,15 @@ def render_eq(quakes, generated, banner):
         when = e(fmt_dt(q["origin"]))
         if href:
             when = f'<a href="{href}">{when}</a>'
-        where = e(q["hypo"]) or "—"
+        where = e(q["hypo"]) or NO_DATA
         if q["kind"] and "速報" in q["kind"]:
             where += ' <small class=n>(速報)</small>'
         rows.append(
             f"<tr><th scope=row>{when}</th><td>{where}</td>"
-            f"<td>{('M' + e(q['mag'])) if q['mag'] else '—'}</td>"
+            f"<td>{('M' + e(q['mag'])) if q['mag'] else NO_DATA}</td>"
             # 震度が電文に無いのは「未確定」とは限らない(遠地地震など国内で震度を
             # 観測していない場合も同じ)。断定を避けて「—」とし、詳細ページで補う。
-            f"<td><strong>{e(int_label(q['maxint'])) if q['maxint'] else '—'}</strong></td></tr>"
+            f"<td><strong>{e(int_label(q['maxint'])) if q['maxint'] else NO_DATA}</strong></td></tr>"
         )
     body.append(
         "<div class=tw role=region aria-labelledby=eqh tabindex=0><table>"

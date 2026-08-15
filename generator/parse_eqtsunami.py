@@ -113,11 +113,13 @@ def parse_vxse53(data):
         mag = (e.text or "").strip()
         break
     coord, depth = _hypo_parts(hypo)
+    detail_name = text(hypo, "DetailedName") if hypo is not None else ""
     return {
         "kind": "震源・震度",
         "event_id": text(root, "EventID"),
         "origin": text(root, "OriginTime"),
         "hypo": text(hypo, "Name") if hypo is not None else "",
+        "detail_name": detail_name,
         "mag": mag,
         "maxint": text(root, "MaxInt"),
         "report_dt": text(root, "ReportDateTime"),
@@ -148,6 +150,7 @@ def parse_vxse51(data):
         "maxint": text(root, "MaxInt"),
         "report_dt": text(root, "ReportDateTime"),
         "headline": text(first(root, "Headline"), "Text") if first(root, "Headline") else "",
+        "detail_name": "",
         "coord": "",
         "depth": "",
         "comments": _comments(root),

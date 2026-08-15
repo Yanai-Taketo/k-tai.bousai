@@ -145,18 +145,29 @@ class TestEqDetailRealTelegram(unittest.TestCase):
 
 
 class TestNoIntensity(unittest.TestCase):
-    def test_absent_intensity_is_not_called_pending(self):
-        """震度が電文に無い場合に「調査中」と断定しない。
+    def test_absent_values_show_dashes_and_keep_the_row(self):
+        """欠測は「調査中」と断定せず、行も消さずに「---」で示す。
 
-        遠地地震(例: インドネシア付近M7.7)は国内で震度を観測しないためMaxIntが
-        無い。これを「調査中」と表示すると、後から震度が出るかのように誤解させる。
+        海外の地震(例: インドネシア付近M7.7)は国内で震度を観測せず、電文の
+        深さも「不明」になる。「調査中」だと後から出るように誤解させ、行ごと
+        消すと項目の存在すら分からない。Yahoo!天気・災害の表記に合わせる。
         """
         q = parse_vxse53(fixture("VXSE53_sample.xml"))
         q["maxint"] = ""
+        q["depth"] = "不明"
+        q["mag"] = ""
         q["obs"] = []
         html = render_eq_detail(q, "08月15日 12:00", "")
-        self.assertIn("国内での震度の発表はありません", html)
         self.assertNotIn("調査中", html)
+        for label in ("最大震度", "深さ", "規模"):
+            self.assertIn(f"<th scope=row>{label}</th><td>---</td>", html)
+
+    def test_overseas_detail_name_is_shown(self):
+        """海外の地震は詳細震央地名を併記する(例: インドネシア付近(インドネシア、フローレス))。"""
+        q = parse_vxse53(fixture("VXSE53_sample.xml"))
+        q["detail_name"] = "インドネシア、フローレス"
+        html = render_eq_detail(q, "08月15日 12:00", "")
+        self.assertIn("岩手県沖(インドネシア、フローレス)", html)
 
     def test_list_shows_dash(self):
         q = parse_vxse53(fixture("VXSE53_sample.xml"))
