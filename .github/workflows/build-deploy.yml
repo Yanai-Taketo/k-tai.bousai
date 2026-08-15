@@ -49,8 +49,11 @@ jobs:
 
       # トリガー判定はWorker上で動くため本ジョブでは使われないが、壊れても誰も
       # 気づかないまま更新頻度が静かに落ちる(2026-08-15の障害)。ここで毎回検査する。
+      # ※ `node --test worker/`(ディレクトリ指定)はテストが実行されず素通りする。
+      #   working-directory を指定して呼ぶこと(検証済み: 不具合を入れると exit 1)。
       - name: テスト(トリガー判定ロジック)
-        run: node --test worker/
+        working-directory: worker
+        run: node --test
 
       - name: GitHub Pages artifactアップロード
         uses: actions/upload-pages-artifact@v3
