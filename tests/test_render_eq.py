@@ -115,20 +115,25 @@ class TestEqDetailRealTelegram(unittest.TestCase):
         self.assertIn("震度１", html)
         self.assertLessEqual(gz_size(html), EQ_GZIP_BUDGET)
 
-    def test_detail_paths_are_directory_style(self):
-        """URLはディレクトリ形式(Cloudflareの.html→拡張子なし308を避けるため)。"""
+    def test_detail_paths_and_links(self):
+        """出力はフラットな.html、内部リンクは拡張子なし。
+
+        実測(2026-08-15): Cloudflare Pages・GitHub Pages とも拡張子なしURLを
+        0リダイレクトで配信する。`.html`付き・末尾スラッシュ付きはCloudflareが
+        308を返し1往復増える。
+        """
         q = parse_vxse53(fixture("VXSE53_sample.xml"))
-        self.assertEqual(eq_detail_rel(q), "eq/20260814224256/index.html")
-        self.assertEqual(eq_detail_href(q), "20260814224256/")
+        self.assertEqual(eq_detail_rel(q), "eq/20260814224256.html")
+        self.assertEqual(eq_detail_href(q), "eq/20260814224256")
         self.assertIsNone(eq_detail_rel({"event_id": ""}))
         self.assertIsNone(eq_detail_href({"event_id": ""}))
         # パス名に使えない文字は除去する(パストラバーサル防止)
         self.assertEqual(
-            eq_detail_rel({"event_id": "../../etc/passwd"}), "eq/etcpasswd/index.html"
+            eq_detail_rel({"event_id": "../../etc/passwd"}), "eq/etcpasswd.html"
         )
 
     def test_no_html_suffix_links_anywhere(self):
-        """生成HTML内に .html で終わる内部リンクが残っていないこと。"""
+        """内部リンクに .html を残さない(Cloudflareの308を避けるため)。"""
         q = parse_vxse53(fixture("VXSE53_sample.xml"))
         html = render_eq_detail(q, "08月15日 12:00", "")
         internal = [
